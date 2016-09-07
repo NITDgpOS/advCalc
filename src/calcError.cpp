@@ -36,5 +36,5 @@ void ERROR::set(const signed char error)
 
 void ERROR::reset()
 {
-	this->e = E_noError;
+	this->e = noError;
 }

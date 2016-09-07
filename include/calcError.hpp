@@ -11,10 +11,10 @@ public:
 	ERROR(const signed char);
 	enum
 	{
-		E_noError    =  0,
-		E_memAlloc   = -1,
-		E_outOfRange = -2,
-		E_invalidCmd = -3
+		noError    =  0,
+		memAlloc   = -1,
+		outOfRange = -2,
+		invalidCmd = -3
 	};
 	const char *toString();
 	bool isSet();
