@@ -5,7 +5,7 @@
 #include <calcError.hpp>
 
 template <typename Type>
-class stack
+class calcStack
 {
 	Type *start;
 	Type *current;
@@ -13,14 +13,14 @@ class stack
 	long unsigned rate;
 	bool accelerate;
 public:
-	stack();
-	stack(const long unsigned size);
-	stack(const bool);
-	stack(const long unsigned, const long unsigned, const bool);
-	stack(const stack &);
-	~stack();
+	calcStack();
+	calcStack(const long unsigned size);
+	calcStack(const bool);
+	calcStack(const long unsigned, const long unsigned, const bool);
+	calcStack(const calcStack &);
+	~calcStack();
 	void beFast(bool);
-	void operator=(const stack &);
+	void operator=(const calcStack &);
 	bool increaseSize();
 	bool decreaseSize();
 	bool get(Type &);
@@ -32,7 +32,7 @@ public:
 };
 
 template <typename Type>
-stack<Type>::stack()
+calcStack<Type>::calcStack()
 {
 	this->size       = 16;
 	this->rate       = 1;
@@ -42,7 +42,7 @@ stack<Type>::stack()
 }
 
 template <typename Type>
-stack<Type>::stack(const long unsigned size)
+calcStack<Type>::calcStack(const long unsigned size)
 {
 	this->size       = size;
 	this->rate       = 1;
@@ -52,7 +52,7 @@ stack<Type>::stack(const long unsigned size)
 }
 
 template <typename Type>
-stack<Type>::stack(const bool accelerate)
+calcStack<Type>::calcStack(const bool accelerate)
 {
 	this->size       = 16;
 	this->rate       = 1;
@@ -62,7 +62,7 @@ stack<Type>::stack(const bool accelerate)
 }
 
 template <typename Type>
-stack<Type>::stack(const unsigned long size, const long unsigned rate, const bool accelerate)
+calcStack<Type>::calcStack(const unsigned long size, const long unsigned rate, const bool accelerate)
 {
 	this->size       = size;
 	this->rate       = rate;
@@ -72,7 +72,7 @@ stack<Type>::stack(const unsigned long size, const long unsigned rate, const boo
 }
 
 template <typename Type>
-stack<Type>::stack(const stack<Type> &t)
+calcStack<Type>::calcStack(const calcStack<Type> &t)
 {
 	this->size       = t.size;
 	this->rate       = t.rate;
@@ -83,7 +83,7 @@ stack<Type>::stack(const stack<Type> &t)
 }
 
 template <typename Type>
-void stack<Type>::operator=(const stack<Type> &t)
+void calcStack<Type>::operator=(const calcStack<Type> &t)
 {
 	if (this->start)
 		delete [] this->start;
@@ -95,20 +95,20 @@ void stack<Type>::operator=(const stack<Type> &t)
 }
 
 template <typename Type>
-stack<Type>::~stack()
+calcStack<Type>::~calcStack()
 {
 	this->reset();
 	delete [] this->start;
 }
 
 template <typename Type>
-void stack<Type>::beFast(bool acc)
+void calcStack<Type>::beFast(bool acc)
 {
 	this->accelerate = acc;
 }
 
 template <typename Type>
-bool stack<Type>::pop(Type &y)
+bool calcStack<Type>::pop(Type &y)
 {
 	if (current)
 	{
@@ -121,7 +121,7 @@ bool stack<Type>::pop(Type &y)
 }
 
 template <typename Type>
-bool stack<Type>::pop()
+bool calcStack<Type>::pop()
 {
 	if (this->current)
 	{
@@ -133,13 +133,13 @@ bool stack<Type>::pop()
 }
 
 template <typename Type>
-bool stack<Type>::get(Type &y)
+bool calcStack<Type>::get(Type &y)
 {
 	return current ? y = *(current - 1), 1 : 0;
 }
 
 template <typename Type>
-bool stack<Type>::push(const Type y)
+bool calcStack<Type>::push(const Type y)
 {
 	if (current)
 	{
@@ -154,7 +154,7 @@ bool stack<Type>::push(const Type y)
 }
 
 template <typename Type>
-bool stack<Type>::push(const Type *start, const Type *end)
+bool calcStack<Type>::push(const Type *start, const Type *end)
 {
 	while (this->size < end - start)
 		if (not this->increaseSize())
@@ -173,13 +173,13 @@ bool stack<Type>::push(const Type *start, const Type *end)
 }
 
 template <typename Type>
-void stack<Type>::reset()
+void calcStack<Type>::reset()
 {
 	current = 0;
 }
 
 template <typename Type>
-bool stack<Type>::decreaseSize()
+bool calcStack<Type>::decreaseSize()
 {
 	try
 	{
@@ -211,7 +211,7 @@ bool stack<Type>::decreaseSize()
 }
 
 template <typename Type>
-bool stack<Type>::increaseSize()
+bool calcStack<Type>::increaseSize()
 {
 	try
 	{
