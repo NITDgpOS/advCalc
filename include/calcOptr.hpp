@@ -80,7 +80,9 @@ class operatorManager
 	calcStack<Operator> operatorStack;
 	calcStack<long double> numberStack;
 public:
-	operatorManager();
+	void insert(const Operator);
+	void insert(const long double);
+	bool ans(long double &);
 };
 
 #endif
