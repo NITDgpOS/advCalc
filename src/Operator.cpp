@@ -4,15 +4,15 @@
 
 static const char bin_ops[22][4] =
 {
-    "+", "-", "*", "/", "^", "|", "&", "P", "C", ">>", "<<",
-    "<", ">", ">=", "<=", "==", "!=", "%", "log", "&&", "||", ""
+	"+", "-", "*", "/", "^", "|", "&", "P", "C", ">>", "<<",
+	"<", ">", ">=", "<=", "==", "!=", "%", "log", "&&", "||", ""
 };
 
 static const char un_ops[22][7] =
 {
-    "~", "!", "ln", "abs", "cos", "sin", "tan", "acos", "asin", "atan",
-    "sec", "cosec", "cot", "asec", "acosec", "acot", "logten", "floor",
-    "sinh", "cosh", "tanh", "ceil"
+	"~", "!", "ln", "abs", "cos", "sin", "tan", "acos", "asin", "atan",
+	"sec", "cosec", "cot", "asec", "acosec", "acot", "logten", "floor",
+	"sinh", "cosh", "tanh", "ceil"
 };
 
 static optr_hash bin_ops_hash[22] = { 0 };
@@ -90,23 +90,23 @@ static str_hash generateHashKey(
 
 bool ismathchar(const char ch)
 {
-  if (isalpha(ch) ||
-      ch == '/' ||
-      ch == '*' ||
-      ch == '-' ||
-      ch == '+' ||
-      ch == '^' ||
-      ch == '%' ||
-      ch == '_' ||
-      ch == '!' ||
-      ch == '&' ||
-      ch == '|' ||
-      ch == '<' ||
-      ch == '>' ||
-      ch == '~' ||
-      ch == '=')
-    return 1;
-  return 0;
+	if (isalpha(ch) ||
+		ch == '/' ||
+		ch == '*' ||
+		ch == '-' ||
+		ch == '+' ||
+		ch == '^' ||
+		ch == '%' ||
+		ch == '_' ||
+		ch == '!' ||
+		ch == '&' ||
+		ch == '|' ||
+		ch == '<' ||
+		ch == '>' ||
+		ch == '~' ||
+		ch == '=')
+		return 1;
+	return 0;
 }
 
 static int priorityOf(const optr_hash s)
@@ -125,47 +125,47 @@ static int priorityOf(const optr_hash s)
 	  };
 	*/
 	switch (s)
-    {
-    case Operator::H_and:
-    case Operator::H_or:
+	{
+	case Operator::H_and:
+	case Operator::H_or:
 		return 1;
 
-    case Operator::H_great:
-    case Operator::H_less:
-    case Operator::H_equal:
-    case Operator::H_not_equal:
-    case Operator::H_great_equal:
-    case Operator::H_less_equal:
+	case Operator::H_great:
+	case Operator::H_less:
+	case Operator::H_equal:
+	case Operator::H_not_equal:
+	case Operator::H_great_equal:
+	case Operator::H_less_equal:
 		return 2;
 
-    case Operator::H_plus:
-    case Operator::H_minus:
+	case Operator::H_plus:
+	case Operator::H_minus:
 		return 3;
 
-    case Operator::H_multiply:
-    case Operator::H_divide:
+	case Operator::H_multiply:
+	case Operator::H_divide:
 		return 4;
 
-    case Operator::H_mod:
-    case Operator::H_pow:
+	case Operator::H_mod:
+	case Operator::H_pow:
 		return 5;
 
-    case Operator::H_P:
-    case Operator::H_C:
-    case Operator::H_log:
+	case Operator::H_P:
+	case Operator::H_C:
+	case Operator::H_log:
 		return 6;
 
-    case Operator::H_bit_and:
-    case Operator::H_bit_or:
+	case Operator::H_bit_and:
+	case Operator::H_bit_or:
 		return 7;
 
-    case Operator::H_bit_shift_right:
-    case Operator::H_bit_shift_left:
+	case Operator::H_bit_shift_right:
+	case Operator::H_bit_shift_left:
 		return 8;
 
-    default:
+	default:
 		return 0;
-    }
+	}
 }
 
 bool Operator::setOperatorProperties()
@@ -232,53 +232,53 @@ unsigned char Operator::setFromString(const char *start)
 const char *Operator::toString()
 {
 	switch (this->op)
-    {
-    case H_plus:              return "+";
-    case H_minus:             return "-";
-    case H_multiply:          return "*";
-    case H_divide:            return "/";
-    case H_pow:               return "^";
-    case H_mod:               return "%";
-    case H_P:                 return "P";
-    case H_C:                 return "C";
-    case H_bit_and:           return "&";
-    case H_bit_or:            return "|";
-    case H_bit_shift_right:   return ">>";
-    case H_bit_shift_left:    return "<<";
-    case H_bit_not:           return "~";
-    case H_open_bracket:      return "(";
-    case H_close_bracket:     return ")";
-    case H_not:               return "!";
-    case H_and:               return "&&";
-    case H_or:                return "||";
-    case H_great:             return ">";
-    case H_less:              return "<";
-    case H_great_equal:       return ">=";
-    case H_less_equal:        return "<=";
-    case H_sin:               return "sin";
-    case H_cos:               return "cos";
-    case H_tan:               return "tan";
-    case H_sec:               return "sec";
-    case H_cosec:             return "cosec";
-    case H_cot:               return "cot";
-    case H_asin:              return "asin";
-    case H_acos:              return "acos";
-    case H_atan:              return "atan";
-    case H_asec:              return "asec";
-    case H_acosec:            return "acosec";
-    case H_acot:              return "acot";
-    case H_sinh:              return "sinh";
-    case H_cosh:              return "cosh";
-    case H_tanh:              return "tanh";
-    case H_log:               return "log";
-    case H_ln:                return "ln";
-    case H_logten:            return "logten";
-    case H_abs:               return "abs";
-    case H_floor:             return "floor";
-    case H_ceil:              return "ceil";
-    case 0:                   return "(null)";
-    default:                  return "";
-    }
+	{
+	case H_plus:              return "+";
+	case H_minus:             return "-";
+	case H_multiply:          return "*";
+	case H_divide:            return "/";
+	case H_pow:               return "^";
+	case H_mod:               return "%";
+	case H_P:                 return "P";
+	case H_C:                 return "C";
+	case H_bit_and:           return "&";
+	case H_bit_or:            return "|";
+	case H_bit_shift_right:   return ">>";
+	case H_bit_shift_left:    return "<<";
+	case H_bit_not:           return "~";
+	case H_open_bracket:      return "(";
+	case H_close_bracket:     return ")";
+	case H_not:               return "!";
+	case H_and:               return "&&";
+	case H_or:                return "||";
+	case H_great:             return ">";
+	case H_less:              return "<";
+	case H_great_equal:       return ">=";
+	case H_less_equal:        return "<=";
+	case H_sin:               return "sin";
+	case H_cos:               return "cos";
+	case H_tan:               return "tan";
+	case H_sec:               return "sec";
+	case H_cosec:             return "cosec";
+	case H_cot:               return "cot";
+	case H_asin:              return "asin";
+	case H_acos:              return "acos";
+	case H_atan:              return "atan";
+	case H_asec:              return "asec";
+	case H_acosec:            return "acosec";
+	case H_acot:              return "acot";
+	case H_sinh:              return "sinh";
+	case H_cosh:              return "cosh";
+	case H_tanh:              return "tanh";
+	case H_log:               return "log";
+	case H_ln:                return "ln";
+	case H_logten:            return "logten";
+	case H_abs:               return "abs";
+	case H_floor:             return "floor";
+	case H_ceil:              return "ceil";
+	case 0:                   return "(null)";
+	default:                  return "";
+	}
 }
 
 void makeOperatorHashes()
@@ -288,10 +288,10 @@ void makeOperatorHashes()
 
 	/* Generating */
 	for (; i < 22; ++i)
-    {
+	{
 		bin_ops_hash[i] = generateHashKey(bin_ops[i]) % unify;
 		un_ops_hash[i] = generateHashKey(un_ops[i]) % unify;
-    }
+	}
 
 	/* Sorting */
 	for (i = 0; i < 22; ++i)
