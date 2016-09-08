@@ -56,6 +56,15 @@ Operator::Operator(const Operator &x)
 #endif
 }
 
+inline bool Operator::isUnary()
+{
+#ifdef TESTING
+	if (not this->op)
+		throw "Error: Null operator beign checked for unary";
+#endif
+	return not this->isBinary;
+}
+
 Operator Operator::operator=(const Operator &x)
 {
 	this->op = x.op;
