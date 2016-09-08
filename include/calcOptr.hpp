@@ -19,12 +19,10 @@ public:
 	Operator(const Operator &);
 	bool isUnary();
 	const char *toString();
+	unsigned char checkPriority(const Operator);
 	unsigned char setFromString(const char *);
-	int priorityGroup();
 	Operator operator=(const Operator &);
 	bool operator==(const Operator);
-	bool operator<=(const Operator);
-	bool operator>=(const Operator);
 	bool operator<(const Operator);
 	bool operator>(const Operator);
 	enum

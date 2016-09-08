@@ -311,3 +311,57 @@ void makeOperatorHashes()
 				bin_ops_hash[j + 1] = t;
 			}
 }
+
+#define HIGH 20
+#define LOW  10
+unsigned char Operator::checkPriority(const Operator s2)
+{
+#ifdef TESTING
+	if (not this->op || not s2.op)
+		throw "Error: Null operator cannot have a priority";
+#endif
+	bool s1_open = this->op == H_open_bracket;
+	bool s2_close = s2.op == H_close_bracket;
+	if (s1_open && s2_close)
+		return HIGH;
+
+	if (s2_close)
+		return LOW;
+
+	if (s1_open)
+		return HIGH;
+
+	if (this->isBinary && not s2.isBinary)
+		return HIGH;
+
+	if (not this->isBinary && s2.isBinary)
+		return LOW;
+
+	if (not this->isBinary && not s2.isBinary)
+		return HIGH;
+
+	if (this->op == s2.op)
+	{
+		if (this->isBinary)
+			return LOW;
+		return HIGH;
+	}
+
+	if (this->priority && s2.priority)
+		return this->priority < s2.priority ? HIGH : LOW;
+}
+
+inline bool Operator::operator==(const Operator x)
+{
+	return this->op == x.op;
+}
+
+inline bool Operator::operator>(const Operator x)
+{
+	return this->checkPriority(x) == HIGH;
+}
+
+inline bool Operator::operator<(const Operator x)
+{
+	return this->checkPriority(x) == LOW;
+}
