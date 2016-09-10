@@ -11,13 +11,18 @@ public:
 	ERROR(const signed char);
 	enum
 	{
-		noError    =  0,
-		memAlloc   = -1,
-		outOfRange = -2,
-		numScarce  = -3,
-		optrScarce = -4,
-		brktError  = -5,
-		invalidCmd = -6
+		noError     =  0,
+		memAlloc    = -1,
+		outOfRange  = -2,
+		numScarce   = -3,
+		optrScarce  = -4,
+		brktError   = -5,
+		divError    = -6,
+		factError   = -7,
+		rangUndef   = -8,
+		domUndef    = -9,
+		invalidOptr = -10,
+		invalidCmd  = -11
 	};
 	const char *toString();
 	bool isSet();
