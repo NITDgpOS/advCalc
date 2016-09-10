@@ -360,9 +360,24 @@ unsigned char Operator::checkPriority(const Operator s2)
 		return this->priority < s2.priority ? HIGH : LOW;
 }
 
+inline bool Operator::operator==(const int x)
+{
+	return this->op == x;
+}
+
 inline bool Operator::operator==(const Operator x)
 {
 	return this->op == x.op;
+}
+
+inline bool Operator::operator!=(const int x)
+{
+	return this->op != x;
+}
+
+inline bool Operator::operator!=(const Operator x)
+{
+	return this->op != x.op;
 }
 
 inline bool Operator::operator>(const Operator x)
