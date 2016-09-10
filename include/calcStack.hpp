@@ -19,6 +19,7 @@ public:
 	calcStack(const long unsigned, const long unsigned, const bool);
 	calcStack(const calcStack &);
 	~calcStack();
+	bool isEmpty();
 	void beFast(bool);
 	void operator=(const calcStack &);
 	bool increaseSize();
@@ -69,6 +70,12 @@ calcStack<Type>::calcStack(const unsigned long size, const long unsigned rate, c
 	this->accelerate = accelerate;
 	this->start      = new Type[this->size];
 	this->current    = 0;
+}
+
+template <typename Type>
+bool calcStack<Type>::isEmpty()
+{
+	return current;
 }
 
 template <typename Type>
