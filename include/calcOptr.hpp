@@ -22,7 +22,10 @@ public:
 	unsigned char checkPriority(const Operator);
 	unsigned char setFromString(const char *);
 	Operator operator=(const Operator &);
+	bool operator==(const int);
 	bool operator==(const Operator);
+	bool operator!=(const int);
+	bool operator!=(const Operator);
 	bool operator<(const Operator);
 	bool operator>(const Operator);
 	enum
@@ -75,14 +78,53 @@ public:
 	};
 };
 
+template <typename numType>
 class operatorManager
 {
 	calcStack<Operator> operatorStack;
-	calcStack<long double> numberStack;
+	calcStack<numType> numberStack;
 public:
-	void insert(const Operator);
-	void insert(const long double);
-	bool ans(long double &);
+	bool insert(const Operator);
+	void insert(const numType);
+	bool ans(numType &);
 };
+
+template <typename numType>
+bool operatorManager::insert(const Operator x)
+{
+	Operator tmp;
+	numType x, y;
+	if (not this->operatorStack.get(tmp) || tmp > x)
+		this->operatorStack.push(x);
+	else
+	{
+		do
+		{
+			if (not this->numberStack.pop(x))
+				return Error = ERROR::numScarce, 0;
+			if (not tmp.isUnary() && not this->numberStack.pop(y))
+				return Error = ERROR::numScarce, 0;
+		} while (this->operatorStack.get(tmp) && tmp < x);
+		if (x != Operator::H_close_bracket)
+			operatorStack.push(x);
+	}
+	return 1;
+}
+
+template <typename numType>
+void operatorManager::insert(const numType x)
+{
+	numberStack.push(x);
+}
+
+template <typename numType>
+bool operatorManager::ans(numType &x)
+{
+#ifdef TESTING
+	if (not operatorStack.isEmpty())
+		throw "Operators left in stack due to some error";
+#endif
+	return numberStack.pop(x) && numberStack.isEmpty();
+}
 
 #endif
