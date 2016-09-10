@@ -16,11 +16,14 @@ const char *ERROR::toString()
 {
 	switch (this->e)
 	{
-	case   0: return "No error";
-	case  -1: return "Unable to allocate memory";
-	case  -2: return "Out of range";
-	case  -3: return "Invalid command";
-	default : return "Error not recognized";
+	case noError   : return "No error";
+	case memAlloc  : return "Unable to allocate memory";
+	case outOfRange: return "Out of range";
+	case numScarce : return "Number Scarcity error";
+	case optrScarce: return "Operator Scarcity error";
+	case brktError : return "Bracket Error";
+	case invalidCmd: return "Invalid command";
+	default        : return "Error not recognized";
 	}
 }
 

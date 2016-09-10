@@ -14,7 +14,10 @@ public:
 		noError    =  0,
 		memAlloc   = -1,
 		outOfRange = -2,
-		invalidCmd = -3
+		numScarce  = -3,
+		optrScarce = -4,
+		brktError  = -5,
+		invalidCmd = -6
 	};
 	const char *toString();
 	bool isSet();
