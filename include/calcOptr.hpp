@@ -76,6 +76,15 @@ public:
 		H_floor           = 757783302,
 		H_ceil            = 204432389
 	};
+	bool isUnary() const;
+	const char *toString() const;
+	unsigned char checkPriority(const Operator) const;
+	bool operator==(const Operator::optrHash) const;
+	bool operator==(const Operator) const;
+	bool operator!=(const Operator::optrHash) const;
+	bool operator!=(const Operator) const;
+	bool operator<(const Operator) const;
+	bool operator>(const Operator) const;
 };
 
 template <typename numType>

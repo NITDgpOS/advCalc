@@ -56,7 +56,7 @@ Operator::Operator(const Operator &x)
 #endif
 }
 
-inline bool Operator::isUnary()
+inline bool Operator::isUnary() const
 {
 #ifdef TESTING
 	if (not this->op)
@@ -238,7 +238,7 @@ unsigned char Operator::setFromString(const char *start)
 	return charsRead;
 }
 
-const char *Operator::toString()
+const char *Operator::toString() const
 {
 	switch (this->op)
 	{
@@ -323,7 +323,7 @@ void makeOperatorHashes()
 
 #define HIGH 20
 #define LOW  10
-unsigned char Operator::checkPriority(const Operator s2)
+unsigned char Operator::checkPriority(const Operator s2) const
 {
 #ifdef TESTING
 	if (not this->op || not s2.op)
@@ -360,32 +360,32 @@ unsigned char Operator::checkPriority(const Operator s2)
 		return this->priority < s2.priority ? HIGH : LOW;
 }
 
-inline bool Operator::operator==(const int x)
+inline bool Operator::operator==(const optrHash x) const
 {
 	return this->op == x;
 }
 
-inline bool Operator::operator==(const Operator x)
+inline bool Operator::operator==(const Operator x) const
 {
 	return this->op == x.op;
 }
 
-inline bool Operator::operator!=(const int x)
+inline bool Operator::operator!=(const optrHash x) const
 {
 	return this->op != x;
 }
 
-inline bool Operator::operator!=(const Operator x)
+inline bool Operator::operator!=(const Operator x) const
 {
 	return this->op != x.op;
 }
 
-inline bool Operator::operator>(const Operator x)
+inline bool Operator::operator>(const Operator x) const
 {
 	return this->checkPriority(x) == HIGH;
 }
 
-inline bool Operator::operator<(const Operator x)
+inline bool Operator::operator<(const Operator x) const
 {
 	return this->checkPriority(x) == LOW;
 }
