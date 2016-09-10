@@ -2,6 +2,8 @@
 
 #include <calcOptr.hpp>
 
+unsigned char angle_type = DEG;
+
 static const char bin_ops[22][4] =
 {
 	"+", "-", "*", "/", "^", "|", "&", "P", "C", ">>", "<<",
