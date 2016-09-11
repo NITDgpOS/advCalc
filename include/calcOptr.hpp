@@ -94,7 +94,7 @@ class operatorManager
 {
 	calcStack<Operator> operatorStack;
 	calcStack<numType> numberStack;
-	bool calculate(const Operator &, const numType, const numType);
+	bool calculate(const Operator, const numType, const numType);
 public:
 	bool insert(const Operator);
 	void insert(const numType);
@@ -107,17 +107,22 @@ bool operatorManager<numType>::insert(const Operator z)
 {
 	Operator tmp;
 	numType x, y;
+
 	if (not this->operatorStack.get(tmp) || tmp > z)
 		return this->operatorStack.push(z);
-	do
-	{
+
+	do {
+		this->operatorStack.pop();
 		if (not this->numberStack.pop(x))
 			return Error = ERROR::numScarce, 0;
 		if (not tmp.isUnary() && not this->numberStack.pop(y))
 			return Error = ERROR::numScarce, 0;
-	} while (this->calculate(tmp, x, y) && tmp < z);
+		this->calculate(tmp, x, y);
+	} while (this->operatorStack.get(tmp) && tmp < z);
+
 	if (z != Operator::H_close_bracket)
 		return this->operatorStack.push(z);
+
 	return 1;
 }
 
@@ -132,14 +137,17 @@ bool operatorManager<numType>::finishCalculation()
 {
 	Operator tmp;
 	numType x, y;
-	if (this->operatorStack.get(tmp))
-		do
-		{
-			if (not this->numberStack.pop(x))
-				return Error = ERROR::numScarce, 0;
-			if (not tmp.isUnary() && not this->numberStack.pop(y))
-				return Error = ERROR::numScarce, 0;
-		} while (this->calculate(tmp, x, y));
+
+	while (this->operatorStack.pop(tmp))
+	{
+		if (not this->numberStack.pop(x))
+			return Error = ERROR::numScarce, 0;
+		if (not tmp.isUnary() && not this->numberStack.pop(y))
+			return Error = ERROR::numScarce, 0;
+		this->calculate(tmp, x, y);
+	}
+
+	return this->operatorStack.isEmpty() && Error;
 }
 
 template <typename numType>
@@ -153,7 +161,7 @@ bool operatorManager<numType>::ans(numType &x)
 }
 
 template <typename numType>
-bool operatorManager<numType>::calculate(const Operator &op, const numType x, const numType y)
+bool operatorManager<numType>::calculate(const Operator op, const numType x, const numType y)
 {
 	numType z = angle_type == DEG ? (x * PI / 180) : (angle_type == RAD ? x : (x * PI / 200)), ans;
 
@@ -327,8 +335,7 @@ bool operatorManager<numType>::calculate(const Operator &op, const numType x, co
 	else
 		return Error = ERROR::invalidOptr, 0;
 
-	this->numberStack.push(ans);
-	return this->operatorStack.get(op);
+	return this->numberStack.push(ans);
 }
 
 #endif
