@@ -148,8 +148,13 @@ void answerManager<Type>::toggleAutoDelete()
 }
 
 template <typename Type>
-bool answerManager<Type>::getAns(Type &x) const
+bool answerManager<Type>::getAns(unsigned long pos, Type &x) const
 {
+	return
+		pos ?
+		this->answerStack[pos / ansPerStack].find(pos % ansPerStack +
+												  (pos >= ansPerStack ? 1 : 0)) :
+		this->answerStack[numOfAns / ansPerStack].find(0);
 }
 
 #endif
