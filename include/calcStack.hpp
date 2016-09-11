@@ -19,11 +19,15 @@ public:
 	calcStack(const long unsigned, const long unsigned, const bool);
 	calcStack(const calcStack &);
 	~calcStack();
+	unsigned long totalElements();
+	unsigned long capacity();
+	bool setCapacity(const unsigned long);
 	bool isEmpty();
-	void beFast(bool);
+	void beFast(const bool);
 	void operator=(const calcStack &);
 	bool increaseSize();
 	bool decreaseSize();
+	bool find(const unsigned long, Type &);
 	bool get(Type &);
 	bool pop();
 	bool pop(Type &);
@@ -73,12 +77,6 @@ calcStack<Type>::calcStack(const unsigned long size, const long unsigned rate, c
 }
 
 template <typename Type>
-bool calcStack<Type>::isEmpty()
-{
-	return current;
-}
-
-template <typename Type>
 calcStack<Type>::calcStack(const calcStack<Type> &t)
 {
 	this->size       = t.size;
@@ -87,6 +85,57 @@ calcStack<Type>::calcStack(const calcStack<Type> &t)
 	this->start      = new Type[this->size];
 	this->current    = t.current ? this->start + (t.current - t.start) : 0;
 	std::copy(t.start, t.current, this->start);
+}
+
+template <typename Type>
+unsigned long calcStack<Type>::totalElements()
+{
+	return this->current ? this->current - this->start : 0;
+}
+
+template <typename Type>
+unsigned long calcStack<Type>::capacity()
+{
+	return this->size;
+}
+
+template <typename Type>
+bool calcStack<Type>::setCapacity(const unsigned long s)
+{
+	try
+	{
+		Type *temp = new Type[s];
+		size = s;
+		if (current)
+		{
+			std::copy(start, current, temp);
+			current = temp + (s > current - start ? current - start : s);
+		}
+		delete [] this->start;
+		start = temp;
+		return 1;
+	}
+	catch(std::bad_alloc x)
+	{
+		return Error = ERROR::memAlloc, 0;
+	}
+}
+
+template <typename Type>
+bool calcStack<Type>::isEmpty()
+{
+	return current;
+}
+
+template <typename Type>
+bool calcStack<Type>::find(const unsigned long pos, Type &x)
+{
+	if (current)
+		if (pos)
+			return pos <= current - start ? x = start[pos - 1], 1 : 0;
+		else
+			return x = *(current - 1), 1;
+	return 0;
 }
 
 template <typename Type>
@@ -109,7 +158,7 @@ calcStack<Type>::~calcStack()
 }
 
 template <typename Type>
-void calcStack<Type>::beFast(bool acc)
+void calcStack<Type>::beFast(const bool acc)
 {
 	this->accelerate = acc;
 }
