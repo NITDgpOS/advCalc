@@ -22,7 +22,8 @@ public:
 		rangUndef   = -8,
 		domUndef    = -9,
 		invalidOptr = -10,
-		invalidCmd  = -11
+		parseError  = -11,
+		invalidCmd  = -12
 	};
 	const char *toString();
 	bool isSet();
