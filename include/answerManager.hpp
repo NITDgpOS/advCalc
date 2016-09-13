@@ -21,6 +21,7 @@ public:
 	answerManager(const bool, const unsigned long);
 	answerManager(const bool, const unsigned int, const unsigned int);
 	void toggleAutoDelete();
+	bool parseAns(const char *, Type &);
 	bool getAns(Type &) const;
 	bool push(const Type);
 };
@@ -145,6 +146,21 @@ template <typename Type>
 void answerManager<Type>::toggleAutoDelete()
 {
 	autoDelete = autoDelete ? 0 : 1;
+}
+
+template <typename Type>
+bool parseAns(const char **s, Type &x)
+{
+	if (*s == 'A' || *s == 'a')
+	{
+		char *c = 0;
+		unsigned long y = strtoul(*s + 1, &c, 0);
+		if (errno == ERANGE) return Error = ERROR::outOfRange, 0;
+		else if (*s == c)    return 0;
+		*s = c;
+		return this->getAns(y, x);
+	}
+	return 0;
 }
 
 template <typename Type>
