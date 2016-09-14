@@ -1,6 +1,8 @@
 #ifndef answerMANAGER
 #define answerMANAGER
 
+#include <limits.h>
+
 #include <calcStack.hpp>
 
 template <typename Type>
@@ -153,14 +155,21 @@ bool parseAns(const char **s, Type &x)
 {
 	if (*s == 'A' || *s == 'a')
 	{
-		char *c = 0;
-		unsigned long y = strtoul(*s + 1, &c, 0);
-		if (errno == ERANGE) return Error = ERROR::outOfRange, 0;
-		else if (*s == c)    return 0;
-		*s = c;
-		return this->getAns(y, x);
+		char *c = *s + 1;
+		unsigned long y = 0;
+		while (*c > 47 && *c < 58)
+		{
+			if (y > (ULONG_MAX - *c + 48) / 10)
+				return Error = ERROR::outOfRange, 0;
+			y = y * 10 + *(c++) - 48;
+		} 
+		if (*s == c - 1)
+		{
+			*s = c;
+			return this->getAns(y, x);
+		}
 	}
-	return 0;
+	return Error = ERROR::parseError, 0;
 }
 
 template <typename Type>
@@ -169,7 +178,7 @@ bool answerManager<Type>::getAns(unsigned long pos, Type &x) const
 	return
 		pos ?
 		this->answerStack[pos / ansPerStack].find(pos % ansPerStack +
-												  (pos >= ansPerStack ? 1 : 0)) :
+												  (pos >= ansPerStack - 1 ? 1 : 0)) :
 		this->answerStack[numOfAns / ansPerStack].find(0);
 }
 
