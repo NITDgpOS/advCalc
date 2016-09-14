@@ -27,6 +27,7 @@ const char *ERROR::toString()
 	case domUndef   : return "Domain Undefined";
 	case invalidOptr: return "Invalid Operator";
 	case parseError : return "Unable to parse expression";
+	case invalidAns : return "Inavlid Answer";
 	case invalidCmd : return "Invalid command";
 	default         : return "Error not recognized";
 	}

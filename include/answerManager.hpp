@@ -23,7 +23,7 @@ public:
 	answerManager(const bool, const unsigned long);
 	answerManager(const bool, const unsigned int, const unsigned int);
 	void toggleAutoDelete();
-	bool parseAns(const char *, Type &);
+	bool parseAns(const char *, Type &) const;
 	bool getAns(Type &) const;
 	bool push(const Type);
 };
@@ -151,7 +151,7 @@ void answerManager<Type>::toggleAutoDelete()
 }
 
 template <typename Type>
-bool parseAns(const char **s, Type &x)
+bool parseAns(const char **s, Type &x) const
 {
 	if (*s == 'A' || *s == 'a')
 	{
@@ -159,11 +159,11 @@ bool parseAns(const char **s, Type &x)
 		unsigned long y = 0;
 		while (*c > 47 && *c < 58)
 		{
-			if (y > (ULONG_MAX - *c + 48) / 10)
-				return Error = ERROR::outOfRange, 0;
+			if (y > (ULONG_MAX - *c + 48) / 10) return Error = ERROR::invalidAns, 0;
 			y = y * 10 + *(c++) - 48;
-		} 
-		if (*s == c - 1)
+		}
+		if (y > numOfAns) return Error = ERROR::invalidAns, 0;
+		if (*s == c - 1 && y <= numOfAns)
 		{
 			*s = c;
 			return this->getAns(y, x);
@@ -175,11 +175,12 @@ bool parseAns(const char **s, Type &x)
 template <typename Type>
 bool answerManager<Type>::getAns(unsigned long pos, Type &x) const
 {
+	pos = pos % ansPerStack + (pos >= ansPerStack - 1 ? 1 : 0);
+	unsigned int stackNo = (pos ? pos : numOfAns) / ansPerStack;
 	return
-		pos ?
-		this->answerStack[pos / ansPerStack].find(pos % ansPerStack +
-												  (pos >= ansPerStack - 1 ? 1 : 0)) :
-		this->answerStack[numOfAns / ansPerStack].find(0);
+		this->answerStack[stackNo].find(pos) ?
+		1 :
+		Error = ERROR::invalidAns, 0;
 }
 
 #endif

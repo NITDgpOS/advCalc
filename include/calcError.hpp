@@ -23,7 +23,8 @@ public:
 		domUndef    = -9,
 		invalidOptr = -10,
 		parseError  = -11,
-		invalidCmd  = -12
+		invalidAns  = -12,
+		invalidCmd  = -13
 	};
 	const char *toString();
 	bool isSet();
