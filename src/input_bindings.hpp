@@ -1,5 +1,3 @@
-#include "calc_features.hpp"
-
 #ifndef INPUT_BINDINGS_HPP
 #define INPUT_BINDINGS_HPP
 
