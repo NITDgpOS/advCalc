@@ -1,9 +1,9 @@
 #ifndef CALC_PARSER_H
 #define CALC_PARSER_H
 
+#include "calcOptr.hpp"
 #include "common.hpp"
 #include "str.hpp"
-#include "calcOptr.hpp"
 
 template <typename numT> class calcParse {
   char *input;
@@ -26,7 +26,8 @@ public:
   calcParse(const calcParse &x) { *this = x; }
   bool isParsing() { return running; }
   bool isOver() { return over; }
-  void startParsing();
+  bool startParsing();
+  numT Ans() { return ans; }
   void operator=(const calcParse &x) {
     this->input = x.input;
     this->currentPos = x.currentPos;
@@ -37,8 +38,7 @@ public:
   }
 };
 
-template <typename numT>
-void calcParse<numT>::startParsing() {
+template <typename numT> bool calcParse<numT>::startParsing() {
   this->running = true;
   operatorManager<numT> optr;
 
@@ -46,19 +46,30 @@ void calcParse<numT>::startParsing() {
     this->currentPos = this->input;
 
   while (*this->currentPos && *this->currentPos != end) {
+
+    while (isspace(*this->currentPos)) // Skip spaces
+      ++this->currentPos;
+
+    if (*this->currentPos == '#') // A comment
+      break;
+
     if (*this->currentPos == '(' && this->currentPos[1] == '-') {
       optr.insert(0);
       optr.insert(Operator::H_minus);
     }
+
     if (isdigit(*this->currentPos) || *this->currentPos == '.') {
       numT x = 0;
       if (strToNum(&this->currentPos, x, UREAL) == 0)
-        return;
+        return error(parseError);
       optr.insert(x);
     } else {
       Operator op;
-      if (op.parse(&this->currentPos))
-        optr.insert(op);
+      if (op.parse(&this->currentPos)) {
+        if (!optr.insert(op))
+          return 0;
+      } else
+         return error(parseError);
     }
   }
 
@@ -68,6 +79,8 @@ void calcParse<numT>::startParsing() {
 
   this->running = false;
   this->over = true;
+
+  return 1;
 }
 
 #endif

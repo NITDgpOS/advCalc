@@ -22,20 +22,34 @@ int main(int argc, char *argv[]) {
 
   init_readline();
 
-  do {
-    if (input)
-      free(input);
+// A cleaner approach to write infinite loop without considering it to be
+// infinite and instead quiting at a certain condition
+take_input:
+  if (input)
+    free(input);
 
-    input = readline(prompt);
-    calcParse<float64_t> parser(input);
+  input = readline(prompt);
 
-    if (!strcmp(input, "#")) // A comment
-      continue;              // Do nothing
+  if (!input || !strcmp(input, "exit")) {
+    !input ? printf("exit\nGood bye!\nHave a nice Day.\n") : 0;
+    exit(0);
+  }
 
-    add_history(input);
+  calcParse<float64_t> parser(input);
 
-    parser.startParsing(); // Calculate
-  } while (!!strcmp(input, "exit"));
+  if (!strcmp(input, "#")) // A comment
+    goto take_input;       // Do nothing
 
-  return 0;
+  add_history(input);
+
+  parser.startParsing();
+
+  if (Error.isSet()) {
+    printf("\n :( %s\n", Error.toString());
+    Error.reset();
+  } else {
+    printf(" = %lg\n", parser.Ans());
+  }
+
+  goto take_input;
 }
