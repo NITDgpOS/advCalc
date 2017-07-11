@@ -1,0 +1,132 @@
+#include "common.hpp"
+#include <ctype.h>
+#include <math.h>
+
+uint64_t strlen(const char *s) {
+  register int l = 0;
+  for (; s[l]; l++)
+    ;
+  return l;
+}
+
+int strcmp(const char *s1, const char *s2) {
+  while ((*s1 || *s2) && *s1 == *s2)
+    *s1 ? s1++ : 0, *s2 ? s2++ : 0;
+  return (*s1 - *s2);
+}
+
+int strncmp(const char *s1, const char *s2, uint64_t l) {
+  for (register uint i = 1; i < l && (*s1 || *s2) && *s1 == *s2;
+       i++, *s1 ? s1++ : 0, s2 ? s2++ : 0)
+    ;
+  return (*s1 - *s2);
+}
+
+int strcasecmp(const char *s1, const char *s2) {
+  while ((*s1 || *s2) && tolower(*s1) == tolower(*s2))
+    *s1 ? s1++ : 0, *s2 ? s2++ : 0;
+  return (tolower(*s1) - tolower(*s2));
+}
+
+int strncasecmp(const char *s1, const char *s2, uint64_t l) {
+  register uint i = 1;
+  for (; i < l && (*s1 || *s2) && tolower(*s1) == tolower(*s2);
+       i++, *s1 ? s1++ : 0, s2 ? s2++ : 0)
+    ;
+  return (tolower(*s1) - tolower(*s2));
+}
+
+char *strcpy(char *s1, const char *s2) {
+  char *ret_val = s1;
+  while (*s2)
+    *(s1++) = *(s2++);
+  *s1 = 0;
+  return ret_val;
+}
+
+char *strncpy(char *s1, const char *s2, uint64_t l) {
+  char *ret_val = s1;
+  register uint i = 1;
+  for (; i < l && *s2; i++, *(s1++) = *(s2++))
+    ;
+  if (i < l)
+    *s1 = 0;
+  return ret_val;
+}
+
+char *strcat(char *s1, const char *s2) {
+  register char *s = strlen(s1) + s1;
+  while (*s2)
+    *(s++) = *(s2++);
+  *s = 0;
+  return s1;
+}
+
+char *strncat(char *s1, const char *s2, uint64_t l) {
+  register uint i = strlen(s1);
+  while (*s2 && i < l)
+    s1[i++] = *(s2++);
+  if (i < l)
+    s1[i] = 0;
+  return s1;
+}
+
+bool isidentifier(const char *s) {
+  while (isalpha(*s) || *s == '_')
+    ++s;
+  return *s ? 0 : 1;
+}
+
+uint64_t strToNum(char **a, double &x, datatype d) {
+  bool sign = 0;
+  register char *c = *a, *s = *a;
+  // check for a negative sign
+  if (*c == '-') {
+    if (d == REAL || d == INT)
+      sign = 1;
+    else
+      // for unsigned numbers
+      return 0;
+    ++c;
+  }
+  while (isdigit(*c))
+    // Integral part
+    x = x * 10 + *(c++) - 48;
+  if (*c == '.' && isdigit(c[1])) {
+    // Fraction part
+    if (d != REAL && d != UREAL)
+      return 0;
+    register slong j = 0;
+    while (*(++c) > 47 && *c < 58) // isdigit
+      x = x + powl(10, --j) * (*c - 48);
+  }
+  if ((*c == '.' && !isdigit(c[1])) || s == c)
+    return 0;
+  *a = c;
+  if (sign == 1)
+    x = -x;
+  return c - s; // The length that was converted
+}
+
+#ifdef ANS_CMD
+schar separate_ans(const char *a, ulong &i, ulong &ans_no) {
+  if (tolower(a[i]) != 'a')
+    return ERROR;
+  i++;
+  long double p = 0.0;
+  if (strToNum(a, i, p, UINT) != SUCCESS)
+    return ERROR;
+  ans_no = p;
+  return SUCCESS;
+}
+#endif
+
+void extract(const char *a, char *b, ulong i, ulong j, char ch, ulong len) {
+  ulong x = j;
+  if (j >> sizeof(ulong) || strlen(a) <= x)
+    x = strlen(a) - 1;
+  ulong k = 0;
+  for (; i <= x && a[i] != ch && k < len; b[k++] = a[i++])
+    ;
+  b[k] = 0;
+}
