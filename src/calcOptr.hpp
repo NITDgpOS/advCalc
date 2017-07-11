@@ -135,7 +135,7 @@ bool operatorManager<numType>::insert(const Operator z) {
     if (not tmp.isUnary() && not this->numberStack.pop(y))
       // The second number(y) iff tmp is a binary operator
       return error(numScarce);
-    this->calculate(tmp, x, y); // Calculate the result
+    this->calculate(tmp, y, x); // Calculate the result
   } while ((flag = this->operatorStack.get(tmp)) && tmp < z);
 
   if (z != Operator::H_closeBracket)
@@ -165,7 +165,7 @@ template <typename numType> bool operatorManager<numType>::finishCalculation() {
       return error(numScarce);
     if (not tmp.isUnary() && not this->numberStack.pop(y))
       return error(numScarce);
-    this->calculate(tmp, x, y);
+    this->calculate(tmp, y, x);
   }
 
   return this->operatorStack.isEmpty() ? 1 : error(numScarce);

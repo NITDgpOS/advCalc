@@ -212,7 +212,7 @@ uint8_t Operator::parse(char **start) {
     if (optr.setOperatorProperties()) {
       // modify *this and charsRead iff optr is valid
       *this = optr;
-      charsRead = i;
+      charsRead = i + 1;
     }
   }
   *start = *start + charsRead;

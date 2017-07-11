@@ -106,7 +106,7 @@ template <typename Type> bool calcStack<Type>::setCapacity(const ulong s) {
 }
 
 template <typename Type> bool calcStack<Type>::isEmpty() const {
-  return current;
+  return !current;
 }
 
 template <typename Type>
