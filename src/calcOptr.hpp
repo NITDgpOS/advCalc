@@ -341,6 +341,8 @@ bool operatorManager<numType>::calculate(const Operator op, const numType x,
       ans = x || y;
     else if (op == Operator::H_and)
       ans = x && y;
+    else
+      return error(invalidOptr);
   } else
     return error(invalidOptr);
 

@@ -56,7 +56,7 @@ Operator::Operator(const Operator &x) {
 //   return x.op == this->op;
 // }
 
-inline bool Operator::isUnary() const {
+bool Operator::isUnary() const {
 #ifdef TESTING
   if (not this->op)
     throw "Error: Null operator beign checked for unary";
@@ -390,31 +390,31 @@ bool Operator::setFromString(const char *x) {
   return this->setOperatorProperties();
 }
 
-inline bool Operator::isBracket() {
+bool Operator::isBracket() {
   return this->op == Operator::H_closeBracket ||
          this->op == Operator::H_openBracket;
 }
 
-inline bool Operator::operator==(const Operator::optrHash x) const {
+bool Operator::operator==(const Operator::optrHash x) const {
   return this->op == x;
 }
 
-inline bool Operator::operator==(const Operator x) const {
+bool Operator::operator==(const Operator x) const {
   return this->op == x.op;
 }
 
-inline bool Operator::operator!=(const optrHash x) const {
+bool Operator::operator!=(const Operator::optrHash x) const {
   return this->op != x;
 }
 
-inline bool Operator::operator!=(const Operator x) const {
+bool Operator::operator!=(const Operator x) const {
   return this->op != x.op;
 }
 
-inline bool Operator::operator>(const Operator x) const {
+bool Operator::operator>(const Operator x) const {
   return this->checkPriority(x) == HIGH;
 }
 
-inline bool Operator::operator<(const Operator x) const {
+bool Operator::operator<(const Operator x) const {
   return this->checkPriority(x) == LOW;
 }

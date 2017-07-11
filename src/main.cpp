@@ -7,7 +7,7 @@
 
 const char *prog_name = NULL;
 char prompt[500] = ">> ";
-char *input;
+char *input = NULL;
 
 int main(int argc, char *argv[]) {
 
@@ -22,7 +22,10 @@ int main(int argc, char *argv[]) {
 
   init_readline();
 
-  while (!!strcmp(input, "exit")) {
+  do {
+    if (input)
+      free(input);
+
     input = readline(prompt);
     calcParse<float64_t> parser(input);
 
@@ -32,9 +35,7 @@ int main(int argc, char *argv[]) {
     add_history(input);
 
     parser.startParsing(); // Calculate
-
-    free(input);
-  }
+  } while (!!strcmp(input, "exit"));
 
   return 0;
 }

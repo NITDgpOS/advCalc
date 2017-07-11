@@ -9,7 +9,7 @@ $(TARGET): main.o calcOptr.o input_bindings.o calcError.o str.o
 	$(CXX) -o $@ $^ $(LIBS)
 
 %.o: %.cpp
-	$(CXX) -c $<
+	$(CXX) -c $(CXXFLAGS) $<
 
 clean:
 	$(RM) *.o
