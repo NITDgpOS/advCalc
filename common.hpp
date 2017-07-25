@@ -19,6 +19,12 @@ typedef double float64_t;
 typedef long double float128_t;
 
 typedef uint8_t datatype;
+
+/* String types */
+typedef char * str;
+typedef const char * constStr;
+typedef str charPtr;
+
 #define REAL 0
 #define INT 1
 #define UREAL 2

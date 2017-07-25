@@ -71,13 +71,13 @@ private:
 public:
   Operator();
   explicit Operator(optr_hash);
-  explicit Operator(const char *);
+  explicit Operator(constStr );
   Operator(const Operator &);
   bool isUnary() const;
-  const char *toString() const;
+  constStr toString() const;
   uint8_t checkPriority(const Operator) const;
-  uint8_t parse(char **);
-  bool setFromString(const char *);
+  uint8_t parse(str *);
+  bool setFromString(constStr );
   bool isBracket();
   void operator=(const Operator &);
   bool operator==(const Operator::optrHash) const;

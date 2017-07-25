@@ -6,8 +6,8 @@
 #include "str.hpp"
 
 template <typename numT> class calcParse {
-  char *input;
-  char *currentPos;
+  str input;
+  str currentPos;
   numT ans;
   char end;
   bool running;
@@ -17,10 +17,10 @@ public:
   calcParse()
       : input(NULL), currentPos(NULL), ans(0), end(0), running(false),
         over(false) {}
-  explicit calcParse(char *inp)
+  explicit calcParse(str inp)
       : input(inp), currentPos(NULL), ans(0), end(0), running(false),
         over(false) {}
-  calcParse(char *inp, char *start)
+  calcParse(str inp, str start)
       : input(inp), currentPos(start), ans(0), end(0), running(false),
         over(false) {}
   calcParse(const calcParse &x) { *this = x; }

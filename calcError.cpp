@@ -11,7 +11,7 @@ ERROR::ERROR() { this->e = 0; }
 
 ERROR::ERROR(const signed char error) { this->e = error; }
 
-const char *ERROR::toString() const {
+constStr ERROR::toString() const {
   switch (this->e) {
   case noError:
     return "No error";

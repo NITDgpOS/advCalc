@@ -5,11 +5,11 @@
 #include "calcParser.hpp"
 #include "input_bindings.hpp"
 
-const char *prog_name = NULL;
+constStr prog_name = NULL;
 char prompt[500] = ">> ";
-char *input = NULL;
+str input = NULL;
 
-int main(int argc, char *argv[]) {
+int main(int argc, str argv[]) {
 
   makeOperatorHashes();
 

@@ -5,22 +5,22 @@
 
 #define SKIP_SPACE(s, i) s[i] == ' ' ? ++i : i
 
-extern uint64_t strlen(const char *s);
-extern int strcmp(const char *s1, const char *s2);
-extern int strncmp(const char *s1, const char *s2, uint64_t l);
-extern int strcasecmp(const char *s1, const char *s2);
-extern int strncasecmp(const char *s1, const char *s2, uint64_t l);
-extern char* strcpy(char *s1, const char *s2);
-extern char* strncpy(char *s1, const char *s2, uint64_t l);
-extern char* strcat(char *s1, const char *s2);
-extern char* strncat(char *s1, const char *s2, uint64_t l);
+extern uint64_t strlen(constStr s);
+extern int strcmp(constStr s1, constStr s2);
+extern int strncmp(constStr s1, constStr s2, uint64_t l);
+extern int strcasecmp(constStr s1, constStr s2);
+extern int strncasecmp(constStr s1, constStr s2, uint64_t l);
+extern char* strcpy(str s1, constStr s2);
+extern char* strncpy(str s1, constStr s2, uint64_t l);
+extern char* strcat(str s1, constStr s2);
+extern char* strncat(str s1, constStr s2, uint64_t l);
 
-extern bool isidentifier(const char *s);
+extern bool isidentifier(constStr s);
 
-extern signed char strToNum(char **a, double &x, datatype d);
+extern signed char strToNum(str *a, double &x, datatype d);
 
 #ifdef ANS_CMD
-extern signed char separate_ans(const char *a, unsigned long &i, unsigned long &x);
+extern signed char separate_ans(constStr a, unsigned long &i, unsigned long &x);
 #endif
 
 #endif // CALC_STR_H

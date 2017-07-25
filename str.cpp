@@ -2,33 +2,33 @@
 #include <ctype.h>
 #include <math.h>
 
-uint64_t strlen(const char *s) {
+uint64_t strlen(constStr s) {
   register int l = 0;
   for (; s[l]; l++)
     ;
   return l;
 }
 
-int strcmp(const char *s1, const char *s2) {
+int strcmp(constStr s1, constStr s2) {
   while ((*s1 || *s2) && *s1 == *s2)
     *s1 ? s1++ : 0, *s2 ? s2++ : 0;
   return (*s1 - *s2);
 }
 
-int strncmp(const char *s1, const char *s2, uint64_t l) {
+int strncmp(constStr s1, constStr s2, uint64_t l) {
   for (register uint i = 1; i < l && (*s1 || *s2) && *s1 == *s2;
        i++, *s1 ? s1++ : 0, s2 ? s2++ : 0)
     ;
   return (*s1 - *s2);
 }
 
-int strcasecmp(const char *s1, const char *s2) {
+int strcasecmp(constStr s1, constStr s2) {
   while ((*s1 || *s2) && tolower(*s1) == tolower(*s2))
     *s1 ? s1++ : 0, *s2 ? s2++ : 0;
   return (tolower(*s1) - tolower(*s2));
 }
 
-int strncasecmp(const char *s1, const char *s2, uint64_t l) {
+int strncasecmp(constStr s1, constStr s2, uint64_t l) {
   register uint i = 1;
   for (; i < l && (*s1 || *s2) && tolower(*s1) == tolower(*s2);
        i++, *s1 ? s1++ : 0, s2 ? s2++ : 0)
@@ -36,16 +36,16 @@ int strncasecmp(const char *s1, const char *s2, uint64_t l) {
   return (tolower(*s1) - tolower(*s2));
 }
 
-char *strcpy(char *s1, const char *s2) {
-  char *ret_val = s1;
+str strcpy(str s1, constStr s2) {
+  str ret_val = s1;
   while (*s2)
     *(s1++) = *(s2++);
   *s1 = 0;
   return ret_val;
 }
 
-char *strncpy(char *s1, const char *s2, uint64_t l) {
-  char *ret_val = s1;
+str strncpy(str s1, constStr s2, uint64_t l) {
+  str ret_val = s1;
   register uint i = 1;
   for (; i < l && *s2; i++, *(s1++) = *(s2++))
     ;
@@ -54,15 +54,15 @@ char *strncpy(char *s1, const char *s2, uint64_t l) {
   return ret_val;
 }
 
-char *strcat(char *s1, const char *s2) {
-  register char *s = strlen(s1) + s1;
+str strcat(str s1, constStr s2) {
+  register str s = strlen(s1) + s1;
   while (*s2)
     *(s++) = *(s2++);
   *s = 0;
   return s1;
 }
 
-char *strncat(char *s1, const char *s2, uint64_t l) {
+str strncat(str s1, constStr s2, uint64_t l) {
   register uint i = strlen(s1);
   while (*s2 && i < l)
     s1[i++] = *(s2++);
@@ -71,15 +71,15 @@ char *strncat(char *s1, const char *s2, uint64_t l) {
   return s1;
 }
 
-bool isidentifier(const char *s) {
+bool isidentifier(constStr s) {
   while (isalpha(*s) || *s == '_')
     ++s;
   return *s ? 0 : 1;
 }
 
-uint64_t strToNum(char **a, double &x, datatype d) {
+uint64_t strToNum(str *a, double &x, datatype d) {
   bool sign = 0;
-  register char *c = *a, *s = *a;
+  register str c = *a, *s = *a;
   // check for a negative sign
   if (*c == '-') {
     if (d == REAL || d == INT)
@@ -109,7 +109,7 @@ uint64_t strToNum(char **a, double &x, datatype d) {
 }
 
 #ifdef ANS_CMD
-schar separate_ans(const char *a, ulong &i, ulong &ans_no) {
+schar separate_ans(constStr a, ulong &i, ulong &ans_no) {
   if (tolower(a[i]) != 'a')
     return ERROR;
   i++;
@@ -121,7 +121,7 @@ schar separate_ans(const char *a, ulong &i, ulong &ans_no) {
 }
 #endif
 
-void extract(const char *a, char *b, ulong i, ulong j, char ch, ulong len) {
+void extract(constStr a, str b, ulong i, ulong j, char ch, ulong len) {
   ulong x = j;
   if (j >> sizeof(ulong) || strlen(a) <= x)
     x = strlen(a) - 1;

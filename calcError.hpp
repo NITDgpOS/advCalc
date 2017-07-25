@@ -42,7 +42,7 @@ public:
     invalidAns = -12,
     invalidCmd = -13
   };
-  const char *toString() const;
+  constStr toString() const;
   bool isSet() const;
   void set(const signed char);
   void reset();

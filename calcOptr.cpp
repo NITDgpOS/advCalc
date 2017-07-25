@@ -28,7 +28,7 @@ Operator::Operator(optr_hash x) {
   this->setOperatorProperties();
 }
 
-Operator::Operator(const char *x) {
+Operator::Operator(constStr x) {
   if (not this->setFromString(x)) {
     this->op = this->priority = 0;
     this->isBinary = 0;
@@ -77,8 +77,8 @@ void Operator::operator=(const Operator &x) {
 #endif
 }
 
-static str_hash generateHashKey(const char *s, ulong start = 0, ulong end = 0) {
-  register const char *x = s = s + start;
+static str_hash generateHashKey(constStr s, ulong start = 0, ulong end = 0) {
+  register constStr x = s = s + start;
   register str_hash hash = 0;
   if (start == end)
     while (*x)
@@ -219,7 +219,7 @@ uint8_t Operator::parse(char **start) {
   return charsRead;
 }
 
-const char *Operator::toString() const {
+constStr Operator::toString() const {
   switch (this->op) {
   case H_plus:
     return "+";
@@ -385,7 +385,7 @@ uint8_t Operator::checkPriority(const Operator s2) const {
   return 0;
 }
 
-bool Operator::setFromString(const char *x) {
+bool Operator::setFromString(constStr x) {
   this->op = generateHashKey(x, 0, 0);
   return this->setOperatorProperties();
 }
