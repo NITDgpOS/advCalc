@@ -48,14 +48,6 @@ Operator::Operator(const Operator &x) {
 #endif
 }
 
-// bool Operator::operator==(const Operator::optrHash x) const {
-//   return x == this->op;
-// }
-
-// bool Operator::operator==(const Operator x) const {
-//   return x.op == this->op;
-// }
-
 bool Operator::isUnary() const {
 #ifdef TESTING
   if (not this->op)
@@ -91,8 +83,7 @@ static str_hash generateHashKey(constStr s, ulong start = 0, ulong end = 0) {
   return hash;
 }
 
-double factorial(double x)
-{
+double factorial(double x) {
   long double t = 1;
   for (long double i = 1; i <= x; i++)
     t *= i;
@@ -405,17 +396,13 @@ bool Operator::operator==(const Operator::optrHash x) const {
   return this->op == x;
 }
 
-bool Operator::operator==(const Operator x) const {
-  return this->op == x.op;
-}
+bool Operator::operator==(const Operator x) const { return this->op == x.op; }
 
 bool Operator::operator!=(const Operator::optrHash x) const {
   return this->op != x;
 }
 
-bool Operator::operator!=(const Operator x) const {
-  return this->op != x.op;
-}
+bool Operator::operator!=(const Operator x) const { return this->op != x.op; }
 
 bool Operator::operator>(const Operator x) const {
   return this->checkPriority(x) == HIGH;

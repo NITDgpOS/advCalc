@@ -42,10 +42,17 @@ template <typename numT> bool calcParse<numT>::startParsing() {
   this->running = true;
   operatorManager<numT> optr;
 
+#ifdef TESTING
+  if (this->input)
+    throw "calcParse<T>::input not set\n";
+#endif
+
   if (this->currentPos == NULL)
     this->currentPos = this->input;
 
   while (*this->currentPos && *this->currentPos != end) {
+
+    //optr.operatorStack.display("", " ");
 
     while (isspace(*this->currentPos)) // Skip spaces
       ++this->currentPos;
@@ -73,7 +80,7 @@ template <typename numT> bool calcParse<numT>::startParsing() {
         if (!optr.insert(op))
           return 0;
       } else
-         return error(parseError);
+        return error(parseError);
     }
   }
 

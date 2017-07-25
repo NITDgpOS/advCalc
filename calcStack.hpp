@@ -35,7 +35,8 @@ public:
   bool push(const Type);
   bool push(const Type *, const Type *);
   void reset();
-  void display(std::string before = "", std::string after = "") const;
+  __attribute__((noinline)) void display(std::string before = "",
+                                         std::string after = "") const;
 };
 
 template <typename Type> calcStack<Type>::calcStack() {

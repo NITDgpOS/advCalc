@@ -1,4 +1,3 @@
-
 #ifndef calcOPTR
 #define calcOPTR
 
@@ -107,6 +106,8 @@ template <typename numType> class operatorManager {
   calcStack<Operator> operatorStack;
   calcStack<numType> numberStack;
   // Calculates the ans and puts it into the numberStack
+  template <typename num>
+  friend class calcParse;
   bool calculate(const Operator, const numType, const numType);
 
 public:
