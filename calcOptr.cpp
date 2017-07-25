@@ -105,6 +105,8 @@ bool ismathchar(const char ch) {
           ch == '|' || ch == '<' || ch == '>' || ch == '~' || ch == '=');
 }
 
+bool isBracket(const char ch) { return (ch == '(' || ch == ')'); }
+
 static int priorityOf(const optr_hash s) {
   /*
     priority list:
@@ -165,44 +167,48 @@ static int priorityOf(const optr_hash s) {
 bool Operator::setOperatorProperties() {
   if (not op)
     return 0;
-  register uchar beg = 0, end = 21, mid;
-  bool found = 0;
-  while (beg <= end) {
-    mid = (beg + end) / 2;
-    if (this->op == un_ops_hash[mid] || this->op == un_ops_hash[beg] ||
-        this->op == un_ops_hash[end]) {
-      found = 1;
-      break;
-    } else if (this->op < un_ops_hash[mid])
-      end = mid - 1, ++beg;
-    else
-      beg = mid + 1, --end;
-  }
-  if (found)
-    isBinary = false;
-  else {
-    beg = 0, end = 20;
+  if (this->isBracket()) {
+    this->isBinary = false;
+    this->priority = priorityOf(this->op);
+    return 1;
+  } else {
+    register uchar beg = 0, end = 20, mid;
     while (beg <= end) {
       mid = (beg + end) / 2;
       if (this->op == bin_ops_hash[mid] || this->op == bin_ops_hash[beg] ||
           this->op == bin_ops_hash[end]) {
-        found = 1;
-        break;
+        isBinary = true;
+        this->priority = priorityOf(this->op);
+        return 1;
       } else if (this->op < bin_ops_hash[mid])
         end = mid - 1, ++beg;
       else
         beg = mid + 1, --end;
     }
-    if (not found)
-      return 0;
-    isBinary = true;
-    this->priority = priorityOf(op);
+    while (beg <= end) {
+      mid = (beg + end) / 2;
+      if (this->op == un_ops_hash[mid] || this->op == un_ops_hash[beg] ||
+          this->op == un_ops_hash[end]) {
+        isBinary = false;
+        this->priority = priorityOf(this->op);
+        return 1;
+      } else if (this->op < un_ops_hash[mid])
+        end = mid - 1, ++beg;
+      else
+        beg = mid + 1, --end;
+    }
   }
-  return 1;
+  return 0;
 }
 
 // Parse the given string and return zero on error
-uint8_t Operator::parse(char **start) {
+uint8_t Operator::parse(str *start) {
+  if (::isBracket(**start)) {
+    this->op = **start;
+    this->setOperatorProperties();
+    *start += 1;
+    return 1;
+  }
   uint8_t charsRead = 0;
   str_hash hash = 0;
   Operator optr;

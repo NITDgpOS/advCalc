@@ -86,6 +86,13 @@ public:
   bool operator!=(const Operator) const;
   bool operator<(const Operator) const;
   bool operator>(const Operator) const;
+  std::ostream &operator<<(std::ostream &out) const {
+    return (out << this->toString());
+  }
+  operator constStr () { return this->toString(); }
+  operator int64_t() { return this->op; }
+  operator optr_hash() { return this->op; }
+  operator uint8_t() { return priority; }
 };
 
 #define RAD 0

@@ -54,8 +54,12 @@ template <typename numT> bool calcParse<numT>::startParsing() {
       break;
 
     if (*this->currentPos == '(' && this->currentPos[1] == '-') {
+      Operator op1(Operator::H_openBracket);
+      Operator op2(Operator::H_minus);
+      optr.insert(op1);
       optr.insert(0);
-      optr.insert(Operator::H_minus);
+      optr.insert(op2);
+      this->currentPos += 2;
     }
 
     if (isdigit(*this->currentPos) || *this->currentPos == '.') {
