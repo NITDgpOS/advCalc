@@ -31,7 +31,8 @@ take_input:
   input = readline(prompt);
 
   if (!input || !strcmp(input, "exit")) {
-    !input ? printf("exit\nGood bye!\nHave a nice Day.\n") : 0;
+    !input ? printf("exit\nGood bye!\nHave a nice Day") : 0;
+    printf("\n");
     exit(0);
   }
 
