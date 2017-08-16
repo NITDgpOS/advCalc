@@ -56,7 +56,7 @@ public:
   // Check if there are any answers
   bool isEmpty() const { return !this->numOfAns; }
   void toggleAutoDelete();
-  bool parseAns(constStr*, Type &) const;
+  bool parseAns(constStr *, Type &) const;
   bool getAns(Type &, ulong pos = 0) const;
   void display() const;
   bool push(const Type);
@@ -167,7 +167,7 @@ template <typename Type> void answerManager<Type>::toggleAutoDelete() {
 }
 
 template <typename Type>
-bool answerManager<Type>::parseAns(constStr*s, Type &x) const {
+bool answerManager<Type>::parseAns(constStr *s, Type &x) const {
   if (**s == 'A' || **s == 'a') {
     constStr c = *s + 1;
     ulong y = 0;
