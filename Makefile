@@ -4,7 +4,9 @@ LIBS = -lreadline
 
 CFLAGS = -std=c++14
 
-.PHONY: clean all cleanall
+PREFIX = /usr/local
+
+.PHONY: clean all cleanall install
 all: calc
 
 $(TARGET): main.o calcOptr.o input_bindings.o calcError.o str.o
@@ -18,3 +20,6 @@ clean:
 
 cleanall:
 	$(RM) calc *.o
+
+install: $(TARGET)
+	cp $(TARGET) $(PREFIX)/bin
