@@ -12,35 +12,126 @@ template <typename numT> class calcParse {
   char end;
   bool running;
   bool over;
+  typedef enum {
+    ClearField,
+    Number,
+    BinaryOperator,
+    UnaryOperator,
+    OpenBracket,
+    CloseBracket
+  } prevTokenType;
+  prevTokenType prevToken;
+  operatorManager<numT> optr;
+
+  void gotOpenBracket();
+  bool gotCloseBracket();
+  bool gotPlusMinus();
+  bool gotChar();
+  bool gotNum();
+
+  inline bool isOpenBracket() {
+    return *this->currentPos == '(';
+  }
+
+  inline bool isCloseBracket() {
+    return *this->currentPos == ')';
+  }
+
+  inline bool isPlus() {
+    return *this->currentPos == '+';
+  }
+
+  inline bool isMinus() {
+    return *this->currentPos == '-';
+  }
+
+  inline bool isChar() {
+    return isalpha(*this->currentPos);
+  }
+
+  inline bool isNum() {
+    return *this->currentPos == '.' || isdigit(*this->currentPos);
+  }
 
 public:
   calcParse()
       : input(NULL), currentPos(NULL), ans(0), end(0), running(false),
-        over(false) {}
+        over(false), prevToken(ClearField) {}
   explicit calcParse(str inp)
       : input(inp), currentPos(NULL), ans(0), end(0), running(false),
-        over(false) {}
+        over(false), prevToken(ClearField) {}
   calcParse(str inp, str start)
       : input(inp), currentPos(start), ans(0), end(0), running(false),
-        over(false) {}
+        over(false) , prevToken(ClearField){}
   calcParse(const calcParse &x) { *this = x; }
   bool isParsing() { return running; }
   bool isOver() { return over; }
   bool startParsing();
   numT Ans() { return ans; }
-  void operator=(const calcParse &x) {
+  calcParse<numT>& operator=(const calcParse &x) {
     this->input = x.input;
     this->currentPos = x.currentPos;
     this->ans = x.ans;
     this->end = x.end;
     this->running = x.running;
     this->over = x.over;
+    return *this;
   }
 };
 
+template <typename numT> void calcParse<numT>::gotOpenBracket() {
+  this->prevToken = OpenBracket;
+  ++this->currentPos;
+  Operator op(Operator::H_openBracket);
+  this->optr.operatorStack.push(op);
+}
+
+template <typename numT> bool calcParse<numT>::gotCloseBracket() {
+  this->prevToken = CloseBracket;
+  ++this->currentPos;
+  Operator top;
+  while (optr.operatorStack.pop(top) && top != Operator::H_openBracket) {
+    optr.calculate(top);
+  }
+  if (top != Operator::H_openBracket)
+    return error(brktError);
+  return 1;
+}
+
+template <typename numT> bool calcParse<numT>::gotNum() {
+  this->prevToken = Number;
+  numT x = 0;
+  if (strToNum(&this->currentPos, x, REAL) == 0)
+    return error(parseError);
+  optr.insertNum(x);
+  return 1;
+}
+
+template <typename numT> bool calcParse<numT>::gotChar() {
+  Operator op;
+  if (op.parse(this->currentPos)) {
+    this->prevToken = op.isUnary() ? UnaryOperator : BinaryOperator;
+    if (not this->optr.insertOptr(op))
+      return 0;
+  } else
+    return error(parseError);
+  return 1;
+}
+
+template <typename numT> bool calcParse<numT>::gotPlusMinus() {
+  if (this->prevToken == Number) {
+    this->prevToken = BinaryOperator;
+    this->optr.insertOptr(this->isPlus() ? Operator::H_plus : Operator::H_minus);
+    this->currentPos++;
+  } else if (not this->gotNum())
+    return 0;
+  return 1;
+}
+
 template <typename numT> bool calcParse<numT>::startParsing() {
   this->running = true;
-  operatorManager<numT> optr;
+
+  prevToken = ClearField;
 
 #ifdef TESTING
   if (this->input)
@@ -52,36 +143,24 @@ template <typename numT> bool calcParse<numT>::startParsing() {
 
   while (*this->currentPos && *this->currentPos != end) {
 
-    //optr.operatorStack.display("", " ");
-
-    while (isspace(*this->currentPos)) // Skip spaces
-      ++this->currentPos;
+    skipSpace(this->currentPos);
 
     if (*this->currentPos == '#') // A comment
       break;
 
-    if (*this->currentPos == '(' && this->currentPos[1] == '-') {
-      Operator op1(Operator::H_openBracket);
-      Operator op2(Operator::H_minus);
-      optr.insert(op1);
-      optr.insert(0);
-      optr.insert(op2);
-      this->currentPos += 2;
-    }
-
-    if (isdigit(*this->currentPos) || *this->currentPos == '.') {
-      numT x = 0;
-      if (strToNum(&this->currentPos, x, UREAL) == 0)
-        return error(parseError);
-      optr.insert(x);
-    } else {
-      Operator op;
-      if (op.parse(&this->currentPos)) {
-        if (!optr.insert(op))
-          return 0;
-      } else
-        return error(parseError);
-    }
+    if (this->isOpenBracket()) {
+      this->gotOpenBracket();
+    } else if (this->isCloseBracket()) {
+      if (not this->gotCloseBracket())
+        return 0;
+    } else if (this->isNum()) {
+      if (not this->gotNum())
+        return 0;
+    } else if (this->isPlus() or this->isMinus()) {
+      if (not gotPlusMinus())
+        return 0;
+    } else if (not this->gotChar())
+        return 0;
   }
 
   optr.finishCalculation();

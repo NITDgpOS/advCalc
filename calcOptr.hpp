@@ -75,7 +75,7 @@ public:
   bool isUnary() const;
   constStr toString() const;
   uint8_t checkPriority(const Operator) const;
-  uint8_t parse(str *);
+  uint8_t parse(str &);
   bool setFromString(constStr );
   bool isBracket();
   void operator=(const Operator &);
@@ -108,72 +108,55 @@ template <typename numType> class operatorManager {
   // Calculates the ans and puts it into the numberStack
   template <typename num>
   friend class calcParse;
-  bool calculate(const Operator, const numType, const numType);
+  bool calculate(const Operator &);
 
 public:
   // Insert a given Operator into the operatorStack. Uses calculate().
-  bool insert(const Operator);
+  bool insertOptr(const Operator);
+  // Insert a given Operator given the optrHash
+  bool insertOptr(const Operator::optrHash oh) {
+    Operator top(oh);
+    this->insertOptr(top);
+  }
   // Push a number into the numberStack
-  void insert(const numType);
+  void insertNum(const numType);
   // No more input left. Pop out and calculate everything left.
   bool finishCalculation();
   // Pop out the last number in the numberStack
   bool ans(numType &);
+
+  template <typename numT>
+  friend class calcParse;
 };
 
 template <typename numType>
-bool operatorManager<numType>::insert(const Operator z) {
-  Operator tmp;
+bool operatorManager<numType>::insertOptr(const Operator z) {
+  Operator top;
   numType x, y;
-  bool flag = 0;
 
-  flag = this->operatorStack.get(tmp);
-
-  if (z != Operator::H_closeBracket) {
-    // Check(tmp > z) only if any operator is returned into tmp
-    if (not flag || tmp > z)
+  // Check(top > z) only if any operator is returned into top
+  if (not this->operatorStack.get(top) or top > z)
       return this->operatorStack.push(z);
-  } else if (not flag)
-    return error(brktError);
 
   do {
-    this->operatorStack.pop();        // The operator(tmp)
-    if (not this->numberStack.pop(x)) // The number(x)
-      return error(numScarce);
-    if (not tmp.isUnary() && not this->numberStack.pop(y))
-      // The second number(y) iff tmp is a binary operator
-      return error(numScarce);
-    this->calculate(tmp, y, x); // Calculate the result
-  } while ((flag = this->operatorStack.get(tmp)) && tmp < z);
+    this->operatorStack.pop();  // The operator(top)
+    this->calculate(top);       // Calculate the result
+  } while (this->operatorStack.get(top) && top < z);
 
-  if (z != Operator::H_closeBracket)
-    return this->operatorStack.push(z);
-  else if (flag && tmp == Operator::H_openBracket)
-    // If z is a closing bracket then there has to be an opening bracket in the
-    // operator stack which is to be poped out
-    return this->operatorStack.pop();
-  else
-    // else it is an error
-    return error(brktError);
-
-  return 1;
+  return this->operatorStack.push(z);
 }
 
 template <typename numType>
-void operatorManager<numType>::insert(const numType x) {
+void operatorManager<numType>::insertNum(const numType x) {
   this->numberStack.push(x);
 }
 
 template <typename numType> bool operatorManager<numType>::finishCalculation() {
-  Operator tmp;
-  numType x, y;
+  Operator top;
 
-  while (this->operatorStack.pop(tmp)) {
-    if (not this->numberStack.pop(x))
-      return error(numScarce);
-    if (not tmp.isUnary() && not this->numberStack.pop(y))
-      return error(numScarce);
-    this->calculate(tmp, y, x);
+  while (this->operatorStack.pop(top)) {
+    if (top != Operator::H_openBracket)
+      this->calculate(top);
   }
 
   return this->operatorStack.isEmpty() ? 1 : error(numScarce);
@@ -190,34 +173,40 @@ template <typename numType> bool operatorManager<numType>::ans(numType &x) {
 }
 
 template <typename numType>
-bool operatorManager<numType>::calculate(const Operator op, const numType x,
-                                         const numType y) {
-  numType z = angle_type == DEG ? (x * PI / 180)
-                                : (angle_type == RAD ? x : (x * PI / 200)),
+bool operatorManager<numType>::calculate(const Operator &top) {
+  numType x = 0, y = 0;
+  if (not this->numberStack.pop(y))
+    return error(numScarce);
+  if (not top.isUnary() && not this->numberStack.pop(x))
+    // The second number iff top is a binary operator
+    return error(numScarce);
+
+  numType z = angle_type == DEG ? (y * PI / 180)
+                                : (angle_type == RAD ? y : (y * PI / 200)),
           ans;
 
   /* Basic arithmatic operators */
-  if (op == Operator::H_plus)
+  if (top == Operator::H_plus)
     ans = x + y;
-  else if (op == Operator::H_minus)
+  else if (top == Operator::H_minus)
     ans = x - y;
-  else if (op == Operator::H_multiply)
+  else if (top == Operator::H_multiply)
     ans = x * y;
-  else if (op == Operator::H_divide) {
+  else if (top == Operator::H_divide) {
     if (y)
       ans = x / y;
     else
       return error(divError);
-  } else if (op == Operator::H_pow)
+  } else if (top == Operator::H_pow)
     ans = powl(x, y);
 
   /* Factorials */
-  else if (op == Operator::H_P) {
+  else if (top == Operator::H_P) {
     if (x >= 0 && y >= 0 && x >= y && !(x - floorl(x)) && !(y - floorl(y)))
       ans = factorial(x) / factorial(x - y);
     else
       return error(factError);
-  } else if (op == Operator::H_C) {
+  } else if (top == Operator::H_C) {
     if (x >= 0 && y >= 0 && x >= y && !(x - floorl(x)) && !(y - floorl(y)))
       ans = factorial(x) / (factorial(y) * factorial(x - y));
     else
@@ -225,129 +214,129 @@ bool operatorManager<numType>::calculate(const Operator op, const numType x,
   }
 
   /* Computer related basic operators */
-  else if (op == Operator::H_bitNot)
-    ans = ~(ulong)x;
-  else if (op == Operator::H_bitOr)
+  else if (top == Operator::H_bitNot)
+    ans = ~(ulong)y;
+  else if (top == Operator::H_bitOr)
     ans = (ulong)x | (ulong)y;
-  else if (op == Operator::H_bitAnd)
+  else if (top == Operator::H_bitAnd)
     ans = (ulong)x & (ulong)y;
-  else if (op == Operator::H_mod)
+  else if (top == Operator::H_mod)
     ans = fmodl(x, y);
-  else if (op == Operator::H_bitShiftRight)
+  else if (top == Operator::H_bitShiftRight)
     ans = (ulong)x >> (ulong)y;
-  else if (op == Operator::H_bitShiftLeft)
+  else if (top == Operator::H_bitShiftLeft)
     ans = (ulong)x << (ulong)y;
 
   /* Relational operators */
-  else if (op == Operator::H_great)
+  else if (top == Operator::H_great)
     ans = x > y;
-  else if (op == Operator::H_less)
+  else if (top == Operator::H_less)
     ans = x < y;
-  else if (op == Operator::H_greatEqual)
+  else if (top == Operator::H_greatEqual)
     ans = x >= y;
-  else if (op == Operator::H_lessEqual)
+  else if (top == Operator::H_lessEqual)
     ans = x <= y;
-  else if (op == Operator::H_notEqual)
+  else if (top == Operator::H_notEqual)
     ans = x != y;
-  else if (op == Operator::H_equal)
+  else if (top == Operator::H_equal)
     ans = x == y;
 
   /* Other mathematical functions */
-  else if (op == Operator::H_log) {
+  else if (top == Operator::H_log) {
     if (y > 0 && x >= 0)
       ans = logl(y) / logl(x);
     else
       return error(rangUndef);
-  } else if (op == Operator::H_abs)
-    ans = fabsl(x);
-  else if (op == Operator::H_ceil)
-    ans = ceill(x);
-  else if (op == Operator::H_floor)
-    ans = floorl(x);
-  else if (op == Operator::H_ln) {
+  } else if (top == Operator::H_abs)
+    ans = fabsl(y);
+  else if (top == Operator::H_ceil)
+    ans = ceill(y);
+  else if (top == Operator::H_floor)
+    ans = floorl(y);
+  else if (top == Operator::H_ln) {
     if (x > 0)
-      ans = logl(x);
+      ans = logl(y);
     else
       return error(rangUndef);
-  } else if (op == Operator::H_logten) {
+  } else if (top == Operator::H_logten) {
     if (x > 0)
-      ans = log10l(x);
+      ans = log10l(y);
     else
       return error(rangUndef);
-  } else if (op == Operator::H_sinh)
+  } else if (top == Operator::H_sinh)
     ans = sinhl(z);
-  else if (op == Operator::H_cosh)
+  else if (top == Operator::H_cosh)
     ans = coshl(z);
-  else if (op == Operator::H_tanh)
+  else if (top == Operator::H_tanh)
     ans = tanhl(z);
-  else if (op == Operator::H_sin)
+  else if (top == Operator::H_sin)
     ans = sinl(z);
-  else if (op == Operator::H_cos)
+  else if (top == Operator::H_cos)
     ans = cosl(z);
-  else if (op == Operator::H_tan) {
+  else if (top == Operator::H_tan) {
     if (cosl(z))
       ans = tanl(z);
     else
       return error(rangUndef);
-  } else if (op == Operator::H_cosec) {
+  } else if (top == Operator::H_cosec) {
     if (sinl(z))
       ans = 1 / sinl(z);
     else
       return error(rangUndef);
-  } else if (op == Operator::H_sec) {
+  } else if (top == Operator::H_sec) {
     if (cosl(z))
       ans = 1 / cosl(z);
     else
       return error(rangUndef);
-  } else if (op == Operator::H_cot) {
+  } else if (top == Operator::H_cot) {
     if (sinl(z))
       ans = 1 / tanl(z);
     else
       return error(rangUndef);
-  } else if (op == Operator::H_asin) {
-    if (x <= 1 && x >= -1)
+  } else if (top == Operator::H_asin) {
+    if (y <= 1 && y >= -1)
       ans = angle_type == DEG
-                ? (asinl(x) * 180 / PI)
-                : angle_type == GRAD ? (asinl(x) * 200 / PI) : (asinl(x));
+                ? (asinl(y) * 180 / PI)
+                : angle_type == GRAD ? (asinl(y) * 200 / PI) : (asinl(y));
     else
       return error(domUndef);
-  } else if (op == Operator::H_acos) {
-    if (x <= 1.0 && x >= -1.0)
+  } else if (top == Operator::H_acos) {
+    if (y <= 1.0 && y >= -1.0)
       ans = angle_type == DEG
-                ? (acosl(x) * 180 / PI)
-                : angle_type == GRAD ? (acosl(x) * 200 / PI) : (acosl(x));
+                ? (acosl(y) * 180 / PI)
+                : angle_type == GRAD ? (acosl(y) * 200 / PI) : (acosl(y));
     else
       return error(domUndef);
-  } else if (op == Operator::H_atan)
+  } else if (top == Operator::H_atan)
     ans = angle_type == DEG
-              ? (atanl(x) * 180 / PI)
-              : angle_type == GRAD ? (atanl(x) * 200 / PI) : (atanl(x));
-  else if (op == Operator::H_acosec) {
-    if (x <= -1.0 || x >= 1.0)
-      ans = angle_type == DEG ? (asinl(1 / x) * 180 / PI)
-                              : angle_type == GRAD ? (asinl(1 / x) * 200 / PI)
-                                                   : (asinl(1 / x));
+              ? (atanl(y) * 180 / PI)
+              : angle_type == GRAD ? (atanl(y) * 200 / PI) : (atanl(y));
+  else if (top == Operator::H_acosec) {
+    if (y <= -1.0 || y >= 1.0)
+      ans = angle_type == DEG ? (asinl(1 / y) * 180 / PI)
+                              : angle_type == GRAD ? (asinl(1 / y) * 200 / PI)
+                                                   : (asinl(1 / y));
     else
       return error(domUndef);
-  } else if (op == Operator::H_asec) {
-    if (x <= -1 || x >= 1)
-      ans = angle_type == DEG ? (acosl(1 / x) * 180 / PI)
-                              : angle_type == GRAD ? (acosl(1 / x) * 200 / PI)
-                                                   : (acosl(1 / x));
+  } else if (top == Operator::H_asec) {
+    if (y <= -1 || y >= 1)
+      ans = angle_type == DEG ? (acosl(1 / y) * 180 / PI)
+                              : angle_type == GRAD ? (acosl(1 / y) * 200 / PI)
+                                                   : (acosl(1 / y));
     else
       return error(domUndef);
-  } else if (op == Operator::H_acot)
+  } else if (top == Operator::H_acot)
     ans = angle_type == DEG
-              ? (atanl(1 / x) * 180 / PI)
-              : angle_type == GRAD ? (atanl(1 / x) * 200 / PI) : (atanl(1 / x));
+              ? (atanl(1 / y) * 180 / PI)
+              : angle_type == GRAD ? (atanl(1 / y) * 200 / PI) : (atanl(1 / y));
 
   /* Logical operators */
-  else if ((x == 1 || !x) && (y == 1 || !y)) {
-    if (op == Operator::H_not)
-      ans = !x;
-    else if (op == Operator::H_or)
+  else if ((x == 1 || x == 0) && (y == 1 || y == 0)) {
+    if (top == Operator::H_not)
+      ans = !y;
+    else if (top == Operator::H_or)
       ans = x || y;
-    else if (op == Operator::H_and)
+    else if (top == Operator::H_and)
       ans = x && y;
     else
       return error(invalidOptr);

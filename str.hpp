@@ -2,8 +2,15 @@
 #define CALC_STR_H
 
 #include "common.hpp"
+#include <ctype.h>
 
-#define SKIP_SPACE(s, i) s[i] == ' ' ? ++i : i
+inline void skipSpace(constStr s, ulong &i) {
+  isspace(s[i]) ? ++i : i;
+}
+
+inline void skipSpace(str &s) {
+  isspace(*s) ? ++s : s;
+}
 
 extern uint64_t strlen(constStr s);
 extern int strcmp(constStr s1, constStr s2);

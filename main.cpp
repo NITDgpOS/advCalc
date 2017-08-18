@@ -46,7 +46,7 @@ take_input:
   parser.startParsing();
 
   if (Error.isSet()) {
-    printf("\n :( %s\n", Error.toString());
+    printf("\n :-( %s\n", Error.toString());
     Error.reset();
   } else {
     printf(" = %lg\n", parser.Ans());

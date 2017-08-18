@@ -41,7 +41,8 @@ Operator::Operator(const Operator &x) {
   this->setOperatorProperties();
   if (x.isBinary != this->isBinary || x.priority != this->priority)
     throw "Operator error caught\n"
-          "Most recent call to Operator::setOperatorProperties";
+          "Unable to Operator::setOperatorProperties\n"
+          "Operators don't match" FILE "\n";
 #else
   this->isBinary = x.isBinary;
   this->priority = x.priority;
@@ -62,7 +63,8 @@ void Operator::operator=(const Operator &x) {
   this->setOperatorProperties();
   if (x.isBinary != this->isBinary || x.priority != this->priority)
     throw "Operator error caught\n"
-          "Most recent call to Operator::setOperatorProperties";
+          "Unable to Operator::setOperatorProperties\n"
+          "Operators don't match" FILE "\n";
 #else
   this->isBinary = x.isBinary;
   this->priority = x.priority;
@@ -193,18 +195,12 @@ bool Operator::setOperatorProperties() {
 }
 
 // Parse the given string and return zero on error
-uint8_t Operator::parse(str *start) {
-  if (::isBracket(**start)) {
-    this->op = **start;
-    this->setOperatorProperties();
-    *start += 1;
-    return 1;
-  }
+uint8_t Operator::parse(str &start) {
   uint8_t charsRead = 0;
   str_hash hash = 0;
   Operator optr;
-  for (uint i = 0; ismathchar((*start)[i]) && i < 6; ++i) {
-    hash = 127 * hash + (*start)[i];
+  for (uint i = 0; i < 6 && ismathchar(start[i]); ++i) {
+    hash = 127 * hash + start[i];
     optr.op = hash % unify;
     if (optr.setOperatorProperties()) {
       // modify *this and charsRead iff optr is valid
@@ -212,7 +208,7 @@ uint8_t Operator::parse(str *start) {
       charsRead = i + 1;
     }
   }
-  *start = *start + charsRead;
+  start += charsRead;
   return charsRead;
 }
 
@@ -342,33 +338,23 @@ void makeOperatorHashes() {
 #define LOW 10
 // This function checks the priority of two operators and returns HIGH or LOW
 // based on some conditions whether the operator should be poped out of stack or
-// not. HIGH
+// not.
 uint8_t Operator::checkPriority(const Operator s2) const {
 #ifdef TESTING
   if (not this->op || not s2.op)
     throw "Error: Null operator cannot have a priority";
 #endif
-  bool s1_open = this->op == H_openBracket;
-  bool s2_close = s2.op == H_closeBracket;
-  if (s1_open && s2_close)
-    // opening bracket is not something used for calculation so we may need to
-    // break the while loop in
-    // operatorManager<numType>::insert(const Operator z)
+
+  if (this->op == H_openBracket)
     return HIGH;
 
-  if (s2_close)
+  if (this->isBinary && s2.isUnary())
+    return HIGH;
+
+  if (this->isUnary() && s2.isBinary)
     return LOW;
 
-  if (s1_open)
-    return HIGH;
-
-  if (this->isBinary && not s2.isBinary)
-    return HIGH;
-
-  if (not this->isBinary && s2.isBinary)
-    return LOW;
-
-  if (not this->isBinary && not s2.isBinary)
+  if (this->isUnary() && s2.isUnary())
     return HIGH;
 
   if (this->op == s2.op) {
