@@ -1,0 +1,19 @@
+#+TITLE: Things to be done
+#+OPTIONS: toc:nil author:nil creator:nil
+* DONE Full Expression Support
+CLOSED: [2017-08-20 Sun 00:38]
+* TODO Variable support
+Data structure is to be decided. I have thought of either a trie or BST.
+* GUI implementations [0/3]
+** TODO Electron js
+** TODO QT app
+** TODO GTK app
+* Arbitrary precision support [0/2]
+** TODO GMP support
+** TODO Native support
+* Auto completion for command Line [0/3]
+** TODO Bash
+** TODO zsh
+** TODO csh
+* TODO Function definition support
+* TODO Series support
