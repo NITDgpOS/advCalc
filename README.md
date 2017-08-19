@@ -2,7 +2,7 @@
 Reimplementation of calc from scratch.
 
 ## Build and Execute
-First clean everything:
+Firstly, clean everything if you had built it previously:
 ```
 $ make cleanall
 ```
@@ -10,11 +10,11 @@ Then start the build:
 ```
 $ make
 ```
-You can start the calculator using:
+Now, you can start the calculator using:
 ```
 $ ./calc
 ```
-provided you have compiled it successfully. For a systemwide installation do:
+provided you have compiled it successfully. For a system wide installation do:
 ```
 $ sudo make install
 ```
