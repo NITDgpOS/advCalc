@@ -178,6 +178,7 @@ bool Operator::setOperatorProperties() {
       else
         beg = mid + 1, --end;
     }
+    beg = 0, end = 21;
     while (beg <= end) {
       mid = (beg + end) / 2;
       if (this->op == un_ops_hash[mid] || this->op == un_ops_hash[beg] ||
