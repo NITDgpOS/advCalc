@@ -80,6 +80,8 @@ public:
 };
 
 template <typename numT> void calcParse<numT>::gotOpenBracket() {
+  if (this->prevToken == Number)
+    this->optr.insertOptr(Operator::H_multiply);
   this->prevToken = OpenBracket;
   ++this->currentPos;
   Operator op(Operator::H_openBracket);
@@ -99,6 +101,8 @@ template <typename numT> bool calcParse<numT>::gotCloseBracket() {
 }
 
 template <typename numT> bool calcParse<numT>::gotNum() {
+  if (this->prevToken == CloseBracket)
+    this->optr.insertOptr(Operator::H_multiply);
   this->prevToken = Number;
   numT x = 0;
   if (strToNum(&this->currentPos, x, REAL) == 0)
@@ -119,7 +123,7 @@ template <typename numT> bool calcParse<numT>::gotChar() {
 }
 
 template <typename numT> bool calcParse<numT>::gotPlusMinus() {
-  if (this->prevToken == Number) {
+  if (this->prevToken == Number or this->prevToken == CloseBracket) {
     this->prevToken = BinaryOperator;
     this->optr.insertOptr(this->isPlus() ? Operator::H_plus : Operator::H_minus);
     this->currentPos++;
