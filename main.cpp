@@ -43,7 +43,12 @@ take_input:
 
   add_history(input);
 
-  parser.startParsing();
+  try {
+    parser.startParsing();
+  } catch (ERROR *e) {
+    std::cerr << e->toString() << std::endl;
+    delete e;
+  }
 
   if (Error.isSet()) {
     printf("\n :-( %s\n", Error.toString());

@@ -19,6 +19,7 @@
 #define _error(err_type, ret_val) ((Error = ERROR::err_type), (ret_val))
 #endif
 #define error(err_type) _error(err_type, 0)
+#define error_(err_type) new ERROR(ERROR::err_type)
 
 class ERROR {
 private:

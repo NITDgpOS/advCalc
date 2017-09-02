@@ -56,11 +56,13 @@ public:
   // Check if there are any answers
   bool isEmpty() const { return !this->numOfAns; }
   void toggleAutoDelete();
-  bool parseAns(constStr *, Type &) const;
+  bool parseAns(str &, Type &) const;
   bool getAns(Type &, ulong pos = 0) const;
   void display() const;
   bool push(const Type);
 };
+
+answerManager<float64_t> answers;
 
 extern answerManager<long double> ansList;
 extern bool store;
@@ -167,9 +169,9 @@ template <typename Type> void answerManager<Type>::toggleAutoDelete() {
 }
 
 template <typename Type>
-bool answerManager<Type>::parseAns(constStr *s, Type &x) const {
-  if (**s == 'A' || **s == 'a') {
-    constStr c = *s + 1;
+bool answerManager<Type>::parseAns(str &s, Type &x) const {
+  if (*s == 'a') {
+    str c = s + 1;
     ulong y = 0;
     while (*c > 47 && *c < 58) {
       if (y > (ULONG_MAX - *c + 48) / 10)
@@ -178,9 +180,10 @@ bool answerManager<Type>::parseAns(constStr *s, Type &x) const {
     }
     if (y > numOfAns)
       return error(invalidAns);
-    if (*s == c - 1 && y <= numOfAns) {
-      *s = c;
-      return this->getAns(y, x);
+    // If 'c' hasn't changed since its initial value then it is a parseError
+    if (c != s + 1) {
+      s = c;
+      return this->getAns(x, y);
     }
   }
   return error(parseError);

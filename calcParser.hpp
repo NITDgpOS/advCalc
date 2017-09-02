@@ -1,6 +1,7 @@
 #ifndef CALC_PARSER_H
 #define CALC_PARSER_H
 
+#include "answerManager.hpp"
 #include "calcOptr.hpp"
 #include "common.hpp"
 #include "str.hpp"
@@ -28,29 +29,27 @@ template <typename numT> class calcParse {
   bool gotPlusMinus();
   bool gotChar();
   bool gotNum();
+  bool gotOptr(const Operator &);
+  bool gotAns();
+  bool gotVar();
 
-  inline bool isOpenBracket() {
-    return *this->currentPos == '(';
+  inline bool isOpenBracket() { return *this->currentPos == '('; }
+
+  inline bool isAns() {
+    return *this->currentPos == 'a' && isdigit(this->currentPos[1]);
   }
 
-  inline bool isCloseBracket() {
-    return *this->currentPos == ')';
-  }
+  inline bool isCloseBracket() { return *this->currentPos == ')'; }
 
-  inline bool isPlus() {
-    return *this->currentPos == '+';
-  }
+  inline bool isPlus() { return *this->currentPos == '+'; }
 
-  inline bool isMinus() {
-    return *this->currentPos == '-';
-  }
+  inline bool isMinus() { return *this->currentPos == '-'; }
 
-  inline bool isChar() {
-    return isalpha(*this->currentPos);
-  }
+  inline bool isChar() { return isalpha(*this->currentPos); }
 
   inline bool isNum() {
-    return *this->currentPos == '.' || isdigit(*this->currentPos);
+    return isdigit(*this->currentPos) ||
+           (*this->currentPos == '.' && isdigit(this->currentPos[1]));
   }
 
 public:
@@ -62,13 +61,13 @@ public:
         over(false), prevToken(ClearField) {}
   calcParse(str inp, str start)
       : input(inp), currentPos(start), ans(0), end(0), running(false),
-        over(false) , prevToken(ClearField){}
+        over(false), prevToken(ClearField) {}
   calcParse(const calcParse &x) { *this = x; }
   bool isParsing() { return running; }
   bool isOver() { return over; }
   bool startParsing();
   numT Ans() { return ans; }
-  calcParse<numT>& operator=(const calcParse &x) {
+  calcParse<numT> &operator=(const calcParse &x) {
     this->input = x.input;
     this->currentPos = x.currentPos;
     this->ans = x.ans;
@@ -111,13 +110,31 @@ template <typename numT> bool calcParse<numT>::gotNum() {
   return 1;
 }
 
+template <typename numT> bool calcParse<numT>::gotOptr(const Operator &op) {
+  this->prevToken = op.isUnary() ? UnaryOperator : BinaryOperator;
+  if (not this->optr.insertOptr(op))
+    return 0;
+  return 1;
+}
+
+template <typename numT> bool calcParse<numT>::gotAns() {
+  numT number;
+  if (answers.parseAns(this->currentPos, number)) {
+    if (this->prevToken == CloseBracket)
+      this->optr.insertOptr(Operator::H_multiply);
+    this->prevToken = Number;
+    optr.insertNum(number);
+  } else
+    return 0;
+}
+
 template <typename numT> bool calcParse<numT>::gotChar() {
   Operator op;
-  if (op.parse(this->currentPos)) {
-    this->prevToken = op.isUnary() ? UnaryOperator : BinaryOperator;
-    if (not this->optr.insertOptr(op))
-      return 0;
-  } else
+  if (this->isAns())
+    return this->gotAns();
+  else if (op.parse(this->currentPos))
+    return this->gotOptr(op);
+  else
     return error(parseError);
   return 1;
 }
@@ -125,7 +142,8 @@ template <typename numT> bool calcParse<numT>::gotChar() {
 template <typename numT> bool calcParse<numT>::gotPlusMinus() {
   if (this->prevToken == Number or this->prevToken == CloseBracket) {
     this->prevToken = BinaryOperator;
-    this->optr.insertOptr(this->isPlus() ? Operator::H_plus : Operator::H_minus);
+    this->optr.insertOptr(this->isPlus() ? Operator::H_plus
+                                         : Operator::H_minus);
     this->currentPos++;
   } else if (not this->gotNum())
     return 0;
@@ -164,12 +182,16 @@ template <typename numT> bool calcParse<numT>::startParsing() {
       if (not gotPlusMinus())
         return 0;
     } else if (not this->gotChar())
-        return 0;
+      return 0;
   }
 
   optr.finishCalculation();
 
-  optr.ans(this->ans);
+  if (optr.ans(this->ans)) {
+    if (not answers.push(this->ans))
+      return 0;
+  } else
+    return 0;
 
   this->running = false;
   this->over = true;
