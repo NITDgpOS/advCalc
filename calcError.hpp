@@ -11,8 +11,9 @@
 #ifdef DEBUG
 #define _error(err_type, ret_val)                                              \
   ((Error = ERROR::err_type),                                                  \
-   (std::cerr << "Error: '" << Error.toString() << "', File: '" << __FILE__    \
-              << "', Line: " << __LINE__ << std::endl),                        \
+   (std::cerr << std::endl                                                     \
+              << "Error: '" << Error.toString() << "', File: '" << __FILE__    \
+              << "', Line: " << __LINE__),                                     \
    ret_val)
 #else
 #define _error(err_type, ret_val) ((Error = ERROR::err_type), (ret_val))
