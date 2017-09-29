@@ -165,7 +165,7 @@ bool Operator::setOperatorProperties() {
     this->priority = priorityOf(this->op);
     return 1;
   } else {
-    register uchar beg = 0, end = 20, mid;
+    uchar beg = 0, end = 20, mid;
     while (beg <= end) {
       mid = (beg + end) / 2;
       if (this->op == bin_ops_hash[mid] || this->op == bin_ops_hash[beg] ||

@@ -3,7 +3,7 @@
 #include <math.h>
 
 uint64_t strlen(constStr s) {
-  register int l = 0;
+  int l = 0;
   for (; s[l]; l++)
     ;
   return l;
@@ -16,7 +16,7 @@ int strcmp(constStr s1, constStr s2) {
 }
 
 int strncmp(constStr s1, constStr s2, uint64_t l) {
-  for (register uint i = 1; i < l && (*s1 || *s2) && *s1 == *s2;
+  for (uint i = 1; i < l && (*s1 || *s2) && *s1 == *s2;
        i++, *s1 ? s1++ : 0, s2 ? s2++ : 0)
     ;
   return (*s1 - *s2);
@@ -29,7 +29,7 @@ int strcasecmp(constStr s1, constStr s2) {
 }
 
 int strncasecmp(constStr s1, constStr s2, uint64_t l) {
-  register uint i = 1;
+  uint i = 1;
   for (; i < l && (*s1 || *s2) && tolower(*s1) == tolower(*s2);
        i++, *s1 ? s1++ : 0, s2 ? s2++ : 0)
     ;
@@ -46,7 +46,7 @@ str strcpy(str s1, constStr s2) {
 
 str strncpy(str s1, constStr s2, uint64_t l) {
   str ret_val = s1;
-  register uint i = 1;
+  uint i = 1;
   for (; i < l && *s2; i++, *(s1++) = *(s2++))
     ;
   if (i < l)
@@ -55,7 +55,7 @@ str strncpy(str s1, constStr s2, uint64_t l) {
 }
 
 str strcat(str s1, constStr s2) {
-  register str s = strlen(s1) + s1;
+  str s = strlen(s1) + s1;
   while (*s2)
     *(s++) = *(s2++);
   *s = 0;
@@ -63,7 +63,7 @@ str strcat(str s1, constStr s2) {
 }
 
 str strncat(str s1, constStr s2, uint64_t l) {
-  register uint i = strlen(s1);
+  uint i = strlen(s1);
   while (*s2 && i < l)
     s1[i++] = *(s2++);
   if (i < l)
@@ -79,7 +79,7 @@ bool isidentifier(constStr s) {
 
 uint64_t strToNum(str *a, double &x, datatype d) {
   bool sign = 0;
-  register str c = *a, s = *a;
+  str c = *a, s = *a;
   // check for a negative sign
   if (*c == '-') {
     if (d == REAL || d == INT)
@@ -96,7 +96,7 @@ uint64_t strToNum(str *a, double &x, datatype d) {
     // Fraction part
     if (d != REAL && d != UREAL)
       return 0;
-    register slong j = 0;
+    slong j = 0;
     while (*(++c) > 47 && *c < 58) // isdigit
       x = x + powl(10, --j) * (*c - 48);
   }
