@@ -21,10 +21,10 @@ template <typename Type> class answerManager {
   bool autoDelete;
   // Method for increasing the size of the array
   // answerStack
-  bool increaseSize();
+  void increaseSize();
   // Shifting the answer list to delete previous
   // answers
-  bool shift();
+  void shift();
 
 public:
   // Destructor for the answerManager
@@ -56,10 +56,10 @@ public:
   // Check if there are any answers
   bool isEmpty() const { return !this->numOfAns; }
   void toggleAutoDelete();
-  bool parseAns(str &, Type &) const;
-  bool getAns(Type &, ulong pos = 0) const;
+  void parseAns(str &, Type &) const;
+  void getAns(Type &, ulong pos = 0) const;
   void display() const;
-  bool push(const Type);
+  void push(const Type);
 };
 
 answerManager<float64_t> answers;
@@ -67,9 +67,11 @@ answerManager<float64_t> answers;
 extern answerManager<long double> ansList;
 extern bool store;
 
-template <typename Type> bool answerManager<Type>::increaseSize() {
-  if (++numOfStacks == 0)
-    return _error(outOfRange, (--numOfStacks, 0));
+template <typename Type> void answerManager<Type>::increaseSize() {
+  if (++numOfStacks == 0) {
+    --numOfStacks;
+    error(outOfRange);
+  }
   try {
     calcStack<Type> *tmp = new calcStack<Type>[numOfStacks];
     uint i;
@@ -78,22 +80,21 @@ template <typename Type> bool answerManager<Type>::increaseSize() {
     tmp[i].setCapacity(this->ansPerStack);
     delete[] this->answerStack;
     this->answerStack = tmp;
-    return 1;
   } catch (const std::bad_alloc &x) {
-    return error(memAlloc);
+    error(memAlloc);
   }
 }
 
-template <typename Type> bool answerManager<Type>::shift() {
+template <typename Type> void answerManager<Type>::shift() {
   try {
     calcStack<Type> *tmp = new calcStack<Type>[numOfStacks];
     for (uint i = 1; i < numOfStacks; ++i)
       tmp[i - 1] = answerStack[i];
     delete[] answerStack;
     answerStack = tmp;
-    return numOfAns -= ansPerStack, 1;
+    numOfAns -= ansPerStack;
   } catch (const std::bad_alloc &x) {
-    return error(memAlloc);
+    error(memAlloc);
   }
 }
 
@@ -155,13 +156,14 @@ answerManager<Type>::answerManager(const bool ad, const uint nos,
   this->numOfAns = 0;
 }
 
-template <typename Type> bool answerManager<Type>::push(const Type x) {
-  if (this->answerStack[this->numOfAns++ / this->numOfStacks].push(x)) {
-    if (this->numOfAns == this->numOfStacks * this->ansPerStack)
-      return autoDelete ? this->shift() : this->increaseSize();
-    return 1;
+template <typename Type> void answerManager<Type>::push(const Type x) {
+  this->answerStack[this->numOfAns++ / this->numOfStacks].push(x);
+  if (this->numOfAns == this->numOfStacks * this->ansPerStack) {
+    if (autoDelete)
+      this->shift();
+    else
+      this->increaseSize();
   }
-  return 0;
 }
 
 template <typename Type> void answerManager<Type>::toggleAutoDelete() {
@@ -169,32 +171,31 @@ template <typename Type> void answerManager<Type>::toggleAutoDelete() {
 }
 
 template <typename Type>
-bool answerManager<Type>::parseAns(str &s, Type &x) const {
-  if (*s == 'a') {
-    str c = s + 1;
-    ulong y = 0;
-    while (*c > 47 && *c < 58) {
-      if (y > (ULONG_MAX - *c + 48) / 10)
-        return error(invalidAns);
-      y = y * 10 + *(c++) - 48;
-    }
-    if (y > numOfAns)
-      return error(invalidAns);
-    // If 'c' hasn't changed since its initial value then it is a parseError
-    if (c != s + 1) {
-      s = c;
-      return this->getAns(x, y);
-    }
+void answerManager<Type>::parseAns(str &s, Type &x) const {
+  if (*s != 'a')
+    error(parseError);
+  str c = s + 1;
+  ulong y = 0;
+  while (*c > 47 && *c < 58) {
+    if (y > (ULONG_MAX - *c + 48) / 10)
+      error(invalidAns);
+    y = y * 10 + *(c++) - 48;
   }
-  return error(parseError);
+  if (y > numOfAns)
+    error(invalidAns);
+  // If 'c' hasn't changed since its initial value then it is a parseError
+  if (c != s + 1) {
+    s = c;
+    this->getAns(x, y);
+  }
 }
 
 template <typename Type>
-bool answerManager<Type>::getAns(Type &x, ulong pos) const {
+void answerManager<Type>::getAns(Type &x, ulong pos) const {
   uint stackNo = pos / this->ansPerStack;
-  return this->answerStack[stackNo].find(pos % this->ansPerStack, x)
-             ? 1
-             : error(invalidAns);
+  uint posInStack = pos % this->ansPerStack;
+  if (not this->answerStack[stackNo].find(posInStack, x))
+    error(invalidAns);
 }
 
 template <typename Type> void answerManager<Type>::display() const {

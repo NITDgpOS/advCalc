@@ -106,15 +106,14 @@ template <typename numType> class operatorManager {
   calcStack<Operator> operatorStack;
   calcStack<numType> numberStack;
   // Calculates the ans and puts it into the numberStack
-  template <typename num>
-  friend class calcParse;
-  bool calculate(const Operator &);
+  template <typename num> friend class calcParse;
+  void calculate(const Operator &);
 
 public:
   // Insert a given Operator into the operatorStack. Uses calculate().
-  bool insertOptr(const Operator);
+  void insertOptr(const Operator);
   // Insert a given Operator given the optrHash
-  bool insertOptr(const Operator::optrHash oh) {
+  void insertOptr(const Operator::optrHash oh) {
     Operator top(oh);
     this->insertOptr(top);
   }
@@ -125,25 +124,25 @@ public:
   // Pop out the last number in the numberStack
   bool ans(numType &);
 
-  template <typename numT>
-  friend class calcParse;
+  template <typename numT> friend class calcParse;
 };
 
 template <typename numType>
-bool operatorManager<numType>::insertOptr(const Operator z) {
+void operatorManager<numType>::insertOptr(const Operator z) {
   Operator top;
-  numType x, y;
 
   // Check(top > z) only if any operator is returned into top
-  if (not this->operatorStack.get(top) or top > z)
-      return this->operatorStack.push(z);
+  if (not this->operatorStack.get(top) or top > z) {
+    this->operatorStack.push(z);
+    return;
+  }
 
   do {
-    this->operatorStack.pop();  // The operator(top)
-    this->calculate(top);       // Calculate the result
+    this->operatorStack.pop(); // The operator(top)
+    this->calculate(top);      // Calculate the result
   } while (this->operatorStack.get(top) && top < z);
 
-  return this->operatorStack.push(z);
+  this->operatorStack.push(z);
 }
 
 template <typename numType>
@@ -159,7 +158,9 @@ template <typename numType> bool operatorManager<numType>::finishCalculation() {
       this->calculate(top);
   }
 
-  return this->operatorStack.isEmpty() ? 1 : error(numScarce);
+  if (this->operatorStack.isEmpty())
+    return 1;
+  error(numScarce);
 }
 
 template <typename numType> bool operatorManager<numType>::ans(numType &x) {
@@ -167,19 +168,19 @@ template <typename numType> bool operatorManager<numType>::ans(numType &x) {
   if (not this->operatorStack.isEmpty())
     throw "Operators left in stack due to some error";
 #endif
-  return this->numberStack.pop(x) && this->numberStack.isEmpty()
-             ? 1
-             : error(numScarce);
+  if (this->numberStack.pop(x) && this->numberStack.isEmpty())
+    return 1;
+  error(numScarce);
 }
 
 template <typename numType>
-bool operatorManager<numType>::calculate(const Operator &top) {
+void operatorManager<numType>::calculate(const Operator &top) {
   numType x = 0, y = 0;
   if (not this->numberStack.pop(y))
-    return error(numScarce);
+    error(numScarce);
   if (not top.isUnary() && not this->numberStack.pop(x))
     // The second number iff top is a binary operator
-    return error(numScarce);
+    error(numScarce);
 
   numType z = angle_type == DEG ? (y * PI / 180)
                                 : (angle_type == RAD ? y : (y * PI / 200)),
@@ -196,7 +197,7 @@ bool operatorManager<numType>::calculate(const Operator &top) {
     if (y)
       ans = x / y;
     else
-      return error(divError);
+      error(divError);
   } else if (top == Operator::H_pow)
     ans = powl(x, y);
 
@@ -205,12 +206,12 @@ bool operatorManager<numType>::calculate(const Operator &top) {
     if (x >= 0 && y >= 0 && x >= y && !(x - floorl(x)) && !(y - floorl(y)))
       ans = factorial(x) / factorial(x - y);
     else
-      return error(factError);
+      error(factError);
   } else if (top == Operator::H_C) {
     if (x >= 0 && y >= 0 && x >= y && !(x - floorl(x)) && !(y - floorl(y)))
       ans = factorial(x) / (factorial(y) * factorial(x - y));
     else
-      return error(factError);
+      error(factError);
   }
 
   /* Computer related basic operators */
@@ -246,7 +247,7 @@ bool operatorManager<numType>::calculate(const Operator &top) {
     if (y > 0 && x >= 0)
       ans = logl(y) / logl(x);
     else
-      return error(rangUndef);
+      error(rangUndef);
   } else if (top == Operator::H_abs)
     ans = fabsl(y);
   else if (top == Operator::H_ceil)
@@ -257,12 +258,12 @@ bool operatorManager<numType>::calculate(const Operator &top) {
     if (x > 0)
       ans = logl(y);
     else
-      return error(rangUndef);
+      error(rangUndef);
   } else if (top == Operator::H_logten) {
     if (x > 0)
       ans = log10l(y);
     else
-      return error(rangUndef);
+      error(rangUndef);
   } else if (top == Operator::H_sinh)
     ans = sinhl(z);
   else if (top == Operator::H_cosh)
@@ -277,36 +278,36 @@ bool operatorManager<numType>::calculate(const Operator &top) {
     if (cosl(z))
       ans = tanl(z);
     else
-      return error(rangUndef);
+      error(rangUndef);
   } else if (top == Operator::H_cosec) {
     if (sinl(z))
       ans = 1 / sinl(z);
     else
-      return error(rangUndef);
+      error(rangUndef);
   } else if (top == Operator::H_sec) {
     if (cosl(z))
       ans = 1 / cosl(z);
     else
-      return error(rangUndef);
+      error(rangUndef);
   } else if (top == Operator::H_cot) {
     if (sinl(z))
       ans = 1 / tanl(z);
     else
-      return error(rangUndef);
+      error(rangUndef);
   } else if (top == Operator::H_asin) {
     if (y <= 1 && y >= -1)
       ans = angle_type == DEG
                 ? (asinl(y) * 180 / PI)
                 : angle_type == GRAD ? (asinl(y) * 200 / PI) : (asinl(y));
     else
-      return error(domUndef);
+      error(domUndef);
   } else if (top == Operator::H_acos) {
     if (y <= 1.0 && y >= -1.0)
       ans = angle_type == DEG
                 ? (acosl(y) * 180 / PI)
                 : angle_type == GRAD ? (acosl(y) * 200 / PI) : (acosl(y));
     else
-      return error(domUndef);
+      error(domUndef);
   } else if (top == Operator::H_atan)
     ans = angle_type == DEG
               ? (atanl(y) * 180 / PI)
@@ -317,14 +318,14 @@ bool operatorManager<numType>::calculate(const Operator &top) {
                               : angle_type == GRAD ? (asinl(1 / y) * 200 / PI)
                                                    : (asinl(1 / y));
     else
-      return error(domUndef);
+      error(domUndef);
   } else if (top == Operator::H_asec) {
     if (y <= -1 || y >= 1)
       ans = angle_type == DEG ? (acosl(1 / y) * 180 / PI)
                               : angle_type == GRAD ? (acosl(1 / y) * 200 / PI)
                                                    : (acosl(1 / y));
     else
-      return error(domUndef);
+      error(domUndef);
   } else if (top == Operator::H_acot)
     ans = angle_type == DEG
               ? (atanl(1 / y) * 180 / PI)
@@ -339,11 +340,11 @@ bool operatorManager<numType>::calculate(const Operator &top) {
     else if (top == Operator::H_and)
       ans = x && y;
     else
-      return error(invalidOptr);
+      error(invalidOptr);
   } else
-    return error(invalidOptr);
+    error(invalidOptr);
 
-  return this->numberStack.push(ans);
+  this->numberStack.push(ans);
 }
 
 #endif

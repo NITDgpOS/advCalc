@@ -25,12 +25,12 @@ template <typename numT> class calcParse {
   operatorManager<numT> optr;
 
   void gotOpenBracket();
-  bool gotCloseBracket();
-  bool gotPlusMinus();
-  bool gotChar();
-  bool gotNum();
-  bool gotOptr(const Operator &);
-  bool gotAns();
+  void gotCloseBracket();
+  void gotPlusMinus();
+  void gotChar();
+  void gotNum();
+  void gotOptr(const Operator &);
+  void gotAns();
   bool gotVar();
 
   inline bool isOpenBracket() { return *this->currentPos == '('; }
@@ -65,7 +65,7 @@ public:
   calcParse(const calcParse &x) { *this = x; }
   bool isParsing() { return running; }
   bool isOver() { return over; }
-  bool startParsing();
+  void startParsing();
   numT Ans() { return ans; }
   calcParse<numT> &operator=(const calcParse &x) {
     this->input = x.input;
@@ -87,7 +87,7 @@ template <typename numT> void calcParse<numT>::gotOpenBracket() {
   this->optr.operatorStack.push(op);
 }
 
-template <typename numT> bool calcParse<numT>::gotCloseBracket() {
+template <typename numT> void calcParse<numT>::gotCloseBracket() {
   this->prevToken = CloseBracket;
   ++this->currentPos;
   Operator top;
@@ -95,62 +95,54 @@ template <typename numT> bool calcParse<numT>::gotCloseBracket() {
     optr.calculate(top);
   }
   if (top != Operator::H_openBracket)
-    return error(brktError);
-  return 1;
+    error(brktError);
 }
 
-template <typename numT> bool calcParse<numT>::gotNum() {
+template <typename numT> void calcParse<numT>::gotNum() {
   if (this->prevToken == CloseBracket)
     this->optr.insertOptr(Operator::H_multiply);
   this->prevToken = Number;
   numT x = 0;
   if (strToNum(&this->currentPos, x, REAL) == 0)
-    return error(parseError);
+    error(parseError);
   optr.insertNum(x);
-  return 1;
 }
 
-template <typename numT> bool calcParse<numT>::gotOptr(const Operator &op) {
+template <typename numT> void calcParse<numT>::gotOptr(const Operator &op) {
   this->prevToken = op.isUnary() ? UnaryOperator : BinaryOperator;
-  if (not this->optr.insertOptr(op))
-    return 0;
-  return 1;
+  this->optr.insertOptr(op);
 }
 
-template <typename numT> bool calcParse<numT>::gotAns() {
+template <typename numT> void calcParse<numT>::gotAns() {
   numT number;
-  if (answers.parseAns(this->currentPos, number)) {
-    if (this->prevToken == CloseBracket)
-      this->optr.insertOptr(Operator::H_multiply);
-    this->prevToken = Number;
-    optr.insertNum(number);
-  } else
-    return 0;
+  answers.parseAns(this->currentPos, number);
+  if (this->prevToken == CloseBracket)
+    this->optr.insertOptr(Operator::H_multiply);
+  this->prevToken = Number;
+  optr.insertNum(number);
 }
 
-template <typename numT> bool calcParse<numT>::gotChar() {
+template <typename numT> void calcParse<numT>::gotChar() {
   Operator op;
   if (this->isAns())
-    return this->gotAns();
+    this->gotAns();
   else if (op.parse(this->currentPos))
-    return this->gotOptr(op);
+    this->gotOptr(op);
   else
-    return error(parseError);
-  return 1;
+    error(parseError);
 }
 
-template <typename numT> bool calcParse<numT>::gotPlusMinus() {
+template <typename numT> void calcParse<numT>::gotPlusMinus() {
   if (this->prevToken == Number or this->prevToken == CloseBracket) {
     this->prevToken = BinaryOperator;
     this->optr.insertOptr(this->isPlus() ? Operator::H_plus
                                          : Operator::H_minus);
     this->currentPos++;
-  } else if (not this->gotNum())
-    return 0;
-  return 1;
+  } else
+    this->gotNum();
 }
 
-template <typename numT> bool calcParse<numT>::startParsing() {
+template <typename numT> void calcParse<numT>::startParsing() {
   this->running = true;
 
   prevToken = ClearField;
@@ -173,30 +165,23 @@ template <typename numT> bool calcParse<numT>::startParsing() {
     if (this->isOpenBracket()) {
       this->gotOpenBracket();
     } else if (this->isCloseBracket()) {
-      if (not this->gotCloseBracket())
-        return 0;
+      this->gotCloseBracket();
     } else if (this->isNum()) {
-      if (not this->gotNum())
-        return 0;
+      this->gotNum();
     } else if (this->isPlus() or this->isMinus()) {
-      if (not gotPlusMinus())
-        return 0;
-    } else if (not this->gotChar())
-      return 0;
+      this->gotPlusMinus();
+    } else
+      this->gotChar();
   }
 
   optr.finishCalculation();
 
   if (optr.ans(this->ans)) {
-    if (not answers.push(this->ans))
-      return 0;
-  } else
-    return 0;
+    answers.push(this->ans);
+  }
 
   this->running = false;
   this->over = true;
-
-  return 1;
 }
 
 #endif

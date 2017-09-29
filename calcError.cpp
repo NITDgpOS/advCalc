@@ -1,7 +1,5 @@
 #include "calcError.hpp"
 
-ERROR Error;
-
 const ERROR ERROR::operator=(signed int x) {
   e = x;
   return *this;

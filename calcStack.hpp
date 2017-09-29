@@ -26,14 +26,14 @@ public:
   bool isEmpty() const;
   void beFast(const bool);
   void operator=(const calcStack &);
-  bool increaseSize();
+  void increaseSize();
   bool decreaseSize();
   bool find(const ulong, Type &) const;
   bool get(Type &) const;
   bool pop();
   bool pop(Type &);
-  bool push(const Type);
-  bool push(const Type *, const Type *);
+  void push(const Type);
+  void push(const Type *, const Type *);
   void reset();
   __attribute__((noinline)) void display(std::string before = "",
                                          std::string after = "") const;
@@ -102,7 +102,7 @@ template <typename Type> bool calcStack<Type>::setCapacity(const ulong s) {
     start = temp;
     return 1;
   } catch (const std::bad_alloc &x) {
-    return error(memAlloc);
+    error(memAlloc);
   }
 }
 
@@ -163,23 +163,20 @@ template <typename Type> bool calcStack<Type>::get(Type &y) const {
   return current ? (y = *(current - 1), 1) : 0;
 }
 
-template <typename Type> bool calcStack<Type>::push(const Type y) {
+template <typename Type> void calcStack<Type>::push(const Type y) {
   if (current) {
     if ((ulong)(current - start) == size)
-      if (not this->increaseSize())
-        return 0;
+      this->increaseSize();
     *current = y;
   } else
     *(current = start) = y;
   ++current;
-  return 1;
 }
 
 template <typename Type>
-bool calcStack<Type>::push(const Type *start, const Type *end) {
+void calcStack<Type>::push(const Type *start, const Type *end) {
   while (this->size < end - start)
-    if (not this->increaseSize())
-      return 0;
+    this->increaseSize();
   if (this->current) {
     std::copy(start, end, this->current - 1);
     this->current += end - start;
@@ -187,7 +184,6 @@ bool calcStack<Type>::push(const Type *start, const Type *end) {
     std::copy(start, end, this->start);
     this->current = this->start + (end - start);
   }
-  return 1;
 }
 
 template <typename Type> void calcStack<Type>::reset() { current = 0; }
@@ -197,11 +193,11 @@ template <typename Type> bool calcStack<Type>::decreaseSize() {
     Type *temp;
     if (accelerate) {
       if (rate - 1 > rate)
-        return Error = ERROR::outOfRange, 0;
+        error(outOfRange);
       temp = new Type[size / accelerate];
     } else {
       if (size - rate > size)
-        return Error = ERROR::outOfRange, 0;
+        error(outOfRange);
       temp = new Type[size - rate];
     }
     size = accelerate ? size / --rate : size - rate;
@@ -213,11 +209,11 @@ template <typename Type> bool calcStack<Type>::decreaseSize() {
     start = temp;
     return 1;
   } catch (const std::bad_alloc &x) {
-    return Error = ERROR::memAlloc, 0;
+    error(memAlloc);
   }
 }
 
-template <typename Type> bool calcStack<Type>::increaseSize() {
+template <typename Type> void calcStack<Type>::increaseSize() {
   try {
     Type *temp =
         accelerate ? new Type[(rate + 1) * size] : new Type[rate + size];
@@ -228,9 +224,8 @@ template <typename Type> bool calcStack<Type>::increaseSize() {
     }
     delete[] this->start;
     start = temp;
-    return 1;
   } catch (const std::bad_alloc &x) {
-    return Error = ERROR::memAlloc, 0;
+    error(memAlloc);
   }
 }
 

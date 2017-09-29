@@ -43,18 +43,14 @@ take_input:
 
   add_history(input);
 
-  try {
+  try { // Parsing the input
+    calcParse<float64_t> parser(input);
     parser.startParsing();
-  } catch (ERROR *e) {
-    std::cerr << e->toString() << std::endl;
+    Printf(" = ");
+    Println("%lg", parser.Ans());
+  } catch (ERROR *e) { // Catch any errors
+    std::cerr << std::endl << e->toString() << std::endl;
     delete e;
-  }
-
-  if (Error.isSet()) {
-    printf("\n :-( %s\n", Error.toString());
-    Error.reset();
-  } else {
-    printf(" = %lg\n", parser.Ans());
   }
 
   goto take_input;
