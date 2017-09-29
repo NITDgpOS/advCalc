@@ -130,3 +130,29 @@ void extract(constStr a, str b, ulong i, ulong j, char ch, ulong len) {
     ;
   b[k] = 0;
 }
+
+str trimSpaces(constStr s) {
+  str modStr = new char[strlen(s)];
+  int i = 0, j = 0;
+
+  while (isspace(s[i]))
+    ++i; // Skip the starting spaces. We don't need them.
+
+  while (s[i] != '\0') {
+    modStr[j++] = s[i++]; // Copy normal characters
+
+    if (isspace(s[i])) {
+      modStr[j++] = ' '; // Insert a single space
+
+      while (isspace(s[i]))
+        ++i; // Skip to the next relevant character to be copied
+
+      if (s[i] == '\0') {
+        --j; // Reached the end? Then remove the space
+        break; // No more characters available
+      }
+    }
+  }
+  modStr[j] = '\0'; // Place a NULL to complete the string
+  return modStr;
+}

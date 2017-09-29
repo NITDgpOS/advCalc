@@ -1,7 +1,9 @@
 #ifndef CALC_COMMON_H
 #define CALC_COMMON_H
 
-#include <stdint.h>
+#include <cstdint>
+#include <cstdarg>
+#include <memory>
 
 /* Integer types */
 typedef signed char schar;
@@ -33,5 +35,14 @@ typedef str charPtr;
 #ifndef NULL
 #define NULL 0UL
 #endif
+
+const bool DONT_PRINT = 0;
+extern bool isQuiet;
+#define Printf(...) (isQuiet ? DONT_PRINT : printf(__VA_ARGS__))
+
+#define Println(...) {                          \
+    printf(__VA_ARGS__);                        \
+    printf("\n");                               \
+  }
 
 #endif // CALC_COMMON_H

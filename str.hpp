@@ -30,4 +30,6 @@ extern signed char strToNum(str *a, double &x, datatype d);
 extern signed char separate_ans(constStr a, unsigned long &i, unsigned long &x);
 #endif
 
+extern str trimSpaces(constStr s);
+
 #endif // CALC_STR_H

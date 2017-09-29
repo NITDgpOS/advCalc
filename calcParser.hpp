@@ -155,12 +155,16 @@ template <typename numT> void calcParse<numT>::startParsing() {
   if (this->currentPos == NULL)
     this->currentPos = this->input;
 
+  if (*this->currentPos == '#')
+    error(noError);
+
   while (*this->currentPos && *this->currentPos != end) {
 
     skipSpace(this->currentPos);
 
-    if (*this->currentPos == '#') // A comment
+    if (*this->currentPos == '#') {
       break;
+    }
 
     if (this->isOpenBracket()) {
       this->gotOpenBracket();
