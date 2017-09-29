@@ -70,13 +70,13 @@ private:
 public:
   Operator();
   explicit Operator(optr_hash);
-  explicit Operator(constStr );
+  explicit Operator(constStr);
   Operator(const Operator &);
   bool isUnary() const;
   constStr toString() const;
   uint8_t checkPriority(const Operator) const;
   uint8_t parse(str &);
-  bool setFromString(constStr );
+  bool setFromString(constStr);
   bool isBracket();
   void operator=(const Operator &);
   bool operator==(const Operator::optrHash) const;
@@ -88,7 +88,7 @@ public:
   std::ostream &operator<<(std::ostream &out) const {
     return (out << this->toString());
   }
-  operator constStr () { return this->toString(); }
+  operator constStr() { return this->toString(); }
   operator int64_t() { return this->op; }
   operator optr_hash() { return this->op; }
   operator uint8_t() { return priority; }

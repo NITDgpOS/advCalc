@@ -34,7 +34,7 @@ constStr ERROR::toString() const {
   case parseError:
     return "Unable to parse expression";
   case invalidAns:
-    return "Inavlid Answer";
+    return "Invalid Answer";
   case invalidCmd:
     return "Invalid command";
   default:
