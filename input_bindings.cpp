@@ -33,7 +33,7 @@ static int rubout_pressed(int x, int input_char) {
     long i = 0, j = 0, k;
 
     for (; rl_line_buffer[i] == SPACE; ++i) {
-      /* counting spaces */;
+      /* counting spaces */
     }
 
     if (i != 0) {

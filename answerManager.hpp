@@ -56,7 +56,7 @@ public:
   // Check if there are any answers
   bool isEmpty() const { return !this->numOfAns; }
   void toggleAutoDelete();
-  void parseAns(str &, Type &) const;
+  void parseAns(constStr &, Type &) const;
   void getAns(Type &, ulong pos = 0) const;
   void display() const;
   void push(const Type);
@@ -171,10 +171,10 @@ template <typename Type> void answerManager<Type>::toggleAutoDelete() {
 }
 
 template <typename Type>
-void answerManager<Type>::parseAns(str &s, Type &x) const {
+void answerManager<Type>::parseAns(constStr &s, Type &x) const {
   if (*s != 'a')
     error(parseError);
-  str c = s + 1;
+  constStr c = s + 1;
   ulong y = 0;
   while (*c > 47 && *c < 58) {
     if (y > (ULONG_MAX - *c + 48) / 10)

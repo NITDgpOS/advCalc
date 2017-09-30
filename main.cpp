@@ -21,6 +21,27 @@ constStr welcomeMessage = {
 };
 
 
+
+inline void execute(constStr input) {
+  try { // Parsing the input
+    calcParse<float64_t> parser(input);
+    parser.startParsing();
+    Printf(" = ");
+    println("%lg", parser.Ans());
+  } catch (ERROR *e) { // Catch any errors
+    if (e->isSet()) {
+      if (not isQuiet)
+        std::cerr << std::endl;
+      std::cerr << "Error: " << e->toString();
+    }
+    if (e->isSet() || not isQuiet)
+      std::cerr << std::endl;
+    delete e;
+  }
+}
+
+
+
 int main(int argc, str argv[]) {
 
   makeOperatorHashes();
@@ -46,23 +67,16 @@ int main(int argc, str argv[]) {
         char in[32768];
         while (not f.eof()) {
           f.getline(in, 32768);
-          str input = trimSpaces(in);
+          constStr input = trimSpaces(in);
           if (input[0] != '\0') {
-            try { // Parsing the line
-              calcParse<float64_t> parser(input);
-              parser.startParsing();
-              Printf(">> %s = ", input);
-              Println("%lg", parser.Ans());
-            } catch (ERROR *e) { // Catch any errors
-              std::cerr << e->toString() << std::endl;
-              delete e;
-            }
+            Printf(">> %s", input);
+            execute(input);
           }
           delete input;
         }
         f.close();
       } else {
-        Println("'%s': is not a file", optarg);
+        println("'%s': is not a file", optarg);
         exit(-1);
       }
       break;
@@ -89,32 +103,15 @@ int main(int argc, str argv[]) {
 
   // Quit if there is an EOF or "exit" as an input
   if (!input || !strcmp(input, "exit")) {
-    Printf("exit\nGood bye!\nHave a nice Day");
+    Printf("\nGood bye!\nHave a nice Day");
     Println("");
     exit(0);
   }
 
-  // Do nothing if its a comment. Instead loop again.
-  //if (input[0] == '#') {
-  //Println("");
-  //goto take_input;
-  //}
-
   // Add to GNU Readline history to access it using up arrow and C-r
   add_history(input);
 
-  try { // Parsing the input
-    calcParse<float64_t> parser(input);
-    parser.startParsing();
-    Printf(" = ");
-    Println("%lg", parser.Ans());
-  } catch (ERROR *e) { // Catch any errors
-    if (e->isSet()) {
-      std::cerr << std::endl << e->toString();
-    }
-    std::cerr << std::endl;
-    delete e;
-  }
+  execute(input);
 
   goto take_input;
 }

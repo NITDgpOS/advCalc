@@ -77,9 +77,9 @@ bool isidentifier(constStr s) {
   return *s ? 0 : 1;
 }
 
-uint64_t strToNum(str *a, double &x, datatype d) {
+uint64_t strToNum(constStr *a, double &x, datatype d) {
   bool sign = 0;
-  str c = *a, s = *a;
+  constStr c = *a, s = *a;
   // check for a negative sign
   if (*c == '-') {
     if (d == REAL || d == INT)

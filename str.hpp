@@ -8,7 +8,7 @@ inline void skipSpace(constStr s, ulong &i) {
   isspace(s[i]) ? ++i : i;
 }
 
-inline void skipSpace(str &s) {
+inline void skipSpace(constStr &s) {
   isspace(*s) ? ++s : s;
 }
 
@@ -24,7 +24,7 @@ extern char* strncat(str s1, constStr s2, uint64_t l);
 
 extern bool isidentifier(constStr s);
 
-extern signed char strToNum(str *a, double &x, datatype d);
+extern signed char strToNum(constStr *a, double &x, datatype d);
 
 #ifdef ANS_CMD
 extern signed char separate_ans(constStr a, unsigned long &i, unsigned long &x);

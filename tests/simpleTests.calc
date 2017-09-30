@@ -1,2 +1,6 @@
-   3   +   2
-a1-2
+# This is a comment
+a1 - 2     # Should produce an error
+9 + 2      # Add two numbers
+3  *  a1   # Answer will work now
+a1 log 32  # Checking "log"
+sin 30     # Unary operator check

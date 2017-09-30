@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <cstdarg>
 #include <memory>
+#include <iostream>
 
 /* Integer types */
 typedef signed char schar;
@@ -38,11 +39,17 @@ typedef str charPtr;
 
 const bool DONT_PRINT = 0;
 extern bool isQuiet;
+
 #define Printf(...) (isQuiet ? DONT_PRINT : printf(__VA_ARGS__))
 
-#define Println(...) {                          \
+#define Println(...) {                                      \
+    Printf(__VA_ARGS__);                                    \
+    isQuiet ? DONT_PRINT : bool(std::cout << std::endl);    \
+  }
+
+#define println(...) {                          \
     printf(__VA_ARGS__);                        \
-    printf("\n");                               \
+    std::cout << std::endl;                     \
   }
 
 #endif // CALC_COMMON_H

@@ -75,7 +75,7 @@ public:
   bool isUnary() const;
   constStr toString() const;
   uint8_t checkPriority(const Operator) const;
-  uint8_t parse(str &);
+  uint8_t parse(constStr &);
   bool setFromString(constStr);
   bool isBracket();
   void operator=(const Operator &);

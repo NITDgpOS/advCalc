@@ -6,12 +6,14 @@ uint8_t angle_type = DEG;
 
 static const char bin_ops[22][4] = {
     "+", "-", "*",  "/",  "^",  "|",  "&", "P",   "C",  ">>", "<<",
-    "<", ">", ">=", "<=", "==", "!=", "%", "log", "&&", "||", ""};
+    "<", ">", ">=", "<=", "==", "!=", "%", "log", "&&", "||", ""
+};
 
 static const char un_ops[22][7] = {
     "~",      "!",     "ln",   "abs",   "cos",  "sin",  "tan",    "acos",
     "asin",   "atan",  "sec",  "cosec", "cot",  "asec", "acosec", "acot",
-    "logten", "floor", "sinh", "cosh",  "tanh", "ceil"};
+    "logten", "floor", "sinh", "cosh",  "tanh", "ceil"
+};
 
 static optr_hash bin_ops_hash[22] = {0};
 static optr_hash un_ops_hash[22] = {0};
@@ -196,7 +198,7 @@ bool Operator::setOperatorProperties() {
 }
 
 // Parse the given string and return zero on error
-uint8_t Operator::parse(str &start) {
+uint8_t Operator::parse(constStr &start) {
   uint8_t charsRead = 0;
   str_hash hash = 0;
   Operator optr;
