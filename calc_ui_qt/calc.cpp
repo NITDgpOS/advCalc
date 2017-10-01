@@ -264,20 +264,20 @@ void CalcUi::on_buttonTanh_clicked()
 }
 
 void CalcUi::on_buttonCalculate_clicked() {
-  constStr input = lineEditInput->text().toStdString().c_str();
-  QString msg = textEditOutput->toPlainText() + QString(input) + " ";
+  QString input = lineEditInput->text();
+  std::string in = input.toStdString();
+  QString msg = textEditOutput->toPlainText() + input + " ";
   try { // Parsing the input
-    //textEditOutput->setText(textEditOutput->toPlainText() + input);
-    calcParse<float64_t> parser(input);
+    calcParse<float64_t> parser(in.c_str());
     parser.startParsing();
     char ans[30];
     sprintf(ans, "%lg", parser.Ans());
-    std::cerr << input << "=" << parser.Ans() << std::endl;
+    qDebug() << input << "=" << parser.Ans();
     msg = msg + "= " + ans;
   } catch (ERROR *e) { // Catch any errors
     if (e->isSet()) {
       QString err = "Error: ";
-      std::cerr << "Error: " << e->toString() << std::endl;
+      qDebug() << input << "Error: " << e->toString();
       msg = msg + err + e->toString();
     }
     delete e;
