@@ -5,14 +5,14 @@
 uint8_t angle_type = DEG;
 
 static const char bin_ops[22][4] = {
-    "+", "-", "*",  "/",  "^",  "|",  "&", "P",   "C",  ">>", "<<",
-    "<", ">", ">=", "<=", "==", "!=", "%", "log", "&&", "||", ""
+  "+", "-", "*",  "/",  "^",  "|",  "&", "P",   "C",  ">>", "<<",
+  "<", ">", ">=", "<=", "==", "!=", "%", "log", "&&", "||", ""
 };
 
 static const char un_ops[22][7] = {
-    "~",      "!",     "ln",   "abs",   "cos",  "sin",  "tan",    "acos",
-    "asin",   "atan",  "sec",  "cosec", "cot",  "asec", "acosec", "acot",
-    "logten", "floor", "sinh", "cosh",  "tanh", "ceil"
+  "~",      "!",     "ln",   "abs",   "cos",  "sin",  "tan",    "acos",
+  "asin",   "atan",  "sec",  "cosec", "cot",  "asec", "acosec", "acot",
+  "logten", "floor", "sinh", "cosh",  "tanh", "ceil"
 };
 
 static optr_hash bin_ops_hash[22] = {0};
@@ -43,8 +43,8 @@ Operator::Operator(const Operator &x) {
   this->setOperatorProperties();
   if (x.isBinary != this->isBinary || x.priority != this->priority)
     throw "Operator error caught\n"
-          "Unable to Operator::setOperatorProperties\n"
-          "Operators don't match" FILE "\n";
+      "Unable to Operator::setOperatorProperties\n"
+      "Operators don't match" FILE "\n";
 #else
   this->isBinary = x.isBinary;
   this->priority = x.priority;
@@ -65,8 +65,8 @@ void Operator::operator=(const Operator &x) {
   this->setOperatorProperties();
   if (x.isBinary != this->isBinary || x.priority != this->priority)
     throw "Operator error caught\n"
-          "Unable to Operator::setOperatorProperties\n"
-          "Operators don't match" FILE "\n";
+      "Unable to Operator::setOperatorProperties\n"
+      "Operators don't match" FILE "\n";
 #else
   this->isBinary = x.isBinary;
   this->priority = x.priority;
@@ -378,7 +378,7 @@ bool Operator::setFromString(constStr x) {
 
 bool Operator::isBracket() {
   return this->op == Operator::H_closeBracket ||
-         this->op == Operator::H_openBracket;
+    this->op == Operator::H_openBracket;
 }
 
 bool Operator::operator==(const Operator::optrHash x) const {
