@@ -100,7 +100,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Clear</string>
+            <string>&amp;Clear</string>
            </property>
           </widget>
          </item>
@@ -110,7 +110,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Delete</string>
+            <string>&amp;Delete</string>
            </property>
           </widget>
          </item>
@@ -142,7 +142,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Quit</string>
+            <string>&amp;Quit</string>
            </property>
            <property name="checkable">
             <bool>false</bool>
@@ -170,7 +170,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Configure</string>
+            <string>C&amp;onfigure</string>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -378,10 +378,13 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Constant Name</string>
+            <string>Constant &amp;Name</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
+           </property>
+           <property name="buddy">
+            <cstring>lineEditConstantName</cstring>
            </property>
           </widget>
          </item>
@@ -423,10 +426,13 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Constant Value</string>
+            <string>Constant &amp;Value</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
+           </property>
+           <property name="buddy">
+            <cstring>lineEditConstantValue</cstring>
            </property>
           </widget>
          </item>
@@ -487,7 +493,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Remove</string>
+            <string>&amp;Remove</string>
            </property>
           </widget>
          </item>
@@ -3176,6 +3182,38 @@
     <hint type="destinationlabel">
      <x>261</x>
      <y>306</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEditConstantName</sender>
+   <signal>returnPressed()</signal>
+   <receiver>buttonAddConstant</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>740</x>
+     <y>212</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>585</x>
+     <y>279</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEditConstantValue</sender>
+   <signal>returnPressed()</signal>
+   <receiver>buttonAddConstant</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>722</x>
+     <y>257</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>597</x>
+     <y>279</y>
     </hint>
    </hints>
   </connection>
