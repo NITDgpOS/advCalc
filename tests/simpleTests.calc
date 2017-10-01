@@ -4,3 +4,9 @@ a1 - 2     # Should produce an error
 3  *  a1   # Answer will work now
 a1 log 32  # Checking "log"
 sin 30     # Unary operator check
+-3         # Answer is -3
+--3        # Answer is 3
++3         # 3
+---3       # -3
++--3       # 3
+-+3        # -3
