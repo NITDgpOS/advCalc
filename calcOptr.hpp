@@ -255,12 +255,12 @@ void operatorManager<numType>::calculate(const Operator &top) {
   else if (top == Operator::H_floor)
     ans = floorl(y);
   else if (top == Operator::H_ln) {
-    if (x > 0)
+    if (y > 0)
       ans = logl(y);
     else
       error(rangUndef);
   } else if (top == Operator::H_logten) {
-    if (x > 0)
+    if (y > 0)
       ans = log10l(y);
     else
       error(rangUndef);
