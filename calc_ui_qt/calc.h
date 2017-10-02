@@ -1,7 +1,7 @@
 #ifndef CALC_UI_H
 #define CALC_UI_H
 
-#include <QtWidgets/QDialog>
+#include <QDialog>
 
 #include "ui_calc.h"
 
@@ -14,7 +14,9 @@ private:
   void setLineEditInput(QString s)
   {
     int t = lineEditInput->cursorPosition();
-    lineEditInput->setText(lineEditInput->text().left(t) + s + lineEditInput->text().right(lineEditInput->text().length() - t));
+    lineEditInput->
+      setText(lineEditInput->text().left(t) + s +
+              lineEditInput->text().right(lineEditInput->text().length() - t));
     lineEditInput->setCursorPosition(t + s.length());
   }
 

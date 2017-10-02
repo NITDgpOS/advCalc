@@ -1,6 +1,7 @@
 TEMPLATE = app
 TARGET = calc_ui_qt
 INCLUDEPATH += .
+QT += widgets
 
 # Input
 HEADERS += calc.h ../common.hpp ../calcOptr.hpp ../str.hpp ../calcError.hpp ui_calc.h
