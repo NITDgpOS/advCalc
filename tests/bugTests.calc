@@ -1,0 +1,11 @@
+-3                     # Answer is -3
+--3                    # Not to work
++3                     # Answer is 3
+---3                   # Not to work
++--3                   # Not to work
+-+3                    # Not to work
+-3 + -2                # Works
+-3 +- -2               # Doesn't work
+ln 2.71                # Checking ln
+3.1 log 3.1            # Checking log
+logten 100             #Checking log base 10

@@ -6,6 +6,8 @@ CFLAGS = -std=c++14
 
 TESTS_FILE = tests/simpleTests.calc
 
+BUGS_FILE = tests/bugTests.calc
+
 PREFIX = /usr/local
 
 .PHONY: clean all cleanall install tests
@@ -28,3 +30,4 @@ install: $(TARGET)
 
 tests: $(TARGET)
 	./$(TARGET) -f $(TESTS_FILE)
+	./$(TARGET) -f $(BUGS_FILE)
