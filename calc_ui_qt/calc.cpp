@@ -16,8 +16,11 @@ CalcUi::CalcUi(QWidget *parent)
 
   lineEditInput->setHidden(false);
   keyCheckBox->setHidden(true);
+  configureLayoutWidget->setHidden(true);
 
-  textEditOutput->setMaximumWidth(1000);
+  textBrowserOutput->setMinimumWidth(500);
+  textBrowserOutput->setMinimumHeight(325);
+  textBrowserOutput->setMaximumHeight(325);
 
   layout()->setSizeConstraint(QLayout::SetFixedSize);
 
@@ -27,11 +30,56 @@ CalcUi::CalcUi(QWidget *parent)
   lineEditInput->setFocus();
 }
 
+void CalcUi::on_buttonCalculate_clicked() {
+  QString input = lineEditInput->text();
+  std::string in = input.toStdString();
+  QString msg = textBrowserOutput->toPlainText() + input + " ";
+  try { // Parsing the input
+    calcParse<float64_t> parser(in.c_str());
+    parser.startParsing();
+    char ans[30];
+    sprintf(ans, "%lg", parser.Ans());
+    qDebug() << input << "=" << parser.Ans();
+    msg = msg + "= " + ans;
+  } catch (ERROR *e) { // Catch any errors
+    if (e->isSet()) {
+      QString err = "Error: ";
+      qDebug() << input << "Error: " << e->toString();
+      msg = msg + err + e->toString();
+    }
+    delete e;
+  }
+  msg = msg + "\n";
+  textBrowserOutput->setText(msg);
+  lineEditInput->clear();
+}
+
 void CalcUi::on_lineEditInput_textChanged()
 {
-  buttonClear->setEnabled(!lineEditInput->text().isEmpty());
-  buttonDelete->setEnabled(!lineEditInput->text().isEmpty());
-  buttonCalculate->setEnabled(!lineEditInput->text().isEmpty());
+  QString input = lineEditInput->text();
+  buttonClear->setEnabled(!input.isEmpty());
+  buttonDelete->setEnabled(!input.isEmpty());
+  buttonCalculate->setEnabled(!input.isEmpty());
+  QString msg;
+  if (not input.isEmpty()) {
+    std::string in = input.toStdString();
+    try {
+      calcParse<float64_t> parser(in.c_str());
+      parser.startParsing();
+      char ans[30];
+      sprintf(ans, "%lg", parser.Ans());
+      msg = ans;
+    } catch (ERROR *e) {
+      if (e->isSet()) {
+        QString err = "Error: ";
+        msg = err + e->toString();
+      }
+      delete e;
+    }
+  } else {
+    msg = "Enter an expression";
+  }
+  outputDisplayLabel->setText(msg);
 }
 
 void CalcUi::on_lineEditConstantName_textChanged()
@@ -163,9 +211,9 @@ void CalcUi::on_buttonPow_clicked()
   setLineEditInput("^");
 }
 
-void CalcUi::on_buttonMod_clicked()
+void CalcUi::on_buttonDot_clicked()
 {
-  setLineEditInput("%");
+  setLineEditInput(".");
 }
 
 void CalcUi::on_buttonOpenBracket_clicked()
@@ -176,11 +224,6 @@ void CalcUi::on_buttonOpenBracket_clicked()
 void CalcUi::on_buttonCloseBracket_clicked()
 {
   setLineEditInput(")");
-}
-
-void CalcUi::on_buttonSum_clicked()
-{
-  setLineEditInput("sum");
 }
 
 void CalcUi::on_buttonSpace_clicked()
@@ -263,25 +306,12 @@ void CalcUi::on_buttonTanh_clicked()
   setLineEditInput("tanh");
 }
 
-void CalcUi::on_buttonCalculate_clicked() {
-  QString input = lineEditInput->text();
-  std::string in = input.toStdString();
-  QString msg = textEditOutput->toPlainText() + input + " ";
-  try { // Parsing the input
-    calcParse<float64_t> parser(in.c_str());
-    parser.startParsing();
-    char ans[30];
-    sprintf(ans, "%lg", parser.Ans());
-    qDebug() << input << "=" << parser.Ans();
-    msg = msg + "= " + ans;
-  } catch (ERROR *e) { // Catch any errors
-    if (e->isSet()) {
-      QString err = "Error: ";
-      qDebug() << input << "Error: " << e->toString();
-      msg = msg + err + e->toString();
-    }
-    delete e;
-  }
-  msg = msg + "\n";
-  textEditOutput->setText(msg);
+void CalcUi::on_buttonAmp_clicked()
+{
+  setLineEditInput("&");
+}
+
+void CalcUi::on_buttonPipe_clicked()
+{
+  setLineEditInput("|");
 }

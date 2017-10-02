@@ -44,10 +44,11 @@ private slots:
   void on_buttonMultiply_clicked();
   void on_buttonDivide_clicked();
   void on_buttonPow_clicked();
-  void on_buttonMod_clicked();
+  void on_buttonDot_clicked();
   void on_buttonOpenBracket_clicked();
   void on_buttonCloseBracket_clicked();
-  void on_buttonSum_clicked();
+  void on_buttonAmp_clicked();
+  void on_buttonPipe_clicked();
   void on_buttonSpace_clicked();
   void on_buttonSin_clicked();
   void on_buttonCos_clicked();
