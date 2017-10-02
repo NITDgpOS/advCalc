@@ -1,4 +1,4 @@
-#include <QApplication>
+#include <QtWidgets/QApplication>
 #include "calc.h"
 #include "../calcOptr.hpp"
 

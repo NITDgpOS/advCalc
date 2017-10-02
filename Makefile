@@ -1,16 +1,20 @@
 TARGET = calc
+QT_TARGET = calc_qt
 
 LIBS = -lreadline
-
 CFLAGS = -std=c++14
 
 TESTS_FILE = tests/simpleTests.calc
-
 BUGS_FILE = tests/bugTests.calc
 
 PREFIX = /usr/local
 
-.PHONY: clean all cleanall install tests
+LIBOBJ = str.o calcError.o calcOptr.o
+OBJECTS = $(LIBOBJ) input_bindings.o main.o
+
+RM = rm -f
+
+.PHONY: clean all cleanall install tests lib all_gui
 all: calc
 
 $(TARGET): main.o calcOptr.o input_bindings.o calcError.o str.o
@@ -20,10 +24,13 @@ $(TARGET): main.o calcOptr.o input_bindings.o calcError.o str.o
 	$(CXX) -c $(CFLAGS) $(CXXFLAGS) $<
 
 clean:
-	$(RM) *.o
+	-$(RM) *.o
+	-cd calc_ui_qt && make clean
 
 cleanall:
-	$(RM) calc *.o
+	-$(RM) $(TARGET) $(QT_TARGET) *.o *.gch
+	-cd calc_ui_qt && make clean
+	-cd calc_ui_qt && $(RM) Makefile calc_ui_qt *.gch *.o
 
 install: $(TARGET)
 	cp $(TARGET) $(PREFIX)/bin
@@ -31,3 +38,9 @@ install: $(TARGET)
 tests: $(TARGET)
 	./$(TARGET) -f $(TESTS_FILE)
 	./$(TARGET) -f $(BUGS_FILE)
+
+all_gui: $(QT_TARGET)
+
+$(QT_TARGET): calc_ui_qt/
+	-cd calc_ui_qt && qmake calc_ui_qt.pro && make
+	-cp calc_ui_qt/calc_ui_qt ./$(QT_TARGET)

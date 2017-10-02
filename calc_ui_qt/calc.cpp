@@ -65,6 +65,7 @@ void CalcUi::on_lineEditInput_textChanged()
     std::string in = input.toStdString();
     try {
       calcParse<float64_t> parser(in.c_str());
+      parser.storeAnswers = false;
       parser.startParsing();
       char ans[30];
       sprintf(ans, "%lg", parser.Ans());
@@ -84,16 +85,14 @@ void CalcUi::on_lineEditInput_textChanged()
 
 void CalcUi::on_lineEditConstantName_textChanged()
 {
-  buttonAddConstant->setEnabled(
-                                lineEditConstantName->hasAcceptableInput() &&
+  buttonAddConstant->setEnabled(lineEditConstantName->hasAcceptableInput() &&
                                 !lineEditConstantValue->text().isEmpty());
   buttonRemoveConstant->setEnabled(lineEditConstantName->hasAcceptableInput());
 }
 
 void CalcUi::on_lineEditConstantValue_textChanged()
 {
-  buttonAddConstant->setEnabled(
-                                lineEditConstantName->hasAcceptableInput() &&
+  buttonAddConstant->setEnabled(lineEditConstantName->hasAcceptableInput() &&
                                 !lineEditConstantValue->text().isEmpty());
 }
 

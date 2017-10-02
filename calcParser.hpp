@@ -53,15 +53,17 @@ template <typename numT> class calcParse {
   }
 
 public:
+  bool storeAnswers;
+
   calcParse()
       : input(NULL), currentPos(NULL), ans(0), end(0), running(false),
-        over(false), prevToken(ClearField) {}
+        over(false), prevToken(ClearField), storeAnswers(true) {}
   explicit calcParse(constStr inp)
       : input(inp), currentPos(NULL), ans(0), end(0), running(false),
-        over(false), prevToken(ClearField) {}
+        over(false), prevToken(ClearField), storeAnswers(true) {}
   calcParse(str inp, str start)
       : input(inp), currentPos(start), ans(0), end(0), running(false),
-        over(false), prevToken(ClearField) {}
+        over(false), prevToken(ClearField), storeAnswers(true) {}
   calcParse(const calcParse &x) { *this = x; }
   bool isParsing() { return running; }
   bool isOver() { return over; }
@@ -180,7 +182,7 @@ template <typename numT> void calcParse<numT>::startParsing() {
 
   optr.finishCalculation();
 
-  if (optr.ans(this->ans)) {
+  if (optr.ans(this->ans) && this->storeAnswers == true) {
     answers.push(this->ans);
   }
 
