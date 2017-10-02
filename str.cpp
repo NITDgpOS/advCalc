@@ -80,18 +80,23 @@ bool isidentifier(constStr s) {
 uint64_t strToNum(constStr *a, double &x, datatype d) {
   bool sign = 0;
   constStr c = *a, s = *a;
-  // check for a negative sign
-  if (*c == '-') {
-    if (d == REAL || d == INT)
-      sign = 1;
-    else
-      // for unsigned numbers
-      return 0;
+  bool flag = 0;
+  if (*c == '+' || *c == '-') {
+    if (*c == '-') {
+      if (d == REAL || d == INT)
+        sign = 1;
+      else
+        // for unsigned numbers
+        return 0;
+    }
     ++c;
   }
-  while (isdigit(*c))
-    // Integral part
-    x = x * 10 + *(c++) - 48;
+  if (isdigit(*c)) {
+    // Integral Part
+    while (isdigit(*c))
+      x = x * 10 + *(c++) - 48;
+    flag = 1;
+  }
   if (*c == '.' && isdigit(c[1])) {
     // Fraction part
     if (d != REAL && d != UREAL)
@@ -99,12 +104,14 @@ uint64_t strToNum(constStr *a, double &x, datatype d) {
     slong j = 0;
     while (*(++c) > 47 && *c < 58) // isdigit
       x = x + powl(10, --j) * (*c - 48);
+    flag = 1;
   }
-  if ((*c == '.' && !isdigit(c[1])) || s == c)
+  //  if ((*c == '.' && !isdigit(c[1])) || s == c)
+    //    return 0;
+  if (not flag)
     return 0;
   *a = c;
-  if (sign == 1)
-    x = -x;
+  x = sign ? -x : x;
   return c - s; // The length that was converted
 }
 
