@@ -18,9 +18,9 @@ CalcUi::CalcUi(QWidget *parent)
   keyCheckBox->setHidden(true);
   configureLayoutWidget->setHidden(true);
 
-  textBrowserOutput->setMinimumWidth(500);
-  textBrowserOutput->setMinimumHeight(325);
-  textBrowserOutput->setMaximumHeight(325);
+  outputTable->setMinimumWidth(500);
+  outputTable->setMinimumHeight(325);
+  outputTable->setMaximumHeight(325);
 
   layout()->setSizeConstraint(QLayout::SetFixedSize);
 
@@ -31,38 +31,42 @@ CalcUi::CalcUi(QWidget *parent)
 }
 
 void CalcUi::on_buttonCalculate_clicked() {
-  QString input = lineEditInput->text();
-  std::string in = input.toStdString();
-  QString msg = textBrowserOutput->toPlainText() + input + " ";
-  try { // Parsing the input
+  QString expression = lineEditInput->text();
+  std::string in = expression.toStdString();
+  QString answer;
+  try { // Parsing the expression
     calcParse<float64_t> parser(in.c_str());
     parser.startParsing();
     char ans[30];
     sprintf(ans, "%lg", parser.Ans());
-    qDebug() << input << "=" << parser.Ans();
-    msg = msg + "= " + ans;
+    qDebug() << expression << "=" << parser.Ans();
+    answer = ans;
   } catch (ERROR *e) { // Catch any errors
     if (e->isSet()) {
       QString err = "Error: ";
-      qDebug() << input << "Error: " << e->toString();
-      msg = msg + err + e->toString();
+      qDebug() << expression << "Error: " << e->toString();
+      answer = err + e->toString();
     }
     delete e;
   }
-  msg = msg + "\n";
-  textBrowserOutput->setText(msg);
+  int currentRow = outputTable->rowCount();
+  outputTable->insertRow(currentRow);
+  outputTable->setItem(currentRow, 0,
+                       new QTableWidgetItem(expression));
+  outputTable->setItem(currentRow, 1,
+                       new QTableWidgetItem(answer));
   lineEditInput->clear();
 }
 
 void CalcUi::on_lineEditInput_textChanged()
 {
-  QString input = lineEditInput->text();
-  buttonClear->setEnabled(!input.isEmpty());
-  buttonDelete->setEnabled(!input.isEmpty());
-  buttonCalculate->setEnabled(!input.isEmpty());
+  QString expression = lineEditInput->text();
+  buttonClear->setEnabled(!expression.isEmpty());
+  buttonDelete->setEnabled(!expression.isEmpty());
+  buttonCalculate->setEnabled(!expression.isEmpty());
   QString msg;
-  if (not input.isEmpty()) {
-    std::string in = input.toStdString();
+  if (not expression.isEmpty()) {
+    std::string in = expression.toStdString();
     try {
       calcParse<float64_t> parser(in.c_str());
       parser.storeAnswers = false;

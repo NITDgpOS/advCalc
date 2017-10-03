@@ -42,7 +42,18 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QTextBrowser" name="textBrowserOutput"/>
+          <widget class="QTableWidget" name="outputTable">
+           <column>
+            <property name="text">
+             <string>Expression</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Answer</string>
+            </property>
+           </column>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="outputDisplayLabel">
