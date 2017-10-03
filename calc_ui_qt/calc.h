@@ -10,7 +10,8 @@ class CalcUi : public QDialog, public Ui::CalcUi
   Q_OBJECT
 
 private:
-  bool buttonOF_checked;
+  // Don't use lineEditInput->setText to insert text
+  // Use this function instead
   void setLineEditInput(QString s)
   {
     int t = lineEditInput->cursorPosition();
@@ -27,8 +28,8 @@ private slots:
   void on_lineEditInput_textChanged();
   void on_lineEditConstantName_textChanged();
   void on_lineEditConstantValue_textChanged();
-  void on_keyCheckBox_toggled(bool checked);
-  void on_buttonOtherFunctions_clicked();
+  void on_keyCheckBox_toggled(bool);
+  void on_buttonOtherFunctions_toggled(bool);
   void on_buttonDelete_clicked();
   void on_comboBox_activated(const QString &arg1);
   void on_button1_clicked();
@@ -68,6 +69,7 @@ private slots:
   void on_buttonCosh_clicked();
   void on_buttonTanh_clicked();
   void on_buttonCalculate_clicked();
+  void on_outputTable_itemPressed(QTableWidgetItem *);
 };
 
 #endif

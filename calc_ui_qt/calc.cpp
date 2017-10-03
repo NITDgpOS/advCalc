@@ -12,8 +12,6 @@ CalcUi::CalcUi(QWidget *parent)
 
   buttonConfigure->toggle();
 
-  buttonOF_checked = buttonOtherFunctions->isChecked();
-
   lineEditInput->setHidden(false);
   keyCheckBox->setHidden(true);
   configureLayoutWidget->setHidden(true);
@@ -32,30 +30,30 @@ CalcUi::CalcUi(QWidget *parent)
 
 void CalcUi::on_buttonCalculate_clicked() {
   QString expression = lineEditInput->text();
-  std::string in = expression.toStdString();
-  QString answer;
   try { // Parsing the expression
+    std::string in = expression.toStdString();
+    QString answer;
     calcParse<float64_t> parser(in.c_str());
     parser.startParsing();
     char ans[30];
     sprintf(ans, "%lg", parser.Ans());
     qDebug() << expression << "=" << parser.Ans();
     answer = ans;
+    int currentRow = outputTable->rowCount();
+    QTableWidgetItem *expressionItem = new QTableWidgetItem(expression);
+    QTableWidgetItem *answerItem = new QTableWidgetItem(answer);
+    expressionItem->setFlags(Qt::ItemIsEnabled);
+    answerItem->setFlags(Qt::ItemIsEnabled);
+    outputTable->insertRow(currentRow);
+    outputTable->setItem(currentRow, 0, expressionItem);
+    outputTable->setItem(currentRow, 1, answerItem);
+    lineEditInput->clear();
   } catch (ERROR *e) { // Catch any errors
     if (e->isSet()) {
-      QString err = "Error: ";
       qDebug() << expression << "Error: " << e->toString();
-      answer = err + e->toString();
+      delete e;
     }
-    delete e;
   }
-  int currentRow = outputTable->rowCount();
-  outputTable->insertRow(currentRow);
-  outputTable->setItem(currentRow, 0,
-                       new QTableWidgetItem(expression));
-  outputTable->setItem(currentRow, 1,
-                       new QTableWidgetItem(answer));
-  lineEditInput->clear();
 }
 
 void CalcUi::on_lineEditInput_textChanged()
@@ -102,15 +100,53 @@ void CalcUi::on_lineEditConstantValue_textChanged()
 
 void CalcUi::on_keyCheckBox_toggled(bool checked)
 {
-  if (checked)
-    buttonOtherFunctions->setChecked(not checked);
-  else
-    buttonOtherFunctions->setChecked(buttonOF_checked);
+  buttonOtherFunctions->setChecked(not checked);
+  buttonOtherFunctions->setHidden(checked);
+  button1->setHidden(checked);
+  button2->setHidden(checked);
+  button3->setHidden(checked);
+  button4->setHidden(checked);
+  button5->setHidden(checked);
+  button6->setHidden(checked);
+  button7->setHidden(checked);
+  button8->setHidden(checked);
+  button9->setHidden(checked);
+  button0->setHidden(checked);
+  buttonCloseBracket->setHidden(checked);
+  buttonOpenBracket->setHidden(checked);
+  buttonPlus->setHidden(checked);
+  buttonMinus->setHidden(checked);
+  buttonMultiply->setHidden(checked);
+  buttonDivide->setHidden(checked);
+  buttonPow->setHidden(checked);
+  buttonDot->setHidden(checked);
+  buttonLn->setHidden(checked);
+  buttonFact->setHidden(checked);
+  buttonSpace->setHidden(checked);
+  button3->setHidden(checked);
+  buttonClear->setHidden(checked);
+  buttonDelete->setHidden(checked);
+  buttonCalculate->setHidden(checked);
+  keyboardLine->setHidden(checked);
 }
 
-void CalcUi::on_buttonOtherFunctions_clicked()
+void CalcUi::on_buttonOtherFunctions_toggled(bool checked)
 {
-  buttonOF_checked = buttonOtherFunctions->isChecked();
+  buttonSin->setVisible(checked);
+  buttonCos->setVisible(checked);
+  buttonTan->setVisible(checked);
+  buttonAsin->setVisible(checked);
+  buttonAcos->setVisible(checked);
+  buttonAtan->setVisible(checked);
+  buttonAmp->setVisible(checked);
+  buttonLog->setVisible(checked);
+  buttonLog10->setVisible(checked);
+  buttonPipe->setVisible(checked);
+  buttonP->setVisible(checked);
+  buttonC->setVisible(checked);
+  buttonSinh->setVisible(checked);
+  buttonCosh->setVisible(checked);
+  buttonTanh->setVisible(checked);
 }
 
 void CalcUi::on_comboBox_activated(const QString &arg1)
@@ -130,6 +166,7 @@ void CalcUi::on_comboBox_activated(const QString &arg1)
       lineEditInput->setReadOnly(false);
       keyCheckBox->setChecked(false);
     }
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonDelete_clicked()
@@ -137,184 +174,228 @@ void CalcUi::on_buttonDelete_clicked()
   int t = lineEditInput->cursorPosition();
   lineEditInput->setText(lineEditInput->text().left(t ? t - 1 : 0) + lineEditInput->text().right(lineEditInput->text().length() - t));
   lineEditInput->setCursorPosition(t);
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_button1_clicked()
 {
   setLineEditInput("1");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_button2_clicked()
 {
   setLineEditInput("2");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_button3_clicked()
 {
   setLineEditInput("3");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_button4_clicked()
 {
   setLineEditInput("4");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_button5_clicked()
 {
   setLineEditInput("5");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_button6_clicked()
 {
   setLineEditInput("6");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_button7_clicked()
 {
   setLineEditInput("7");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_button8_clicked()
 {
   setLineEditInput("8");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_button9_clicked()
 {
   setLineEditInput("9");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_button0_clicked()
 {
   setLineEditInput("0");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonPlus_clicked()
 {
   setLineEditInput("+");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonMinus_clicked()
 {
   setLineEditInput("-");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonMultiply_clicked()
 {
   setLineEditInput("*");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonDivide_clicked()
 {
   setLineEditInput("/");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonPow_clicked()
 {
   setLineEditInput("^");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonDot_clicked()
 {
   setLineEditInput(".");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonOpenBracket_clicked()
 {
   setLineEditInput("(");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonCloseBracket_clicked()
 {
   setLineEditInput(")");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonSpace_clicked()
 {
   setLineEditInput(" ");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonSin_clicked()
 {
   setLineEditInput("sin");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonCos_clicked()
 {
   setLineEditInput("cos");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonTan_clicked()
 {
   setLineEditInput("tan");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonAsin_clicked()
 {
   setLineEditInput("asin");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonAcos_clicked()
 {
   setLineEditInput("acos");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonAtan_clicked()
 {
   setLineEditInput("atan");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonLog_clicked()
 {
   setLineEditInput("log");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonLn_clicked()
 {
   setLineEditInput("ln");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonLog10_clicked()
 {
   setLineEditInput("logten");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonFact_clicked()
 {
   setLineEditInput("!");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonP_clicked()
 {
   setLineEditInput("P");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonC_clicked()
 {
   setLineEditInput("C");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonSinh_clicked()
 {
   setLineEditInput("sinh");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonCosh_clicked()
 {
   setLineEditInput("cosh");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonTanh_clicked()
 {
   setLineEditInput("tanh");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonAmp_clicked()
 {
   setLineEditInput("&");
+  lineEditInput->setFocus();
 }
 
 void CalcUi::on_buttonPipe_clicked()
 {
   setLineEditInput("|");
+  lineEditInput->setFocus();
+}
+
+void CalcUi::on_outputTable_itemPressed(QTableWidgetItem *item)
+{
+  setLineEditInput(item->text());
+  lineEditInput->setFocus();
+  qDebug() << item->flags();
 }

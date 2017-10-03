@@ -194,7 +194,7 @@
       </layout>
      </item>
      <item>
-      <widget class="Line" name="line_6">
+      <widget class="Line" name="keyboardLine">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -1144,7 +1144,7 @@
         <item>
          <widget class="QCheckBox" name="keyCheckBox">
           <property name="text">
-           <string>&amp;Keyboard Only</string>
+           <string>Keyboard</string>
           </property>
          </widget>
         </item>
@@ -1305,6 +1305,9 @@
           <property name="alignment">
            <set>Qt::AlignCenter</set>
           </property>
+          <property name="buddy">
+           <cstring>lineEditConstantName</cstring>
+          </property>
          </widget>
         </item>
         <item>
@@ -1349,6 +1352,9 @@
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
+          </property>
+          <property name="buddy">
+           <cstring>lineEditConstantValue</cstring>
           </property>
          </widget>
         </item>
@@ -1417,24 +1423,6 @@
       </item>
       <item>
        <widget class="QPushButton" name="buttonOtherFunctions">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>55</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="text">
          <string>Other Functions</string>
         </property>
@@ -1443,9 +1431,6 @@
         </property>
         <property name="checked">
          <bool>true</bool>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -1513,7 +1498,6 @@
   <tabstop>checkBoxAns</tabstop>
   <tabstop>checkBoxExp</tabstop>
   <tabstop>checkBoxTime</tabstop>
-  <tabstop>keyCheckBox</tabstop>
   <tabstop>comboBox</tabstop>
   <tabstop>comboBoxAngle</tabstop>
   <tabstop>spinBoxPrecision</tabstop>
@@ -1522,7 +1506,6 @@
   <tabstop>lineEditConstantValue</tabstop>
   <tabstop>buttonRemoveConstant</tabstop>
   <tabstop>buttonAddConstant</tabstop>
-  <tabstop>buttonOtherFunctions</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -1533,12 +1516,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>65</x>
+     <x>24</x>
      <y>275</y>
     </hint>
     <hint type="destinationlabel">
-     <x>212</x>
-     <y>235</y>
+     <x>24</x>
+     <y>237</y>
     </hint>
    </hints>
   </connection>
@@ -1549,636 +1532,12 @@
    <slot>setFocus()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>82</x>
+     <x>80</x>
      <y>275</y>
     </hint>
     <hint type="destinationlabel">
-     <x>100</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonDelete</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>183</x>
-     <y>275</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>189</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>button1</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>67</x>
-     <y>327</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>96</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>button2</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>131</x>
-     <y>327</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>135</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>button3</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>196</x>
-     <y>327</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>208</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>button0</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>131</x>
-     <y>441</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>119</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonSin</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>325</x>
-     <y>327</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>242</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonCos</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>389</x>
-     <y>327</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>270</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonTan</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>454</x>
-     <y>327</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>229</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>button4</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>67</x>
-     <y>365</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>180</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>button5</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>131</x>
-     <y>365</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>147</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>button6</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>196</x>
-     <y>365</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>60</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonPlus</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>260</x>
-     <y>327</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>54</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonPlus</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>260</x>
-     <y>327</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>73</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonAsin</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>325</x>
-     <y>365</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>221</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonAcos</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>389</x>
-     <y>365</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>184</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonAtan</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>454</x>
-     <y>365</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>223</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>button7</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>67</x>
-     <y>403</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>197</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>button8</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>131</x>
-     <y>403</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>242</x>
-     <y>228</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>button9</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>196</x>
-     <y>403</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>32</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonMinus</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>260</x>
-     <y>365</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>79</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonLog</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>389</x>
-     <y>403</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>246</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonLn</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>131</x>
-     <y>479</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>75</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonLog10</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>454</x>
-     <y>403</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>214</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonDot</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>196</x>
-     <y>479</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>223</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonPow</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>260</x>
-     <y>479</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>228</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonDivide</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>260</x>
-     <y>441</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>69</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonMultiply</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>260</x>
-     <y>403</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>106</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonFact</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>67</x>
-     <y>479</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>98</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonP</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>389</x>
-     <y>441</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>243</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonC</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>454</x>
-     <y>441</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>227</x>
-     <y>228</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOpenBracket</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>67</x>
-     <y>441</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>265</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonCloseBracket</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>196</x>
-     <y>441</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>149</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonAmp</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>325</x>
-     <y>403</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>228</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonPipe</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>325</x>
-     <y>441</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>224</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonSinh</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>325</x>
-     <y>479</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>243</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonCosh</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>389</x>
-     <y>479</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>63</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonTanh</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>454</x>
-     <y>479</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>258</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonConfigure</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>line_10</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>453</x>
-     <y>275</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>466</x>
-     <y>104</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonConfigure</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>453</x>
-     <y>275</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>289</x>
-     <y>235</y>
+     <x>80</x>
+     <y>241</y>
     </hint>
    </hints>
   </connection>
@@ -2189,12 +1548,12 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>363</x>
-     <y>275</y>
+     <x>333</x>
+     <y>286</y>
     </hint>
     <hint type="destinationlabel">
-     <x>3</x>
-     <y>408</y>
+     <x>357</x>
+     <y>500</y>
     </hint>
    </hints>
   </connection>
@@ -2205,11 +1564,11 @@
    <slot>setFocus()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>273</x>
-     <y>275</y>
+     <x>197</x>
+     <y>283</y>
     </hint>
     <hint type="destinationlabel">
-     <x>307</x>
+     <x>197</x>
      <y>225</y>
     </hint>
    </hints>
@@ -2221,60 +1580,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>350</x>
-     <y>224</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>273</x>
-     <y>275</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonSpace</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>306</x>
-     <y>498</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>339</x>
+     <x>248</x>
      <y>218</y>
     </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonConfigure</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>configureLayoutWidget</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>426</x>
-     <y>257</y>
-    </hint>
     <hint type="destinationlabel">
-     <x>489</x>
-     <y>417</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>clicked()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>555</x>
-     <y>392</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>388</x>
-     <y>226</y>
+     <x>248</x>
+     <y>286</y>
     </hint>
    </hints>
   </connection>
@@ -2285,12 +1596,12 @@
    <slot>setFocus()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>546</x>
-     <y>367</y>
+     <x>470</x>
+     <y>379</y>
     </hint>
     <hint type="destinationlabel">
-     <x>426</x>
-     <y>225</y>
+     <x>310</x>
+     <y>247</y>
     </hint>
    </hints>
   </connection>
@@ -2301,12 +1612,12 @@
    <slot>setFocus()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>596</x>
-     <y>350</y>
+     <x>580</x>
+     <y>348</y>
     </hint>
     <hint type="destinationlabel">
-     <x>445</x>
-     <y>223</y>
+     <x>98</x>
+     <y>247</y>
     </hint>
    </hints>
   </connection>
@@ -2318,11 +1629,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>540</x>
-     <y>243</y>
+     <y>236</y>
     </hint>
     <hint type="destinationlabel">
-     <x>444</x>
-     <y>227</y>
+     <x>439</x>
+     <y>235</y>
     </hint>
    </hints>
   </connection>
@@ -2334,11 +1645,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>580</x>
-     <y>249</y>
+     <y>247</y>
     </hint>
     <hint type="destinationlabel">
-     <x>409</x>
-     <y>226</y>
+     <x>439</x>
+     <y>247</y>
     </hint>
    </hints>
   </connection>
@@ -2350,603 +1661,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>509</x>
-     <y>246</y>
+     <y>237</y>
     </hint>
     <hint type="destinationlabel">
-     <x>437</x>
-     <y>227</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonAmp</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>546</x>
-     <y>398</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>300</x>
-     <y>385</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonSin</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>605</x>
-     <y>395</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>295</x>
-     <y>307</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonAsin</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>572</x>
-     <y>395</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>291</x>
-     <y>345</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonPipe</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>525</x>
-     <y>399</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>310</x>
-     <y>428</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonSinh</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>504</x>
-     <y>403</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>319</x>
-     <y>470</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonCos</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>540</x>
-     <y>406</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>382</x>
-     <y>309</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonAcos</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>481</x>
-     <y>401</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>379</x>
-     <y>352</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonLog</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>642</x>
-     <y>396</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>376</x>
-     <y>388</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonP</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>635</x>
-     <y>406</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>381</x>
-     <y>427</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonCosh</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>620</x>
-     <y>402</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>385</x>
-     <y>462</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonTan</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>643</x>
-     <y>400</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>417</x>
-     <y>315</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonAtan</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>589</x>
-     <y>403</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>432</x>
-     <y>345</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonLog10</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>664</x>
-     <y>404</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>448</x>
-     <y>388</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonC</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>652</x>
-     <y>395</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>442</x>
-     <y>434</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonOtherFunctions</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonTanh</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>675</x>
-     <y>404</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>447</x>
-     <y>456</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>button1</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>594</x>
-     <y>92</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>48</x>
-     <y>310</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>button2</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>569</x>
-     <y>97</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>91</x>
-     <y>318</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>button3</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>628</x>
-     <y>91</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>163</x>
-     <y>307</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonPlus</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>573</x>
-     <y>97</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>232</x>
-     <y>309</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>button4</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>612</x>
-     <y>87</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>45</x>
-     <y>354</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>button5</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>580</x>
-     <y>99</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>113</x>
-     <y>346</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>button6</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>557</x>
-     <y>99</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>167</x>
-     <y>353</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonMinus</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>636</x>
-     <y>98</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>254</x>
-     <y>355</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>button7</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>653</x>
-     <y>100</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>48</x>
-     <y>387</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>button8</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>624</x>
-     <y>94</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>127</x>
-     <y>393</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>button9</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>570</x>
-     <y>97</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>178</x>
-     <y>387</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonMultiply</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>660</x>
-     <y>99</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>238</x>
-     <y>391</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonOpenBracket</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>670</x>
-     <y>97</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>59</x>
-     <y>424</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>button0</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>681</x>
-     <y>101</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>102</x>
-     <y>431</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonCloseBracket</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>646</x>
-     <y>95</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>184</x>
-     <y>427</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonDivide</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>603</x>
-     <y>100</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>238</x>
-     <y>429</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonFact</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>564</x>
-     <y>95</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>54</x>
-     <y>466</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonLn</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>582</x>
-     <y>92</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>108</x>
-     <y>467</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonDot</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>637</x>
-     <y>95</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>185</x>
-     <y>462</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonPow</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>624</x>
-     <y>99</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>249</x>
-     <y>458</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonSpace</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>652</x>
-     <y>96</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>306</x>
-     <y>509</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>line_6</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>580</x>
-     <y>92</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>380</x>
-     <y>298</y>
+     <x>440</x>
+     <y>218</y>
     </hint>
    </hints>
   </connection>
@@ -2989,76 +1708,60 @@
    <slot>setFocus()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>505</x>
-     <y>124</y>
+     <x>472</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>389</x>
-     <y>240</y>
+     <x>161</x>
+     <y>224</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonOtherFunctions</receiver>
-   <slot>setHidden(bool)</slot>
+   <sender>buttonConfigure</sender>
+   <signal>clicked()</signal>
+   <receiver>lineEditInput</receiver>
+   <slot>setFocus()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>553</x>
-     <y>97</y>
+     <x>373</x>
+     <y>286</y>
     </hint>
     <hint type="destinationlabel">
-     <x>610</x>
-     <y>399</y>
+     <x>373</x>
+     <y>235</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>keyCheckBox</sender>
+   <sender>buttonConfigure</sender>
    <signal>toggled(bool)</signal>
-   <receiver>buttonClear</receiver>
-   <slot>setHidden(bool)</slot>
+   <receiver>line_10</receiver>
+   <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>555</x>
-     <y>101</y>
+     <x>406</x>
+     <y>286</y>
     </hint>
     <hint type="destinationlabel">
-     <x>46</x>
-     <y>267</y>
+     <x>456</x>
+     <y>507</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>keyCheckBox</sender>
+   <sender>buttonConfigure</sender>
    <signal>toggled(bool)</signal>
-   <receiver>buttonDelete</receiver>
-   <slot>setHidden(bool)</slot>
+   <receiver>configureLayoutWidget</receiver>
+   <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>553</x>
-     <y>96</y>
+     <x>439</x>
+     <y>282</y>
     </hint>
     <hint type="destinationlabel">
-     <x>170</x>
-     <y>271</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>keyCheckBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>buttonCalculate</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>536</x>
-     <y>90</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>252</x>
-     <y>265</y>
+     <x>484</x>
+     <y>481</y>
     </hint>
    </hints>
   </connection>
