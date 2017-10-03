@@ -29,7 +29,7 @@ CalcUi::CalcUi(QWidget *parent)
 }
 
 void CalcUi::on_buttonCalculate_clicked() {
-  QString expression = lineEditInput->text();
+  QString expression = lineEditInput->text().simplified();
   try { // Parsing the expression
     std::string in = expression.toStdString();
     QString answer;
@@ -58,7 +58,7 @@ void CalcUi::on_buttonCalculate_clicked() {
 
 void CalcUi::on_lineEditInput_textChanged()
 {
-  QString expression = lineEditInput->text();
+  QString expression = lineEditInput->text().simplified();
   buttonClear->setEnabled(!expression.isEmpty());
   buttonDelete->setEnabled(!expression.isEmpty());
   buttonCalculate->setEnabled(!expression.isEmpty());
@@ -172,7 +172,9 @@ void CalcUi::on_comboBox_activated(const QString &arg1)
 void CalcUi::on_buttonDelete_clicked()
 {
   int t = lineEditInput->cursorPosition();
-  lineEditInput->setText(lineEditInput->text().left(t ? t - 1 : 0) + lineEditInput->text().right(lineEditInput->text().length() - t));
+  lineEditInput->setText(lineEditInput->text().left(t ? t - 1 : 0) +
+                         lineEditInput->text().
+                         right(lineEditInput->text().length() - t));
   lineEditInput->setCursorPosition(t);
   lineEditInput->setFocus();
 }
