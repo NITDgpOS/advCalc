@@ -399,5 +399,4 @@ void CalcUi::on_outputTable_itemPressed(QTableWidgetItem *item)
 {
   setLineEditInput(item->text());
   lineEditInput->setFocus();
-  qDebug() << item->flags();
 }

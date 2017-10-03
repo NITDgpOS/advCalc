@@ -4,9 +4,10 @@
 CLOSED: [2017-08-20 Sun 00:38]
 * TODO Variable support
 Data structure is to be decided. I have thought of either a trie or BST.
-* GUI implementations [0/3]
+* GUI implementations [1/3]
 ** TODO Electron js
-** TODO QT app
+** DONE QT app
+CLOSED: [2017-10-03 Tue 23:22]
 ** TODO GTK app
 * Arbitrary precision support [0/2]
 ** TODO GMP support

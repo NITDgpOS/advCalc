@@ -35,3 +35,5 @@ calc_ui_qt/calc_ui_qt
 calc_ui_qt/Makefile
 calc_qt
 ui_calc.h
+.qmake.stash
+*.stash
