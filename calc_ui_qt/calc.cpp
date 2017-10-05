@@ -56,12 +56,11 @@ void CalcUi::on_buttonCalculate_clicked() {
   }
 }
 
-void CalcUi::on_lineEditInput_textChanged()
+void CalcUi::on_lineEditInput_textChanged(QString &expression)
 {
-  QString expression = lineEditInput->text().simplified();
+  expression = expression.simplified();
   buttonClear->setEnabled(!expression.isEmpty());
   buttonDelete->setEnabled(!expression.isEmpty());
-  buttonCalculate->setEnabled(!expression.isEmpty());
   QString msg;
   if (not expression.isEmpty()) {
     std::string in = expression.toStdString();
@@ -72,15 +71,18 @@ void CalcUi::on_lineEditInput_textChanged()
       char ans[30];
       sprintf(ans, "%lg", parser.Ans());
       msg = ans;
+      buttonCalculate->setEnabled(true);
     } catch (ERROR *e) {
       if (e->isSet()) {
         QString err = "Error: ";
         msg = err + e->toString();
       }
+      buttonCalculate->setEnabled(false);
       delete e;
     }
   } else {
     msg = "Enter an expression";
+    buttonCalculate->setEnabled(false);
   }
   outputDisplayLabel->setText(msg);
 }

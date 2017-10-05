@@ -1454,9 +1454,9 @@
  </widget>
  <tabstops>
   <tabstop>lineEditInput</tabstop>
-  <tabstop>buttonClear</tabstop>
-  <tabstop>buttonDelete</tabstop>
   <tabstop>buttonCalculate</tabstop>
+  <tabstop>buttonDelete</tabstop>
+  <tabstop>buttonClear</tabstop>
   <tabstop>buttonQuit</tabstop>
   <tabstop>buttonConfigure</tabstop>
   <tabstop>button1</tabstop>
@@ -1506,6 +1506,9 @@
   <tabstop>lineEditConstantValue</tabstop>
   <tabstop>buttonRemoveConstant</tabstop>
   <tabstop>buttonAddConstant</tabstop>
+  <tabstop>buttonOtherFunctions</tabstop>
+  <tabstop>outputTable</tabstop>
+  <tabstop>keyCheckBox</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -1574,22 +1577,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>lineEditInput</sender>
-   <signal>returnPressed()</signal>
-   <receiver>buttonCalculate</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>218</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>248</x>
-     <y>286</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>buttonAddConstant</sender>
    <signal>clicked()</signal>
    <receiver>lineEditInput</receiver>
@@ -1622,54 +1609,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>horizontalSliderPrecision</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>540</x>
-     <y>236</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>439</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSliderPrecision</sender>
-   <signal>sliderPressed()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>580</x>
-     <y>247</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>439</x>
-     <y>247</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSliderPrecision</sender>
-   <signal>sliderReleased()</signal>
-   <receiver>lineEditInput</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>509</x>
-     <y>237</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>440</x>
-     <y>218</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>spinBoxPrecision</sender>
    <signal>valueChanged(int)</signal>
    <receiver>horizontalSliderPrecision</receiver>
@@ -1692,11 +1631,11 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>628</x>
-     <y>238</y>
+     <x>683</x>
+     <y>239</y>
     </hint>
     <hint type="destinationlabel">
-     <x>626</x>
+     <x>683</x>
      <y>215</y>
     </hint>
    </hints>
@@ -1762,6 +1701,54 @@
     <hint type="destinationlabel">
      <x>484</x>
      <y>481</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEditInput</sender>
+   <signal>returnPressed()</signal>
+   <receiver>buttonCalculate</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>256</x>
+     <y>245</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>259</x>
+     <y>273</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSliderPrecision</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lineEditInput</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>524</x>
+     <y>237</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>420</x>
+     <y>218</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBoxPrecision</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lineEditInput</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>565</x>
+     <y>221</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>416</x>
+     <y>247</y>
     </hint>
    </hints>
   </connection>
