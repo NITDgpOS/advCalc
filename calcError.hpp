@@ -43,7 +43,8 @@ public:
     invalidOptr = -10,
     parseError = -11,
     invalidAns = -12,
-    invalidCmd = -13
+    invalidCmd = -13,
+    sizeError = -14
   };
   constStr toString() const;
   bool isSet() const;

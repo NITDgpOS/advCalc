@@ -37,6 +37,8 @@ constStr ERROR::toString() const {
     return "Invalid Answer";
   case invalidCmd:
     return "Invalid command";
+  case sizeError:
+    return "Size out of bounds";
   default:
     return "Undefined Error. Please report this event.";
   }

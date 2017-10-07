@@ -12,6 +12,8 @@ template <typename Type> class calcStack {
   ulong size;
   ulong rate;
   bool accelerate;
+  void increaseSize();
+  bool decreaseSize();
 
 public:
   calcStack();
@@ -19,6 +21,7 @@ public:
   explicit calcStack(const bool);
   calcStack(const ulong, const ulong, const bool);
   calcStack(const calcStack &);
+  calcStack(calcStack &&);
   ~calcStack();
   ulong totalElements() const;
   ulong capacity() const;
@@ -26,8 +29,6 @@ public:
   bool isEmpty() const;
   void beFast(const bool);
   void operator=(const calcStack &);
-  void increaseSize();
-  bool decreaseSize();
   bool find(const ulong, Type &) const;
   bool get(Type &) const;
   bool pop();
@@ -41,15 +42,17 @@ public:
 
 template <typename Type> calcStack<Type>::calcStack() {
   this->size = 16;
-  this->rate = 1;
+  this->rate = 2;
   this->accelerate = 1;
   this->start = new Type[this->size];
   this->current = 0;
 }
 
 template <typename Type> calcStack<Type>::calcStack(const ulong size) {
+  if (not size)
+    error(sizeError);
   this->size = size;
-  this->rate = 1;
+  this->rate = 2;
   this->accelerate = 1;
   this->start = new Type[this->size];
   this->current = 0;
@@ -57,7 +60,7 @@ template <typename Type> calcStack<Type>::calcStack(const ulong size) {
 
 template <typename Type> calcStack<Type>::calcStack(const bool accelerate) {
   this->size = 16;
-  this->rate = 1;
+  this->rate = 2;
   this->accelerate = accelerate;
   this->start = new Type[this->size];
   this->current = 0;
@@ -66,6 +69,8 @@ template <typename Type> calcStack<Type>::calcStack(const bool accelerate) {
 template <typename Type>
 calcStack<Type>::calcStack(const ulong size, const ulong rate,
                            const bool accelerate) {
+  if (not size || rate < 2)
+    error(sizeError);
   this->size = size;
   this->rate = rate;
   this->accelerate = accelerate;
@@ -82,6 +87,17 @@ template <typename Type> calcStack<Type>::calcStack(const calcStack<Type> &t) {
   std::copy(t.start, t.current, this->start);
 }
 
+template <typename Type> calcStack<Type>::calcStack(calcStack<Type>&& t) :
+  size(t.size), rate(t.rate), accelerate(t.accelarate), start(t.start),
+  current(t.current)
+{
+  t.size = 16;
+  t.rate = 2;
+  t.accelerate = 1;
+  t.start = new Type[this->size];
+  t.current = 0;
+}
+
 template <typename Type> ulong calcStack<Type>::totalElements() const {
   return this->current ? this->current - this->start : 0;
 }
@@ -91,6 +107,8 @@ template <typename Type> ulong calcStack<Type>::capacity() const {
 }
 
 template <typename Type> bool calcStack<Type>::setCapacity(const ulong s) {
+  if (not s)
+    error(sizeError);
   try {
     Type *temp = new Type[s];
     size = s;
@@ -190,40 +208,53 @@ template <typename Type> void calcStack<Type>::reset() { current = 0; }
 
 template <typename Type> bool calcStack<Type>::decreaseSize() {
   try {
-    Type *temp;
+    ulong count = current ? current - start : 0;
+    ulong s;
     if (accelerate) {
-      if (rate - 1 > rate)
-        error(outOfRange);
-      temp = new Type[size / accelerate];
+      if (rate < 3 || size / rate == 0)
+        return 0;
+      else if (size / rate < count)
+        s = count;
+      else
+        s = size / rate, --rate;
     } else {
-      if (size - rate > size)
-        error(outOfRange);
-      temp = new Type[size - rate];
+      if (size <= rate)
+        return 0;
+      else if (size - rate < count)
+        s = count;
+      else
+        s = size - rate;
     }
-    size = accelerate ? size / --rate : size - rate;
+    Type *temp = new Type[s];
+    size = s;
     if (current) {
-      std::copy(start, start + size, temp);
-      current = temp + size;
+      std::copy(this->start, this->start + size, temp);
+      current = temp + count;
     }
     delete[] this->start;
-    start = temp;
+    this->start = temp;
     return 1;
   } catch (const std::bad_alloc &x) {
+    accelerate ? ++rate : 0;
     error(memAlloc);
   }
 }
 
 template <typename Type> void calcStack<Type>::increaseSize() {
   try {
-    Type *temp =
-        accelerate ? new Type[(rate + 1) * size] : new Type[rate + size];
-    size = accelerate ? size + (++rate) : size + rate;
+    if (accelerate ?
+        (rate + 1 < rate ||
+         size * (rate + 1) < size) :
+        (size + rate < size))
+      error(sizeError);
+    Type *temp = new Type[accelerate ? (rate + 1) * size : rate + size];
+    size = accelerate ? size * (++rate) : size + rate;
     if (current) {
-      std::copy(start, current, temp);
-      current = temp + (current - start);
+      std::copy(this->start, current, temp);
+      current = temp + (current - this->start);
     }
     delete[] this->start;
-    start = temp;
+    this->start = temp;
   } catch (const std::bad_alloc &x) {
     error(memAlloc);
   }
