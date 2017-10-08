@@ -16,8 +16,6 @@ bool isQuiet = false;
 bool quitAfterExecutingFile = true;
 constStr welcomeMessage = {
   "This is free software with ABSOLUTELY NO WARRANTY.\n"
-  "For details type `warranty'.\n"
-  "Type help and press return to know more.\n"
 };
 
 
@@ -27,23 +25,20 @@ inline void execute(constStr input) {
     calcParse<float64_t> parser(input);
     parser.startParsing();
     Printf(" = ");
-    println("%lg", parser.Ans());
+    printf("%lg", parser.Ans());
   } catch (ERROR *e) { // Catch any errors
-    if (e->isSet()) {
-      if (not isQuiet)
-        std::cerr << std::endl;
-      std::cerr << "Error: " << e->toString();
-    }
-    if (e->isSet() || not isQuiet)
-      std::cerr << std::endl;
+    if (e->isSet())
+      std::cerr << std::endl << "Error: " << e->toString();
     delete e;
   }
+  std::cout << std::endl;
 }
 
 
 
 int main(int argc, str argv[]) {
 
+  // TODO: Make an init function if main() becomes bulky
   makeOperatorHashes();
 
   progName = *argv;
@@ -104,7 +99,7 @@ int main(int argc, str argv[]) {
   // Quit if there is an EOF or "exit" as an input
   if (!input || !strcmp(input, "exit")) {
     Printf("\nGood bye!\nHave a nice Day");
-    Println("");
+    println("");
     exit(0);
   }
 

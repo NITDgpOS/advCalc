@@ -11,36 +11,21 @@ ERROR::ERROR(const signed char error) { this->e = error; }
 
 constStr ERROR::toString() const {
   switch (this->e) {
-  case noError:
-    return "No error";
-  case memAlloc:
-    return "Unable to allocate memory";
-  case outOfRange:
-    return "Out of range";
-  case numScarce:
-    return "Number Scarcity error";
-  case optrScarce:
-    return "Operator Scarcity error";
-  case brktError:
-    return "Bracket Error";
-  case divError:
-    return "Divide Error";
-  case rangUndef:
-    return "Range Undefined";
-  case domUndef:
-    return "Domain Undefined";
-  case invalidOptr:
-    return "Invalid Operator";
-  case parseError:
-    return "Unable to parse expression";
-  case invalidAns:
-    return "Invalid Answer";
-  case invalidCmd:
-    return "Invalid command";
-  case sizeError:
-    return "Size out of bounds";
-  default:
-    return "Undefined Error. Please report this event.";
+  case noError:     return "No error";
+  case memAlloc:    return "Unable to allocate memory";
+  case outOfRange:  return "Out of range";
+  case numScarce:   return "Number Scarcity error";
+  case optrScarce:  return "Operator Scarcity error";
+  case brktError:   return "Bracket Error";
+  case divError:    return "Divide Error";
+  case rangUndef:   return "Range Undefined";
+  case domUndef:    return "Domain Undefined";
+  case invalidOptr: return "Invalid Operator";
+  case parseError:  return "Unable to parse expression";
+  case invalidAns:  return "Invalid Answer";
+  case invalidCmd:  return "Invalid command";
+  case sizeError:   return "Size out of bounds";
+  default:          return "Undefined Error. Please report this event.";
   }
 }
 

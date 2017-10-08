@@ -94,7 +94,7 @@ template <typename Type> calcStack<Type>::calcStack(calcStack<Type>&& t) :
   t.size = 16;
   t.rate = 2;
   t.accelerate = 1;
-  t.start = new Type[this->size];
+  t.start = new Type[t.size];
   t.current = 0;
 }
 

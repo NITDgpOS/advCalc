@@ -59,12 +59,3 @@ public:
 #endif
 
 #endif
-
-/*
-  Local Variables:
-  mode: c++
-  c-file-offset: 2
-  eval: (clang-format-buffer)
-  fill-column: 80
-  End:
-*/

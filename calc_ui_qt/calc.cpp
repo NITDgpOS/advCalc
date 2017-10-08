@@ -56,7 +56,7 @@ void CalcUi::on_buttonCalculate_clicked() {
   }
 }
 
-void CalcUi::on_lineEditInput_textChanged(QString &expression)
+void CalcUi::on_lineEditInput_textChanged(QString expression)
 {
   expression = expression.simplified();
   buttonClear->setEnabled(!expression.isEmpty());
