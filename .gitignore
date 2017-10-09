@@ -37,3 +37,4 @@ calc_qt
 ui_calc.h
 .qmake.stash
 *.stash
+/TAGS
