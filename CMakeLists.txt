@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.9)
+project(advCalc)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules")
+# message(STATUS "some ${CMAKE_SOURCE_DIR}")
+find_package(Readline REQUIRED)
+add_executable(calc main.cpp input_bindings.cpp calcError.cpp str.cpp calcOptr.cpp)
+target_link_libraries(calc ${Readline_LIBRARIES})

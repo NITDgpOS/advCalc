@@ -29,6 +29,7 @@
 *.app
 
 *~
+\#*
 calc
 moc*
 calc_ui_qt/calc_ui_qt
@@ -38,3 +39,4 @@ ui_calc.h
 .qmake.stash
 *.stash
 /TAGS
+build/
