@@ -1,15 +1,15 @@
 #+TITLE: Getting started with using advCalc
+
 * How to build it successfully
 1. Running a =make cleanall= wont harm you since we are already using git for
    versioning. So, just run:
-   #+BEGIN_SRC sh
-   make cleanall
+   #+BEGIN_SRC sh -i
+make cleanall
    #+END_SRC
-   Don’t care about the output unless and until you really care about it.
 
 2. Then run:
-   #+BEGIN_SRC sh
-   make
+   #+BEGIN_SRC sh -i
+make
    #+END_SRC
    If you like to debug then just pass ~CFLAGS=-ggdb~ as an argument to make or
    instead you can use ~-O3~ instead of ~-ggdb~ to get an optimized executable.
@@ -30,7 +30,7 @@ some output based on your input.
 + ~-e <expression>~ - Given an expression. It will give the answer.
 + ~-f <file>~ - Given a file having a list of expressions, the output is shown
   one by one.
-+ ~-q~ - Be quiet. Do spit unnecessary output.
++ ~-q~ - Be quiet. Don’t spit unnecessary output.
 + ~-c~ - Quit after reading all the shell arguments.
 + ~-j~ - Give JSON formatted output.
 * The mechanism
@@ -47,7 +47,7 @@ After the token’s verification, their priority is determined by
 [[file:calcOptr.cpp::uint8_t%20Operator::checkPriority(const%20Operator%20s2)%20const%20{][Operator::checkPriority]] based on which the [[file:calcOptr.hpp::template%20<typename%20numType>%20class%20operatorManager%20{][operatorManager]] takes various
 decisions on whats to do next.
 
-Things that the ~operatorManger~ does:
+Things that the ~operatorManager~ does:
 + Calculate an atomic expression(An expression which can’t be more simple)
 + Throws errors
 + Insert a number in the ~numberStack~ if a number insertion is in demand
@@ -64,14 +64,15 @@ The actual parsing of tokens is done solely by [[calcParser.hpp]].
    3. Throws error?
       1. Display the error
    4. Else get the answer by calling ~Ans()~ on the instance.
-* Footnote
-If any of the above things are inappropriate then either its a bug or this
-document needs verification. In any of the above cases it is advised that you
-open an issue, talk to us or send us an Email specifying the bug.
+* Footnotes
++ If any of the above things seem inappropriate then its either a bug or this
+  document needs verification. In any of the above cases it is advised that you
+  open an issue, talk to us or send us an Email specifying the bug.
 
-It is advised that you read this file in Emacs for better interaction purposes
-as GitHub has a very sparse support for ~.org~ files.
++ It is advised that you read this file in Emacs for better interaction purposes
+  as GitHub has a very sparse support for ~.org~ files.
 
-If you don’t have Unicode fonts on your system or your text editor doesn’t
-support them then this text may seem awkward to you.
++ If you don’t have Unicode fonts on your system or your text editor doesn’t
+  support them then this text may seem awkward to you.
+
 #  LocalWords:  advCalc LocalWords JSON unary
