@@ -9,18 +9,14 @@
 #endif
 
 #ifdef DEBUG
-#define _error(err_type, ret_val)                                              \
-  ((Error = ERROR::err_type),                                                  \
-   (std::cerr << std::endl                                                     \
-              << "Error: '" << Error.toString() << "', File: '" << __FILE__    \
-              << "', Line: " << __LINE__),                                     \
-   ret_val)
+#define error(err_type) {						\
+    std::cerr << std::endl << "Error: '" << Error.toString() << "',";	\
+    std::cerr << " File: '" << __FILE__ << "', Line: " << __LINE__;	\
+    throw new ERROR(ERROR::err_type);					\
+  }
 #else
-#define _error(err_type, ret_val) ((Error = ERROR::err_type), (ret_val))
+#define error(err_type)  throw new ERROR(ERROR::err_type);
 #endif
-
-//#define error(err_type) return _error(err_type, 0)
-#define error(err_type) throw new ERROR(ERROR::err_type)
 
 class ERROR {
 private:
