@@ -1,6 +1,6 @@
 TEMPLATE = app
-TARGET = calc_ui_qt
-INCLUDEPATH += .
+TARGET = ../calc_qt
+INCLUDEPATH += ..
 QT += widgets
 CONFIG += c++14
 

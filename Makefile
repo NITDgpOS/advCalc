@@ -43,4 +43,3 @@ all_gui: $(QT_TARGET)
 
 $(QT_TARGET): calc_ui_qt/
 	-cd calc_ui_qt && qmake calc_ui_qt.pro && make
-	-cp calc_ui_qt/calc_ui_qt ./$(QT_TARGET)

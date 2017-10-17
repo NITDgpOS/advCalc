@@ -209,7 +209,6 @@ template <typename Type> void answerManager<Type>::display() const {
   Local Variables:
   mode: c++
   c-file-offset: 2
-  eval: (clang-format-buffer)
   fill-column: 80
   End:
 */
