@@ -1,0 +1,77 @@
+#+TITLE: Getting started with using advCalc
+* How to build it successfully
+1. Running a =make cleanall= wont harm you since we are already using git for
+   versioning. So, just run:
+   #+BEGIN_SRC sh
+   make cleanall
+   #+END_SRC
+   Don’t care about the output unless and until you really care about it.
+
+2. Then run:
+   #+BEGIN_SRC sh
+   make
+   #+END_SRC
+   If you like to debug then just pass ~CFLAGS=-ggdb~ as an argument to make or
+   instead you can use ~-O3~ instead of ~-ggdb~ to get an optimized executable.
+
+For more information on ~make~ you can read some manuals and documentations on
+*GNU Make*.
+* Using it from the command line
+You can just type in the name of the executable and it should startup prompting
+you for input:
+#+BEGIN_SRC sh -i
+$ ./calc
+This is free software with ABSOLUTELY NO WARRANTY.
+>> _
+#+END_SRC
+Just type in some expressions like ~3+2~ or ~3*sin90~ etc. and it would give you
+some output based on your input.
+** Command line options
++ ~-e <expression>~ - Given an expression. It will give the answer.
++ ~-f <file>~ - Given a file having a list of expressions, the output is shown
+  one by one.
++ ~-q~ - Be quiet. Do spit unnecessary output.
++ ~-c~ - Quit after reading all the shell arguments.
++ ~-j~ - Give JSON formatted output.
+* The mechanism
+** The expression calculator
+Given an expression of the form ~sin(cos(3.14 - 3.14 / 0.707))~ the calculator
+basically parses each token from the left. Here ~sin~ is matched with a list of
+known functions which is stored in [[file:calcOptr.cpp::static%20optr_hash%20un_ops_hash%5B22%5D%20=%20{0};][un_ops_hash]] (contains hashes of the known
+unary functions).
+
+These hashes are calculated at the beginning of the execution of the program in
+~main()~ using [[file:calcOptr.cpp::void%20makeOperatorHashes()%20{][makeOperatorHashes]] function.
+
+After the token’s verification, their priority is determined by
+[[file:calcOptr.cpp::uint8_t%20Operator::checkPriority(const%20Operator%20s2)%20const%20{][Operator::checkPriority]] based on which the [[file:calcOptr.hpp::template%20<typename%20numType>%20class%20operatorManager%20{][operatorManager]] takes various
+decisions on whats to do next.
+
+Things that the ~operatorManger~ does:
++ Calculate an atomic expression(An expression which can’t be more simple)
++ Throws errors
++ Insert a number in the ~numberStack~ if a number insertion is in demand
++ Modify the ~operatorStack~ based on the incoming operator
+
+The actual parsing of tokens is done solely by [[calcParser.hpp]].
+
+1. Process the shell arguments.
+2. Take input in ~main()~.
+3. Exit if we get ~exit~ as an input
+4. Else call ~execute()~.
+   1. Initialize a ~calcParse~ instance with the input.
+   2. Call ~startParsing()~ on the instance just created.
+   3. Throws error?
+      1. Display the error
+   4. Else get the answer by calling ~Ans()~ on the instance.
+* Footnote
+If any of the above things are inappropriate then either its a bug or this
+document needs verification. In any of the above cases it is advised that you
+open an issue, talk to us or send us an Email specifying the bug.
+
+It is advised that you read this file in Emacs for better interaction purposes
+as GitHub has a very sparse support for ~.org~ files.
+
+If you don’t have Unicode fonts on your system or your text editor doesn’t
+support them then this text may seem awkward to you.
+#  LocalWords:  advCalc LocalWords JSON unary

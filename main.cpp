@@ -7,13 +7,36 @@
 #include "calcParser.hpp"
 #include "input_bindings.hpp"
 
+/* Name of the executable. It should be set in main() */
 constStr progName = NULL;
+
+
+/* Arguments to the program */
 constStr *progArgs = NULL;
+
+
+/* Number of arguments to the program */
 size_t progArgsCount = 0;
+
+
+/* Input prompt in the CLI */
 char prompt[500] = ">> ";
-str input = NULL;
+
+
+/* Should we design the output?
+   If its true then we just print the end result */
 bool isQuiet = false;
-bool quitAfterExecutingFile = true;
+
+
+/* Switch can be turned on/off from the CLI */
+bool quit = false;
+
+
+/* Need a JSON output? Just use ‘-j’ flag */
+bool JSONoutput = false;
+
+
+/* The welcome message in the CLI */
 constStr welcomeMessage = {
   "This is free software with ABSOLUTELY NO WARRANTY.\n"
 };
@@ -24,11 +47,20 @@ inline void execute(constStr input) {
   try { // Parsing the input
     calcParse<float64_t> parser(input);
     parser.startParsing();
-    Printf(" = ");
-    printf("%lg", parser.Ans());
+    if (JSONoutput == true) {
+      printf("{ \"ans\": %lf }", parser.Ans());
+    } else {
+      Printf(" = ");
+      printf("%lg", parser.Ans());
+    }
   } catch (ERROR *e) { // Catch any errors
-    if (e->isSet())
-      std::cerr << std::endl << "Error: " << e->toString();
+    if (e->isSet()) {
+      if (JSONoutput == true) {
+	printf("{ \"error\": \"%s\" }", e->toString());
+      } else {
+	std::cerr << std::endl << "Error: " << e->toString();
+      }
+    }
     delete e;
   }
   std::cout << std::endl;
@@ -45,23 +77,30 @@ int main(int argc, str argv[]) {
   progArgs = (constStr *)argv + 1;
   progArgsCount = argc;
 
-  bool executingFile = false;
   // Processing Shell Arguments
   while (true) {
-    char option = getopt(argc, argv, "cf:q");
+    char option = getopt(argc, argv, "ce:f:qj");
     if (option == -1)
       break;
     switch (option) {
     case 'c':
-      quitAfterExecutingFile = false;
+      quit = true;
+      break;
+    case 'e': {
+      constStr input = trimSpaces(optarg);
+      if (input[0] != '\0') {
+	Printf(">> %s", input);
+	execute(input);
+      }
+      break;
+    }
     case 'f': {
       // Use optarg as filename
       std::ifstream f(optarg);
       if (f.is_open()) {
-        executingFile = true;
         char in[32768];
         while (not f.eof()) {
-          f.getline(in, 32768);
+          f.getline(in, 32767);
           constStr input = trimSpaces(in);
           if (input[0] != '\0') {
             Printf(">> %s", input);
@@ -71,19 +110,26 @@ int main(int argc, str argv[]) {
         }
         f.close();
       } else {
-        println("'%s': is not a file", optarg);
+        println("'%s' is not a file", optarg);
         exit(-1);
       }
       break;
     }
     case 'q':
       isQuiet = true;
+      strcpy(prompt, "");
+      break;
+    case 'j':
+      JSONoutput = true;
+      break;
     }
   }
-  if (executingFile == true && quitAfterExecutingFile == true)
+  if (quit == true)
     exit(0);
 
   Printf("%s", welcomeMessage);
+
+  str input = nullptr;
 
   init_readline();
 
