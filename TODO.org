@@ -3,18 +3,15 @@
 * DONE Full Expression Support
 CLOSED: [2017-08-20 Sun 00:38]
 * TODO Variable support
-Data structure is to be decided. I have thought of either a trie or BST.
+Data structure is to be decided. I have thought of either a *trie* or *BST*.
 * GUI implementations [1/3]
-** TODO Electron js
-** DONE QT app
-CLOSED: [2017-10-03 Tue 23:22]
-** TODO GTK app
++ [ ] Electron
++ [X] Qt
++ [ ] Gtk
 * Arbitrary precision support [0/2]
-** TODO GMP support
-** TODO Native support
-* Auto completion for command Line [0/3]
-** TODO Bash
-** TODO zsh
-** TODO csh
++ [ ] Using GMP
++ [ ] Native(Part of core)
 * TODO Function definition support
 * TODO Series support
+
+#  LocalWords:  TODO LocalWords BST trie

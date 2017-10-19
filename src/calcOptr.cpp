@@ -15,8 +15,8 @@ static const char un_ops[22][7] = {
   "logten", "floor", "sinh", "cosh",  "tanh", "ceil"
 };
 
-static optr_hash bin_ops_hash[22] = {0};
-static optr_hash un_ops_hash[22] = {0};
+static optr_hash binOpsHash[22] = {0};
+static optr_hash unOpsHash[22] = {0};
 
 static const ulong unify = 999999999;
 
@@ -170,12 +170,12 @@ bool Operator::setOperatorProperties() {
     uchar beg = 0, end = 20, mid;
     while (beg <= end) {
       mid = (beg + end) / 2;
-      if (this->op == bin_ops_hash[mid] || this->op == bin_ops_hash[beg] ||
-          this->op == bin_ops_hash[end]) {
+      if (this->op == binOpsHash[mid] || this->op == binOpsHash[beg] ||
+          this->op == binOpsHash[end]) {
         isBinary = true;
         this->priority = priorityOf(this->op);
         return 1;
-      } else if (this->op < bin_ops_hash[mid])
+      } else if (this->op < binOpsHash[mid])
         end = mid - 1, ++beg;
       else
         beg = mid + 1, --end;
@@ -183,12 +183,12 @@ bool Operator::setOperatorProperties() {
     beg = 0, end = 21;
     while (beg <= end) {
       mid = (beg + end) / 2;
-      if (this->op == un_ops_hash[mid] || this->op == un_ops_hash[beg] ||
-          this->op == un_ops_hash[end]) {
+      if (this->op == unOpsHash[mid] || this->op == unOpsHash[beg] ||
+          this->op == unOpsHash[end]) {
         isBinary = false;
         this->priority = priorityOf(this->op);
         return 1;
-      } else if (this->op < un_ops_hash[mid])
+      } else if (this->op < unOpsHash[mid])
         end = mid - 1, ++beg;
       else
         beg = mid + 1, --end;
@@ -316,24 +316,24 @@ void makeOperatorHashes() {
 
   /* Generating */
   for (; i < 22; ++i) {
-    bin_ops_hash[i] = generateHashKey(bin_ops[i]) % unify;
-    un_ops_hash[i] = generateHashKey(un_ops[i]) % unify;
+    binOpsHash[i] = generateHashKey(bin_ops[i]) % unify;
+    unOpsHash[i] = generateHashKey(un_ops[i]) % unify;
   }
 
   /* Sorting */
   for (i = 0; i < 22; ++i)
     for (j = 0; j < 22 - i - 1; ++j)
-      if (un_ops_hash[j] > un_ops_hash[j + 1]) {
-        t = un_ops_hash[j];
-        un_ops_hash[j] = un_ops_hash[j + 1];
-        un_ops_hash[j + 1] = t;
+      if (unOpsHash[j] > unOpsHash[j + 1]) {
+        t = unOpsHash[j];
+        unOpsHash[j] = unOpsHash[j + 1];
+        unOpsHash[j + 1] = t;
       }
   for (i = 0; i < 21; ++i)
     for (j = 0; j < 21 - i - 1; ++j)
-      if (bin_ops_hash[j] > bin_ops_hash[j + 1]) {
-        t = bin_ops_hash[j];
-        bin_ops_hash[j] = bin_ops_hash[j + 1];
-        bin_ops_hash[j + 1] = t;
+      if (binOpsHash[j] > binOpsHash[j + 1]) {
+        t = binOpsHash[j];
+        binOpsHash[j] = binOpsHash[j + 1];
+        binOpsHash[j + 1] = t;
       }
 }
 

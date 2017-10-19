@@ -3,7 +3,7 @@
 #include "calc.h"
 #include <QRegExp>
 #include <QDebug>
-#include "../calcParser.hpp"
+#include "calcParser.hpp"
 
 CalcUi::CalcUi(QWidget *parent)
   : QDialog(parent)

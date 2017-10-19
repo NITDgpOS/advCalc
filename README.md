@@ -9,68 +9,28 @@ Note: The Qt GUI version is available.
 Qt and GNU Readline development libraries should be installed beforehand to
 build the source successfully.
 
+On Debian and Debian based distributions:
+
+```
+sudo apt-get install qt5-default cmake libreadline-dev
+```
+
 ## Build and Execute
 
-Firstly, clean everything if you had built it previously:
+Generate the **Makefile** using `cmake` then start the build:
 
 ```
-make cleanall
-```
-
-Then start the build:
-
-```
+cmake .
 make
 ```
 
-To build the GUI instead, run the following command:
+This will create two executables and a library, `src/calc`[CLI app],
+`src/calc_ui_qt/calc_qt`[QT GUI app] and `src/libadvCalc.a`[calc core library].
+Start using the executables as you wish.
 
 ```
-make all_gui
+./src/calc                # CLI
+./src/calc_ui_qt/calc_qt  # QT GUI
 ```
 
-Now, you can start the calculator using:
-
-```
-./calc
-```
-
-Or the GUI using:
-
-```
-./calc_qt
-```
-
-provided you have compiled it successfully. For a system wide installation do:
-
-```
-sudo make install
-```
-
-Now you will be able to execute it simply using:
-
-```
-calc
-```
-
-Systemwide GUI installation will be provided in near future. Wait till then.
-
-
-## How to Contribute
-
-To look at the program flow you need to be able to debug. To do so, first
-create a debugger friendly executable. Start by removing any executable you had
-previously built:
-
-```
-make cleanall
-```
-
-then build the source code using:
-
-```
-make CFLAGS+=-ggdb
-```
-
-which will enable **GDB** friendly debugging information. For other debuggers
-use `-g` instead of `-ggdb`.
+Developers see [Getting Started](GettingStarted.org) for further reading.

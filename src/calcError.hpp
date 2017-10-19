@@ -9,10 +9,10 @@
 #endif
 
 #ifdef DEBUG
-#define error(err_type) {						\
-    std::cerr << std::endl << "Error: '" << Error.toString() << "',";	\
-    std::cerr << " File: '" << __FILE__ << "', Line: " << __LINE__;	\
-    throw new ERROR(ERROR::err_type);					\
+#define error(err_type) {                                               \
+    std::cerr << std::endl << "Error: '" << Error.toString() << "',";   \
+    std::cerr << " File: '" << __FILE__ << "', Line: " << __LINE__;     \
+    throw new ERROR(ERROR::err_type);                                   \
   }
 #else
 #define error(err_type)  throw new ERROR(ERROR::err_type);

@@ -56,9 +56,9 @@ inline void execute(constStr input) {
   } catch (ERROR *e) { // Catch any errors
     if (e->isSet()) {
       if (JSONoutput == true) {
-	printf("{ \"error\": \"%s\" }", e->toString());
+        printf("{ \"error\": \"%s\" }", e->toString());
       } else {
-	std::cerr << std::endl << "Error: " << e->toString();
+        std::cerr << std::endl << "Error: " << e->toString();
       }
     }
     delete e;
@@ -89,8 +89,8 @@ int main(int argc, str argv[]) {
     case 'e': {
       constStr input = trimSpaces(optarg);
       if (input[0] != '\0') {
-	Printf(">> %s", input);
-	execute(input);
+        Printf(">> %s", input);
+        execute(input);
       }
       break;
     }

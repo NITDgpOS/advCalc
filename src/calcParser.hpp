@@ -76,8 +76,11 @@ public:
     this->end = x.end;
     this->running = x.running;
     this->over = x.over;
+    this->storeAnswers = x.storeAnswers;
     return *this;
   }
+  template <typename T>
+  friend std::ostream& operator<<(std::ostream&, calcParse<T>&);
 };
 
 template <typename numT> void calcParse<numT>::gotOpenBracket() {

@@ -40,3 +40,16 @@ ui_calc.h
 *.stash
 /TAGS
 build/
+Makefile
+CMakeFiles/
+cmake_install.cmake
+*Cache*
+*CACHE*
+*cache*
+.*Cache*
+.*cache*
+.*CACHE*
+.qmake*
+*.odt
+*.html
+*.pdf

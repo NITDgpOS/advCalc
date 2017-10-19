@@ -18,6 +18,7 @@ constStr ERROR::toString() const {
   case optrScarce:  return "Operator Scarcity error";
   case brktError:   return "Bracket Error";
   case divError:    return "Divide Error";
+  case factError:   return "Factorial Error";
   case rangUndef:   return "Range Undefined";
   case domUndef:    return "Domain Undefined";
   case invalidOptr: return "Invalid Operator";

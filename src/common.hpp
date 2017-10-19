@@ -42,9 +42,10 @@ extern bool isQuiet;
 
 #define Printf(...) (isQuiet ? DONT_PRINT : printf(__VA_ARGS__))
 
-#define Println(...) {                                      \
-    Printf(__VA_ARGS__);                                    \
-    isQuiet ? DONT_PRINT : bool(std::cout << std::endl);    \
+#define Println(...) {                          \
+    Printf(__VA_ARGS__);                        \
+    isQuiet ? DONT_PRINT :                      \
+      bool(std::cout << std::endl);             \
   }
 
 #define println(...) {                          \

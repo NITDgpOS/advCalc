@@ -2,7 +2,7 @@
 ;;; For more information see (info "(emacs) Directory Variables")
 
 ((nil
-  (indent-tabs-mode . t)
+  (indent-tabs-mode . nil)
   (fill-column . 80))
  (c++-mode
   (vc-display-status . t)
