@@ -131,16 +131,10 @@ template <typename numType>
 void operatorManager<numType>::insertOptr(const Operator z) {
   Operator top;
 
-  // Check(top > z) only if any operator is returned into top
-  if (not this->operatorStack.get(top) or top > z) {
-    this->operatorStack.push(z);
-    return;
-  }
-
-  do {
-    this->operatorStack.pop(); // The operator(top)
+  while (this->operatorStack.get(top) and top < z) {
+    this->operatorStack.pop(); // We have the operator in top
     this->calculate(top);      // Calculate the result
-  } while (this->operatorStack.get(top) && top < z);
+  }
 
   this->operatorStack.push(z);
 }
