@@ -28,10 +28,6 @@ extern bool isidentifier(constStr s);
 
 extern signed char strToNum(constStr *a, double &x, datatype d);
 
-#ifdef ANS_CMD
-extern signed char separate_ans(constStr a, unsigned long &i, unsigned long &x);
-#endif
-
 extern str trimSpaces(constStr s);
 
 #endif // CALC_STR_H
