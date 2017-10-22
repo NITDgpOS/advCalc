@@ -12,6 +12,7 @@ inline void skipSpace(constStr &s) {
   isspace(*s) ? ++s : s;
 }
 
+#if !defined(_STRING_H) && !defined(STRING_H)
 extern uint64_t strlen(constStr s);
 extern int strcmp(constStr s1, constStr s2);
 extern int strncmp(constStr s1, constStr s2, uint64_t l);
@@ -21,6 +22,7 @@ extern char* strcpy(str s1, constStr s2);
 extern char* strncpy(str s1, constStr s2, uint64_t l);
 extern char* strcat(str s1, constStr s2);
 extern char* strncat(str s1, constStr s2, uint64_t l);
+#endif
 
 extern bool isidentifier(constStr s);
 
