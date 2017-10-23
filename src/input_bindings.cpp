@@ -1,5 +1,7 @@
-#include <malloc.h>
+#include <stdio.h>
 #include <readline/readline.h>
+#include <readline/chardefs.h>
+#include "str.hpp"
 
 static bool trim_spaces = false;
 
@@ -27,6 +29,8 @@ static int space_pressed(int x, int input_char) {
   }
   return x;
 }
+
+#if 0
 /* under dev code, edit/use with precaution */
 static int rubout_pressed(int x, int input_char) {
   if (trim_spaces == true) {
@@ -72,6 +76,8 @@ static int rubout_pressed(int x, int input_char) {
   return rl_delete(x, input_char);
 }
 /* **************************************** */
+#endif // 0
+
 static int do_nothing(int x, int input_char) { return x + input_char; }
 
 void init_readline() {
@@ -79,7 +85,9 @@ void init_readline() {
   rl_bind_key(TAB, do_nothing);
   rl_bind_key(RETURN, return_pressed);
   rl_bind_key(NEWLINE, return_pressed);
+#if 0
   /* under dev line, use/edit with precaution */
   rl_bind_key(RUBOUT, rubout_pressed);
   /* **************************************** */
+#endif //0
 }

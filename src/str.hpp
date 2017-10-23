@@ -12,7 +12,7 @@ inline void skipSpace(constStr &s) {
   isspace(*s) ? ++s : s;
 }
 
-#if !defined(_STRING_H) && !defined(STRING_H)
+#if !defined(_STRING_H) && !defined(STRING_H) && !defined(_STRING_H_)
 extern uint64_t strlen(constStr s);
 extern int strcmp(constStr s1, constStr s2);
 extern int strncmp(constStr s1, constStr s2, uint64_t l);
