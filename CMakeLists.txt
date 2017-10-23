@@ -5,6 +5,13 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules")
 
+if (EXISTS "${ROOT}/usr/local/opt/readline/include")
+  include_directories(${ROOT}/usr/local/opt/readline/include)
+  message(STATUS "Found readline Headers")
+else()
+  message(STATUS "Sorry")
+endif()
+
 # message(STATUS "some ${CMAKE_SOURCE_DIR}")
 # message(STATUS "some ${PROJECT_SOURCE_DIR}")
 

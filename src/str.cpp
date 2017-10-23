@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include <math.h>
 
+#if !defined(_STRING_H) && !defined(STRING_H) && !defined(_STRING_H_)
 uint64_t strlen(constStr s) {
   int l = 0;
   for (; s[l]; l++)
@@ -70,6 +71,7 @@ str strncat(str s1, constStr s2, uint64_t l) {
     s1[i] = 0;
   return s1;
 }
+#endif // STRING_H
 
 bool isidentifier(constStr s) {
   while (isalpha(*s) || *s == '_')

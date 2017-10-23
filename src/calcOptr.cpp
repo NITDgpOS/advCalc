@@ -74,8 +74,8 @@ void Operator::operator=(const Operator &x) {
 }
 
 static str_hash generateHashKey(constStr s, ulong start = 0, ulong end = 0) {
-  register constStr x = s = s + start;
-  register str_hash hash = 0;
+  constStr x = s = s + start;
+  str_hash hash = 0;
   if (start == end)
     while (*x)
       hash = 127 * hash + *(x++);
