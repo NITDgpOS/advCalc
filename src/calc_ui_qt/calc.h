@@ -26,8 +26,6 @@ public:
 
 private slots:
   void on_lineEditInput_textChanged(QString);
-  void on_lineEditConstantName_textChanged();
-  void on_lineEditConstantValue_textChanged();
   void on_keyCheckBox_toggled(bool);
   void on_buttonOtherFunctions_toggled(bool);
   void on_buttonDelete_clicked();
