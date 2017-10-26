@@ -24,4 +24,5 @@ add_library(${LIB_ADVCALC} ${LIB_SRC} ${LIB_HPP})
 set(LIBS ${LIB_ADVCALC})
 
 add_subdirectory(src/)
+add_subdirectory(src/calc_ui_qt)
 
