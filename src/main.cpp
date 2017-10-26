@@ -28,6 +28,9 @@ char prompt[500] = ">> ";
 bool isQuiet = false;
 
 
+/* if true print to stdout instead of stderr */
+FILE* useOut4Err = stderr;
+
 /* Switch can be turned on/off from the CLI */
 bool quit = false;
 
@@ -52,18 +55,20 @@ inline void execute(constStr input) {
     } else {
       Printf(" = ");
       printf("%lg", parser.Ans());
-    }
+    }	
+    std::cout << std::endl;
   } catch (ERROR *e) { // Catch any errors
     if (e->isSet()) {
       if (JSONoutput == true) {
-        printf("{ \"error\": \"%s\" }", e->toString());
+        println("{ \"error\": \"%s\" }", e->toString());
       } else {
-        std::cerr << std::endl << "Error: " << e->toString();
+        if (not isQuiet)
+          fprintf(useOut4Err, "\n");
+        fprintf(useOut4Err, "Error: %s\n",e->toString()); 
       }
     }
     delete e;
   }
-  std::cout << std::endl;
 }
 
 
@@ -79,10 +84,13 @@ int main(int argc, str argv[]) {
 
   // Processing Shell Arguments
   while (true) {
-    char option = getopt(argc, argv, "ce:f:qj");
+    char option = getopt(argc, argv, "ce:f:jqs");
     if (option == -1)
       break;
     switch (option) {
+    case 's':
+      useOut4Err = stdout;
+      break;
     case 'c':
       quit = true;
       break;
@@ -144,8 +152,7 @@ int main(int argc, str argv[]) {
 
   // Quit if there is an EOF or "exit" as an input
   if (!input || !strcmp(input, "exit")) {
-    Printf("\nGood bye!\nHave a nice Day");
-    println("");
+    Printf("\nGood bye!\nHave a nice Day\n");
     exit(0);
   }
 
