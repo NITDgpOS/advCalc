@@ -31,7 +31,7 @@
 *~
 \#*
 calc
-moc*
+*moc*.c*
 calc_ui_qt/calc_ui_qt
 calc_ui_qt/Makefile
 calc_qt
