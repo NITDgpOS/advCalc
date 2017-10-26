@@ -22,9 +22,6 @@ CalcUi::CalcUi(QWidget *parent)
 
   layout()->setSizeConstraint(QLayout::SetFixedSize);
 
-  QRegExp regExpIdentifier("[A-Za-z_]{1,20}");
-  lineEditConstantName->setValidator(new QRegExpValidator(regExpIdentifier, this));
-
   lineEditInput->setFocus();
 }
 
@@ -85,19 +82,6 @@ void CalcUi::on_lineEditInput_textChanged(QString expression)
     buttonCalculate->setEnabled(false);
   }
   outputDisplayLabel->setText(msg);
-}
-
-void CalcUi::on_lineEditConstantName_textChanged()
-{
-  buttonAddConstant->setEnabled(lineEditConstantName->hasAcceptableInput() &&
-                                !lineEditConstantValue->text().isEmpty());
-  buttonRemoveConstant->setEnabled(lineEditConstantName->hasAcceptableInput());
-}
-
-void CalcUi::on_lineEditConstantValue_textChanged()
-{
-  buttonAddConstant->setEnabled(lineEditConstantName->hasAcceptableInput() &&
-                                !lineEditConstantValue->text().isEmpty());
 }
 
 void CalcUi::on_keyCheckBox_toggled(bool checked)
