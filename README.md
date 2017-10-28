@@ -44,11 +44,7 @@ Start using the executables as you wish.
 # For macOS
 
 ```
-cd cmake
-cmake .. -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)
-cd ..
-
-cmake .
+cmake . -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)
 make
 ```
 
