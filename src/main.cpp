@@ -55,7 +55,7 @@ inline void execute(constStr input) {
     } else {
       Printf(" = ");
       printf("%lg", parser.Ans());
-    }	
+    }
     std::cout << std::endl;
   } catch (ERROR *e) { // Catch any errors
     if (e->isSet()) {
@@ -64,7 +64,7 @@ inline void execute(constStr input) {
       } else {
         if (not isQuiet)
           fprintf(useOut4Err, "\n");
-        fprintf(useOut4Err, "Error: %s\n",e->toString()); 
+        fprintf(useOut4Err, "Error: %s\n", e->toString());
       }
     }
     delete e;
@@ -94,27 +94,19 @@ int main(int argc, str argv[]) {
     case 'c':
       quit = true;
       break;
-    case 'e': {
-      constStr input = trimSpaces(optarg);
-      if (input[0] != '\0') {
-        Printf(">> %s", input);
-        execute(input);
-      }
+    case 'e':
+      Printf(">> %s", optarg);
+      execute(optarg);
       break;
-    }
     case 'f': {
       // Use optarg as filename
       std::ifstream f(optarg);
       if (f.is_open()) {
-        char in[32768];
+        char input[32768];
         while (not f.eof()) {
-          f.getline(in, 32767);
-          constStr input = trimSpaces(in);
-          if (input[0] != '\0') {
-            Printf(">> %s", input);
-            execute(input);
-          }
-          delete input;
+          f.getline(input, 32767);
+          Printf(">> %s", input);
+          execute(input);
         }
         f.close();
       } else {

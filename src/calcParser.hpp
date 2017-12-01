@@ -13,14 +13,14 @@ template <typename numT> class calcParse {
   char end;
   bool running;
   bool over;
-  typedef enum {
+  using prevTokenType = enum {
     ClearField,
     Number,
     BinaryOperator,
     UnaryOperator,
     OpenBracket,
     CloseBracket
-  } prevTokenType;
+  };
   prevTokenType prevToken;
   operatorManager<numT> optr;
 
@@ -55,30 +55,33 @@ template <typename numT> class calcParse {
 public:
   bool storeAnswers;
 
-  calcParse()
-      : input(NULL), currentPos(NULL), ans(0), end(0), running(false),
-        over(false), prevToken(ClearField), storeAnswers(true) {}
   explicit calcParse(constStr inp)
-      : input(inp), currentPos(NULL), ans(0), end(0), running(false),
-        over(false), prevToken(ClearField), storeAnswers(true) {}
+      : currentPos(NULL), ans(0), end(0), running(false),
+        over(false), prevToken(ClearField), storeAnswers(true) {
+    input = trimSpaces(inp);
+  }
+  calcParse(constStr inp, char e)
+      : currentPos(NULL), ans(0), end(e), running(false),
+        over(false), prevToken(ClearField), storeAnswers(true) {
+    input = trimSpaces(inp);
+  }
   calcParse(str inp, str start)
-      : input(inp), currentPos(start), ans(0), end(0), running(false),
-        over(false), prevToken(ClearField), storeAnswers(true) {}
-  calcParse(const calcParse &x) { *this = x; }
+      : currentPos(start), ans(0), end(0), running(false),
+        over(false), prevToken(ClearField), storeAnswers(true) {
+    input = trimSpaces(inp);
+  }
+  calcParse(constStr inp, str start, char e)
+      : currentPos(start), ans(0), end(e), running(false),
+        over(false), prevToken(ClearField), storeAnswers(true) {
+    input = trimSpaces(inp);
+  }
+  ~calcParse() {
+    delete input;
+  }
   bool isParsing() { return running; }
   bool isOver() { return over; }
   void startParsing();
   numT Ans() { return ans; }
-  calcParse<numT> &operator=(const calcParse &x) {
-    this->input = x.input;
-    this->currentPos = x.currentPos;
-    this->ans = x.ans;
-    this->end = x.end;
-    this->running = x.running;
-    this->over = x.over;
-    this->storeAnswers = x.storeAnswers;
-    return *this;
-  }
   template <typename T>
   friend std::ostream& operator<<(std::ostream&, calcParse<T>&);
 };

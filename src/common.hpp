@@ -21,7 +21,7 @@ typedef float float32_t;
 typedef double float64_t;
 typedef long double float128_t;
 
-typedef uint8_t datatype;
+typedef unsigned char datatype;
 
 /* String types */
 typedef char * str;

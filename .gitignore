@@ -53,3 +53,6 @@ cmake_install.cmake
 *.odt
 *.html
 *.pdf
+/src/testClient
+/-
+/src/calcServer
