@@ -56,3 +56,9 @@ cmake_install.cmake
 /src/testClient
 /-
 /src/calcServer
+/.ccls
+.vscode
+/compile_commands.json
+G*
+cmakefiles/
+debug-build/
