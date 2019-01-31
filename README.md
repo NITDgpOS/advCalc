@@ -1,5 +1,7 @@
 # advCalc
 
+[![gsocheat](https://img.shields.io/badge/GSoC%20Heat-2019-orange.svg)](https://nitdgpos.github.io/gsoc_heat)
+
 Reimplementation of calc from scratch.
 
 Note: The Qt GUI version is available.
