@@ -6,9 +6,11 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <errno.h>
 
 void error(const char *msg)
 {
+  printf("%d", errno);
   perror(msg);
   exit(0);
 }
@@ -33,7 +35,7 @@ int main(int argc, char *argv[])
     fprintf(stderr,"ERROR, no such host\n");
     exit(0);
   }
-  bzero((char *) &serv_addr, sizeof(serv_addr));
+  memset((char *) &serv_addr, 0, sizeof(serv_addr));
   serv_addr.sin_family = AF_INET;
   bcopy((char *)server->h_addr,
         (char *)&serv_addr.sin_addr.s_addr,
@@ -44,12 +46,14 @@ int main(int argc, char *argv[])
   printf("Please enter the message: ");
   bzero(buffer,256);
   fgets(buffer,255,stdin);
-  n = write(sockfd, buffer, strlen(buffer));
-  if (n < 0)
+  printf("'%s'\n", buffer);
+  printf("n = %d\n", n);
+  n = write(sockfd, buffer, strlen(buffer) + 1);
+  if (n <= 0)
     error("ERROR writing to socket");
-  bzero(buffer,256);
+  memset(buffer, 0, 256);
   n = read(sockfd, buffer, 255);
-  if (n < 0)
+  if (n <= 0)
     error("ERROR reading from socket");
   printf("%s\n", buffer);
   close(sockfd);
