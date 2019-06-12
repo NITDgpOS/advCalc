@@ -26,7 +26,6 @@ class calcServer {
     int fd;
     socklen_t length;
     sockaddr_in address;
-    bool close_on_destroy = true;
     IPCdetails() {
       length = sizeof(address);
       memset(&address, 0, length);
@@ -45,8 +44,7 @@ class calcServer {
       return &length;
     }
     ~IPCdetails() {
-      if (close_on_destroy)
-        close(fd);
+      close(fd);
     }
   } server;
   std::map<std::string, std::shared_ptr<IPCdetails>> clients;
@@ -56,12 +54,10 @@ class calcServer {
   std::mutex class_mutex;
   void runCommands(std::shared_ptr<IPCdetails> client) {
     client->debug("Thread launched");
-    client->close_on_destroy = true;
     std::string expr;
     do {
       expr = "";
       char s[256];
-      // printf("Valid = %d\n", fcntl(client.fd, F_GETFD));
       int len;
       client->debug("Waiting for message");
       while (true) {
@@ -150,15 +146,9 @@ public:
     else {
       client->debug("Welcome");
       auto address = client->getAddress();
-      class_mutex.lock();
-      clients.erase(address);
-      clients[address] = client;
-      class_mutex.unlock();
-      client->close_on_destroy = false;
       client->debug("Registering thread");
       auto handle = std::async(std::launch::async, &calcServer::runCommands, this, client).share();
       client->debug("Thread registered");
-      class_mutex.lock();
       auto old_handle = clientHandles.find(address);
       if (old_handle != clientHandles.end()) {
         char c[50];
@@ -166,7 +156,10 @@ public:
         server.debug(c);
         old_handle->second.wait();
       }
+      class_mutex.lock();
       clientHandles.erase(address);
+      clients.erase(address);
+      clients[address] = client;
       clientHandles[address] = handle;
       class_mutex.unlock();
     }
