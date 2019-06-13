@@ -24,18 +24,28 @@ inline const char *execute(constStr input) {
 
 class calcServer {
   struct IPCdetails {
-    int fd;
-    socklen_t length;
+    int fd = 0;
+    socklen_t length = sizeof(address);
     sockaddr_in address;
     IPCdetails() {
-      length = sizeof(address);
       memset(&address, 0, length);
-      fd = 0;
+    }
+    void close() {
+      if (fd > 0) {
+        debug("Killing myself");
+        ::close(fd);
+        fd = 0;
+        memset(&address, 0, length);
+        debug("Killed");
+      }
     }
     const std::string getAddress() const {
-      std::string a = inet_ntoa(address.sin_addr);
-      a += ":" + std::to_string(ntohs(address.sin_port));
-      return a;
+      if (fd > 0) {
+        std::string a = inet_ntoa(address.sin_addr);
+        a += ":" + std::to_string(ntohs(address.sin_port));
+        return a;
+      }
+      return "undefined address";
     }
     void debug(const std::string s) const {
       std::cout << getAddress() << "> " << s << "\n";
@@ -45,7 +55,7 @@ class calcServer {
       return &length;
     }
     ~IPCdetails() {
-      close(fd);
+      close();
     }
   } server;
   std::map<std::string, std::shared_ptr<IPCdetails>> clients;
@@ -111,7 +121,9 @@ public:
       server.address.sin_port = htons(std::stoi(port));
   }
 
-  ~calcServer() { stopServer(); }
+  ~calcServer() {
+    stopServer();
+  }
 
   void startServer() {
     server.fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -137,7 +149,11 @@ public:
     }
   }
 
-  void stopServer() { close(server.fd); }
+  void stopServer() {
+    if (server.fd > 0) {
+      server.close();
+    }
+  }
 
   void dropAllClients() {
     clientHandles.clear();
