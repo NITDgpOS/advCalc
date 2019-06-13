@@ -127,9 +127,6 @@ public:
     while (true) {
       if (numberOfConnections < maxClients) {
         numberOfConnections++;
-        char c[100];
-        sprintf(c, "Ready for connection %d", numberOfConnections);
-        server.debug(c);
         acceptClient();
       } else {
         server.debug("Sleeping for 2s");
