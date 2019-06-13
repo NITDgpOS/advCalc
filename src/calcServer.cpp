@@ -98,9 +98,16 @@ public:
   void init(sa_family_t server_byte_order = AF_INET,
             in_addr_t ip_address = INADDR_ANY,
             int port = 3001) {
-    server.address.sin_family = server_byte_order;
-    server.address.sin_addr.s_addr = ip_address;
-    server.address.sin_port = htons(port);
+    if (server.fd == 0) {
+      server.address.sin_family = server_byte_order;
+      server.address.sin_addr.s_addr = ip_address;
+      server.address.sin_port = htons(port);
+    }
+  }
+
+  void set_port(const std::string port) {
+    if (server.fd == 0)
+      server.address.sin_port = htons(std::stoi(port));
   }
 
   ~calcServer() { stopServer(); }
@@ -196,6 +203,7 @@ int main(int argc, char *argv[])
 
   makeOperatorHashes();
 
+  server.set_port(argv[1]);
   server.startServer();
 
   return 0;
