@@ -1,7 +1,7 @@
 image: ubuntu:bionic
 before_script:
  - apt-get update --yes
- - apt-get install --yes cmake qt5-default g++ libreadline-dev build-essential
+ - apt-get install --yes cmake qt5-default g++ libreadline-dev
 build:
   script:
     - mkdir build
