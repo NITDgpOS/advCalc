@@ -8,7 +8,7 @@
 #include "calcParser.hpp"
 
 inline const char *execute(constStr input) {
-  char *retVal = new char[30];
+  char *retVal = new char[300];
   try { // Parsing the input
     calcParse<float64_t> parser(input);
     parser.startParsing();
