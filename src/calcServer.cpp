@@ -17,6 +17,7 @@ inline const char *execute(constStr input) {
     if (e->isSet()) {
       sprintf(retVal, "{ \"error\": \"%s\" }", e->toString());
     }
+    delete e;
   }
   return retVal;
 }
