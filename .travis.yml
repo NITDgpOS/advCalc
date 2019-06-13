@@ -1,0 +1,20 @@
+language: cpp
+sudo: required
+dist: xenial
+compiler: g++
+os: linux
+notifications:
+  email: false
+
+addons:
+  apt:
+    packages:
+      - g++
+      - libreadline-dev
+      - cmake
+      - qt5-default
+
+script:
+  - mkdir build && cd build
+  - cmake ..
+  - make -j $(nproc)
